@@ -1,0 +1,100 @@
+/**
+=====================================================
+Bill OCR Upload
+=====================================================
+*/
+
+.ocr-upload-container {
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+}
+
+.ocr-upload-button {
+
+    width: fit-content;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    background: #0d6efd;
+
+    color: white;
+
+    font-size: 15px;
+
+    transition: .3s;
+
+}
+
+.ocr-upload-button:hover {
+
+    background: #0b5ed7;
+
+}
+
+.ocr-upload-button:disabled {
+
+    opacity: .6;
+
+    cursor: not-allowed;
+
+}
+
+.ocr-preview {
+
+    width: 320px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+}
+
+.ocr-preview img {
+
+    width: 100%;
+
+    display: block;
+
+}
+.ocr-file-name{
+
+    margin-top:10px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:#555;
+
+    word-break:break-word;
+
+}
+
+.ocr-success{
+
+    margin-top:12px;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    background:#d1fae5;
+
+    color:#065f46;
+
+    font-weight:600;
+
+    text-align:center;
+
+}

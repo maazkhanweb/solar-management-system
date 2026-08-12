@@ -1,0 +1,399 @@
+/* ==========================================================
+   Users Page
+========================================================== */
+
+.users {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.users-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+.users-header h1 {
+
+    margin: 0 0 8px;
+
+    font-size: 44px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+    transition: color .3s;
+
+}
+
+.users-header p {
+
+    margin: 0;
+
+    font-size: 16px;
+
+    color: var(--text-secondary);
+
+    transition: color .3s;
+
+}
+
+/* ==========================================================
+   Add User Button
+========================================================== */
+
+.add-user-btn {
+
+    height: 48px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #2563EB,
+        #1D4ED8
+    );
+
+    box-shadow: 0 10px 25px rgba(37,99,235,.25);
+
+    transition: .30s;
+
+}
+
+.add-user-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 15px 35px rgba(37,99,235,.35);
+
+}
+
+.add-user-btn:active {
+
+    transform: scale(.97);
+
+}
+
+/* ==========================================================
+   Search
+========================================================== */
+
+.search-box {
+
+    width: 100%;
+
+}
+
+.search-box input {
+
+    width: 320px;
+
+    max-width: 100%;
+
+    height: 46px;
+
+    padding: 0 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .30s;
+
+}
+
+.search-box input::placeholder {
+
+    color: var(--text-secondary);
+
+}
+
+.search-box input:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 4px rgba(15,118,110,.12);
+
+}
+
+/* ==========================================================
+   Table Wrapper
+========================================================== */
+
+.users-table {
+
+    width: 100%;
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-md);
+
+    transition: .30s;
+
+}
+
+.users-table table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.users-table th {
+
+    background: var(--table-header);
+
+    color: var(--text-primary);
+
+    padding: 20px;
+
+    text-align: left;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+/* ==========================================================
+   Body
+========================================================== */
+
+.users-table td {
+
+    padding: 20px;
+
+    font-size: 15px;
+
+    color: var(--text-primary);
+
+    border-top: 1px solid var(--border-color);
+
+    transition: .25s;
+
+}
+
+.users-table tbody tr {
+
+    transition: .25s;
+
+}
+
+.users-table tbody tr:hover {
+
+    background: var(--table-hover);
+
+}
+
+/* ==========================================================
+   Status
+========================================================== */
+
+.status {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-width: 90px;
+
+    padding: 7px 16px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.status.active {
+
+    background: rgba(34,197,94,.15);
+
+    color: #22C55E;
+
+}
+
+.status.inactive {
+
+    background: rgba(239,68,68,.15);
+
+    color: #EF4444;
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .users {
+
+    color: #F8FAFC;
+
+}
+
+[data-theme="dark"] .users-header h1 {
+
+    color: #FFFFFF;
+
+}
+
+[data-theme="dark"] .users-header p {
+
+    color: #AFC3D4;
+
+}
+
+[data-theme="dark"] .search-box input {
+
+    background: #132535;
+
+    border-color: #234056;
+
+    color: #FFFFFF;
+
+}
+
+[data-theme="dark"] .search-box input::placeholder {
+
+    color: #8FA8BC;
+
+}
+
+[data-theme="dark"] .users-table {
+
+    background: #12202D;
+
+    border-color: #234056;
+
+}
+
+[data-theme="dark"] .users-table th {
+
+    background: #162838;
+
+    color: #FFFFFF;
+
+    border-bottom: 1px solid #234056;
+
+}
+
+[data-theme="dark"] .users-table td {
+
+    color: #E2E8F0;
+
+    border-top: 1px solid #234056;
+
+}
+
+[data-theme="dark"] .users-table tbody tr:hover {
+
+    background: #183042;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:992px) {
+
+    .users-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+    .users-header h1 {
+
+        font-size: 36px;
+
+    }
+
+    .search-box input {
+
+        width: 100%;
+
+    }
+
+    .users-table {
+
+        overflow-x: auto;
+
+    }
+
+    .users-table table {
+
+        min-width: 900px;
+
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .users-header h1 {
+
+        font-size: 30px;
+
+    }
+
+}

@@ -1,0 +1,191 @@
+/* ==========================================
+   Dashboard
+========================================== */
+
+.dashboard {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+.dashboard-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+}
+
+.dashboard-header h1 {
+
+    margin: 0;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.dashboard-header p {
+
+    margin-top: 8px;
+
+    font-size: 16px;
+
+    color: var(--text-secondary);
+
+    line-height: 1.6;
+
+}
+
+/* ==========================================
+   Dashboard Cards
+========================================== */
+
+.dashboard-cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 20px;
+
+}
+
+/* ==========================================
+   Charts Section
+========================================== */
+
+.dashboard-charts {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    margin-top: 10px;
+
+}
+
+/* ==========================================
+   Chart Card
+========================================== */
+
+.chart-card {
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+
+    transition: .3s;
+
+}
+
+.chart-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+
+}
+
+.chart-card h2 {
+
+    margin: 0 0 20px;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 992px) {
+
+    .dashboard-charts {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .dashboard-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+
+    }
+
+    .dashboard-header h1 {
+
+        font-size: 30px;
+
+    }
+
+    .dashboard-header p {
+
+        font-size: 15px;
+
+    }
+
+    .dashboard-cards {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .dashboard {
+
+        gap: 20px;
+
+    }
+
+    .chart-card {
+
+        padding: 15px;
+
+    }
+
+    .chart-card h2 {
+
+        font-size: 18px;
+
+    }
+
+}

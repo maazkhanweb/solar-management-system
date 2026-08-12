@@ -1,0 +1,439 @@
+/* ===========================================================
+   BILL ANALYSIS CARD
+   PART 1
+=========================================================== */
+
+/* ===========================================================
+   Container
+=========================================================== */
+
+.bill-analysis-card {
+
+    margin-top: 25px;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border-color);
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+
+}
+
+/* ===========================================================
+   Header
+=========================================================== */
+
+.analysis-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+.analysis-header h3 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.analysis-header p {
+
+    margin-top: 6px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+}
+
+/* ===========================================================
+   Grid
+=========================================================== */
+
+.analysis-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+
+}
+
+/* ===========================================================
+   Card
+=========================================================== */
+
+.analysis-item {
+
+    background: var(--input-bg);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    transition: .3s;
+
+}
+
+.analysis-item:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.analysis-item span {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+}
+
+.analysis-item strong {
+
+    display: block;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+/* ===========================================================
+   Saving
+=========================================================== */
+
+.saving {
+
+    color: #22c55e;
+
+}
+
+/* ===========================================================
+   Efficiency
+=========================================================== */
+
+.efficiency {
+
+    color: #2563eb;
+
+}
+
+.efficiency.excellent {
+
+    color: #22c55e;
+
+}
+
+.efficiency.very-good {
+
+    color: #3b82f6;
+
+}
+
+.efficiency.good {
+
+    color: #f59e0b;
+
+}
+
+.efficiency.average {
+
+    color: #f97316;
+
+}
+
+.efficiency.poor {
+
+    color: #ef4444;
+
+}
+/* ===========================================================
+   Empty State
+=========================================================== */
+
+.empty-analysis {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-height: 260px;
+
+}
+
+.analysis-empty {
+
+    text-align: center;
+
+    max-width: 450px;
+
+}
+
+.analysis-empty h4 {
+
+    margin-bottom: 12px;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.analysis-empty p {
+
+    line-height: 1.8;
+
+    font-size: 15px;
+
+    color: var(--text-secondary);
+
+}
+
+.analysis-empty strong {
+
+    color: #2563eb;
+
+}
+
+/* ===========================================================
+   Light Theme
+=========================================================== */
+
+[data-theme="light"] .bill-analysis-card {
+
+    background: #ffffff;
+
+    border-color: #e5e7eb;
+
+}
+
+[data-theme="light"] .analysis-item {
+
+    background: #f8fafc;
+
+    border-color: #e5e7eb;
+
+}
+
+[data-theme="light"] .analysis-item:hover {
+
+    background: #ffffff;
+
+}
+
+/* ===========================================================
+   Dark Theme
+=========================================================== */
+
+[data-theme="dark"] .bill-analysis-card {
+
+    background: #18273c;
+
+    border-color: #334155;
+
+}
+
+[data-theme="dark"] .analysis-header {
+
+    border-color: #334155;
+
+}
+
+[data-theme="dark"] .analysis-header h3 {
+
+    color: #ffffff;
+
+}
+
+[data-theme="dark"] .analysis-header p {
+
+    color: #cbd5e1;
+
+}
+
+[data-theme="dark"] .analysis-item {
+
+    background: #223550;
+
+    border-color: #334155;
+
+}
+
+[data-theme="dark"] .analysis-item:hover {
+
+    background: #2b405d;
+
+}
+
+[data-theme="dark"] .analysis-item span {
+
+    color: #94a3b8;
+
+}
+
+[data-theme="dark"] .analysis-item strong {
+
+    color: #ffffff;
+
+}
+
+[data-theme="dark"] .analysis-empty h4 {
+
+    color: #ffffff;
+
+}
+
+[data-theme="dark"] .analysis-empty p {
+
+    color: #cbd5e1;
+
+}
+
+/* ===========================================================
+   Responsive
+=========================================================== */
+
+@media (max-width: 992px) {
+
+    .analysis-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .bill-analysis-card {
+
+        padding: 20px;
+
+    }
+
+    .analysis-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+
+    }
+
+    .analysis-header h3 {
+
+        font-size: 24px;
+
+    }
+
+    .analysis-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .analysis-item strong {
+
+        font-size: 24px;
+
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .bill-analysis-card {
+
+        padding: 16px;
+
+    }
+
+    .analysis-header h3 {
+
+        font-size: 22px;
+
+    }
+
+    .analysis-item {
+
+        padding: 16px;
+
+    }
+
+    .analysis-item strong {
+
+        font-size: 20px;
+
+    }
+
+}
+.excellent{
+
+    color:#22c55e;
+
+}
+
+.reason{
+
+    color:#f59e0b;
+
+}
+/* ==========================================
+   Reason Colors
+========================================== */
+
+.reason-success{
+
+    color:#22c55e !important;
+
+    font-weight:700;
+
+}
+
+.reason-danger{
+
+    color:#ef4444 !important;
+
+    font-weight:700;
+
+}

@@ -1,0 +1,562 @@
+/* ===================================================
+   Inventory Management
+=================================================== */
+
+.inventory-management {
+
+    width: 100%;
+    min-height: calc(100vh - 70px);
+
+    padding: 30px;
+
+    background: var(--background-color);
+
+    color: var(--text-primary);
+
+    transition: .3s;
+
+    box-sizing: border-box;
+
+}
+
+/* ===================================================
+   Header
+=================================================== */
+
+.inventory-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 30px;
+
+}
+
+.inventory-header h1 {
+
+    margin: 0;
+
+    font-size: 48px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+    line-height: 1.2;
+
+}
+
+.inventory-header p {
+
+    margin-top: 10px;
+
+    font-size: 16px;
+
+    color: var(--text-secondary);
+
+}
+
+/* ===================================================
+   Add Button
+=================================================== */
+
+.add-btn {
+
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    padding: 13px 24px;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: .25s;
+
+}
+
+.add-btn:hover {
+
+    background: #1d4ed8;
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 20px rgba(37,99,235,.30);
+
+}
+
+/* ===================================================
+   Summary Cards
+=================================================== */
+
+.inventory-summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 22px;
+
+    margin-bottom: 30px;
+
+}
+
+.summary-card {
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 16px;
+
+    padding: 28px;
+
+    box-shadow: var(--shadow-sm);
+
+    transition: .30s;
+
+}
+
+.summary-card:hover{
+
+    transform: translateY(-6px);
+
+    box-shadow: var(--shadow-md);
+
+}
+
+.summary-card h3{
+
+    margin:0;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:var(--text-secondary);
+
+}
+
+.summary-card h2{
+
+    margin:18px 0 0;
+
+    font-size:42px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+/* ===================================================
+   Toolbar
+=================================================== */
+
+.inventory-toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    padding:20px;
+
+    margin-bottom:28px;
+
+    background:var(--card-background);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+/* ===================================================
+   Search
+=================================================== */
+
+.inventory-search-input{
+
+    flex:1;
+
+    min-width:320px;
+
+    height:48px;
+
+    padding:0 18px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border-color);
+
+    background:var(--surface-color);
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.inventory-search-input::placeholder{
+
+    color:var(--text-secondary);
+
+}
+
+.inventory-search-input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+
+}
+
+/* ===================================================
+   Filters
+=================================================== */
+
+.inventory-toolbar select{
+
+    min-width:170px;
+
+    height:48px;
+
+    padding:0 16px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border-color);
+
+    background:var(--surface-color);
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    outline:none;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.inventory-toolbar select:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+
+}
+
+/* ===================================================
+   Reset Button
+=================================================== */
+
+.reset-filter-btn{
+
+    height:48px;
+
+    padding:0 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#ef4444;
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.reset-filter-btn:hover{
+
+    background:#dc2626;
+
+    transform:translateY(-2px);
+
+}
+
+/* ===================================================
+   Results
+=================================================== */
+
+.inventory-results{
+
+    margin-bottom:18px;
+
+    font-size:15px;
+
+    color:var(--text-secondary);
+
+}
+
+.inventory-results strong{
+
+    color:#2563eb;
+
+    font-weight:700;
+
+}
+
+/* ===================================================
+   Loading
+=================================================== */
+
+.inventory-loading{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:250px;
+
+    background:var(--card-background);
+
+    border-radius:16px;
+
+    border:1px solid var(--border-color);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.inventory-loading h3{
+
+    color:var(--text-secondary);
+
+    font-size:22px;
+
+}
+
+/* ===================================================
+   Empty State
+=================================================== */
+
+.inventory-empty{
+
+    padding:60px 20px;
+
+    text-align:center;
+
+    background:var(--card-background);
+
+    border-radius:16px;
+
+    border:1px solid var(--border-color);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.inventory-empty h3{
+
+    margin:0;
+
+    font-size:28px;
+
+    color:var(--text-primary);
+
+}
+
+.inventory-empty p{
+
+    margin-top:15px;
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+
+}
+
+/* ===================================================
+   Table Wrapper
+=================================================== */
+
+.inventory-table-wrapper{
+
+    background:var(--card-background);
+
+    border-radius:16px;
+
+    border:1px solid var(--border-color);
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+/* ===================================================
+   Dark Mode
+=================================================== */
+
+[data-theme="dark"] .summary-card{
+
+    background:#111c2d;
+
+}
+
+[data-theme="dark"] .inventory-toolbar{
+
+    background:#111c2d;
+
+}
+
+[data-theme="dark"] .inventory-search-input{
+
+    background:#162338;
+
+}
+
+[data-theme="dark"] .inventory-toolbar select{
+
+    background:#162338;
+
+}
+
+[data-theme="dark"] .inventory-loading{
+
+    background:#111c2d;
+
+}
+
+[data-theme="dark"] .inventory-empty{
+
+    background:#111c2d;
+
+}
+
+[data-theme="dark"] .inventory-table-wrapper{
+
+    background:#111c2d;
+
+}
+
+/* ===================================================
+   Responsive
+=================================================== */
+
+@media(max-width:1200px){
+
+    .inventory-summary{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .inventory-management{
+
+        padding:20px;
+
+    }
+
+    .inventory-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .inventory-header h1{
+
+        font-size:36px;
+
+    }
+
+    .inventory-summary{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .inventory-toolbar{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .inventory-search-input{
+
+        min-width:100%;
+
+    }
+
+    .inventory-toolbar select{
+
+        width:100%;
+
+    }
+
+    .reset-filter-btn{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .inventory-management{
+
+        padding:15px;
+
+    }
+
+    .summary-card{
+
+        padding:22px;
+
+    }
+
+    .summary-card h2{
+
+        font-size:34px;
+
+    }
+
+}

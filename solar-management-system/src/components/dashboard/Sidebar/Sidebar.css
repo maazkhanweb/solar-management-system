@@ -1,0 +1,334 @@
+/* ==========================================================
+   Sidebar
+========================================================== */
+
+.sidebar{
+
+    width:280px;
+
+    min-width:280px;
+
+    height:100vh;
+
+    position:sticky;
+
+    top:0;
+
+    left:0;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    background:linear-gradient(180deg,#07131F 0%,#0A1725 100%);
+
+    color:var(--sidebar-text);
+
+    border-right:1px solid #17344C;
+
+    transition:.35s;
+
+    overflow-y:auto;
+
+    box-shadow:12px 0 35px rgba(0,0,0,.35);
+
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#264760;
+
+    border-radius:20px;
+
+}
+
+/* ==========================================================
+   Logo
+========================================================== */
+
+.sidebar__logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    padding:24px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.sidebar__logo-icon{
+
+    width:56px;
+
+    height:56px;
+
+    border-radius:18px;
+
+    background:linear-gradient(135deg,#16D3B4,#0F766E);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    color:#fff;
+
+    box-shadow:0 10px 25px rgba(22,211,180,.35);
+
+}
+
+.sidebar__logo-text h2{
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    line-height:1.2;
+
+}
+
+.sidebar__logo-text span{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#8FA8BC;
+
+    font-size:13px;
+
+}
+
+/* ==========================================================
+   Navigation
+========================================================== */
+
+.sidebar__navigation{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    padding:18px 14px;
+
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+.sidebar__link{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:15px 16px;
+
+    border-radius:14px;
+
+    color:#D7E5EF;
+
+    background:transparent;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    border:1px solid transparent;
+
+}
+
+.sidebar__link:hover{
+
+    background:#102638;
+
+    border-color:#1D435C;
+
+    transform:translateX(5px);
+
+}
+
+.sidebar__link--active{
+
+    background:linear-gradient(90deg,#0F766E,#16D3B4);
+
+    color:#fff;
+
+    box-shadow:0 12px 25px rgba(22,211,180,.28);
+
+}
+
+.sidebar__icon{
+
+    font-size:20px;
+
+    min-width:22px;
+
+}
+
+.sidebar__text{
+
+    flex:1;
+
+}
+
+/* ==========================================================
+   Footer
+========================================================== */
+
+.sidebar__footer{
+
+    padding:22px;
+
+    border-top:1px solid rgba(255,255,255,.05);
+
+}
+
+.sidebar__footer p{
+
+    color:#fff;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+}
+
+.sidebar__footer span{
+
+    color:#8FA8BC;
+
+    font-size:12px;
+
+}
+
+/* ==========================================================
+   Logout
+========================================================== */
+
+button.sidebar__link{
+
+    width:100%;
+
+    border:none;
+
+    background:transparent;
+
+    text-align:left;
+
+}
+
+button.sidebar__link:hover{
+
+    background:#C62828;
+
+    transform:none;
+
+}
+
+/* ==========================================================
+   Focus
+========================================================== */
+
+.sidebar__link:focus{
+
+    outline:none;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:1200px){
+
+.sidebar{
+
+width:250px;
+min-width:250px;
+
+}
+
+}
+
+@media(max-width:992px){
+
+.sidebar{
+
+width:220px;
+min-width:220px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.sidebar{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+transform:translateX(-100%);
+
+z-index:2000;
+
+}
+
+.sidebar.sidebar--open{
+
+transform:translateX(0);
+
+}
+
+}
+
+@media(max-width:576px){
+
+.sidebar{
+
+width:270px;
+min-width:270px;
+
+}
+
+}

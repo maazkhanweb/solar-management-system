@@ -1,0 +1,652 @@
+/* ==========================================================================
+   Transaction Details Modal
+========================================================================== */
+
+.transaction-modal-overlay {
+
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.68);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 9999;
+
+    animation: modalFade 0.25s ease;
+
+}
+
+
+/* ==========================================================================
+   Modal
+========================================================================== */
+
+.transaction-modal {
+
+    width: 100%;
+    max-width: 760px;
+
+    background: #ffffff;
+
+    border: 1px solid #dbe3ee;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.25);
+
+    animation: modalScale 0.25s ease;
+
+}
+
+
+/* ==========================================================================
+   Header
+========================================================================== */
+
+.transaction-modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 28px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+
+}
+
+
+.transaction-modal-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.transaction-modal-title svg {
+
+    font-size: 26px;
+
+    color: #2563eb;
+
+}
+
+
+.transaction-modal-title h2 {
+
+    margin: 0;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+
+}
+
+
+/* ==========================================================================
+   Close Button
+========================================================================== */
+
+.transaction-modal-close {
+
+    width: 44px;
+
+    height: 44px;
+
+    border: none;
+
+    outline: none;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #f1f5f9;
+
+    transition: 0.3s ease;
+
+}
+
+
+.transaction-modal-close svg {
+
+    font-size: 24px;
+
+    color: #64748b;
+
+}
+
+
+.transaction-modal-close:hover {
+
+    background: #ef4444;
+
+}
+
+
+.transaction-modal-close:hover svg {
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================================
+   Body
+========================================================================== */
+
+.transaction-modal-body {
+
+    padding: 28px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+
+    background: #ffffff;
+
+}
+
+
+.transaction-detail-item {
+
+    background: #f8fafc;
+
+    border: 1px solid #dbe3ee;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.transaction-detail-item span {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #64748b;
+
+}
+
+
+.transaction-detail-item strong {
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    color: #0f172a;
+
+    word-break: break-word;
+
+}
+
+
+.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+/* ==========================================================================
+   Transaction Badge
+========================================================================== */
+
+.transaction-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 7px 14px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.3px;
+
+}
+
+
+/* ADD */
+
+.badge-add {
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+}
+
+
+/* UPDATE */
+
+.badge-update {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+}
+
+
+/* ASSIGN */
+
+.badge-assign {
+
+    background: #e0e7ff;
+
+    color: #4338ca;
+
+}
+
+
+/* RETURN */
+
+.badge-return {
+
+    background: #fef3c7;
+
+    color: #b45309;
+
+}
+
+
+/* DELETE */
+
+.badge-delete {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+}
+
+
+/* ==========================================================================
+   Footer
+========================================================================== */
+
+.transaction-modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    padding: 20px 28px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e2e8f0;
+
+}
+
+
+.transaction-close-btn {
+
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    padding: 11px 26px;
+
+    border-radius: 10px;
+
+    background: #14b8a6;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.3s ease;
+
+}
+
+
+.transaction-close-btn:hover {
+
+    transform: translateY(-2px);
+
+    background: #0f9f90;
+
+}
+
+
+/* ==========================================================================
+   DARK MODE
+========================================================================== */
+
+[data-theme="dark"] .transaction-modal {
+
+    background: #111c2d;
+
+    border-color: #253247;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-header {
+
+    background: #111c2d;
+
+    border-bottom-color: #253247;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-title h2 {
+
+    color: #f8fafc;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-title svg {
+
+    color: #38bdf8;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-close {
+
+    background: #162338;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-close svg {
+
+    color: #cbd5e1;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-close:hover {
+
+    background: #dc2626;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-close:hover svg {
+
+    color: #ffffff;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-body {
+
+    background: #111c2d;
+
+}
+
+
+[data-theme="dark"] .transaction-detail-item {
+
+    background: #162338;
+
+    border-color: #2d415b;
+
+}
+
+
+[data-theme="dark"] .transaction-detail-item span {
+
+    color: #94a3b8;
+
+}
+
+
+[data-theme="dark"] .transaction-detail-item strong {
+
+    color: #f8fafc;
+
+}
+
+
+[data-theme="dark"] .transaction-modal-footer {
+
+    background: #111c2d;
+
+    border-top-color: #253247;
+
+}
+
+
+/* ==========================================================================
+   Dark Mode Badges
+========================================================================== */
+
+[data-theme="dark"] .badge-add {
+
+    background: rgba(34, 197, 94, 0.18);
+
+    color: #4ade80;
+
+}
+
+
+[data-theme="dark"] .badge-update {
+
+    background: rgba(59, 130, 246, 0.18);
+
+    color: #60a5fa;
+
+}
+
+
+[data-theme="dark"] .badge-assign {
+
+    background: rgba(99, 102, 241, 0.18);
+
+    color: #818cf8;
+
+}
+
+
+[data-theme="dark"] .badge-return {
+
+    background: rgba(245, 158, 11, 0.18);
+
+    color: #fbbf24;
+
+}
+
+
+[data-theme="dark"] .badge-delete {
+
+    background: rgba(239, 68, 68, 0.18);
+
+    color: #f87171;
+
+}
+
+
+/* ==========================================================================
+   Animation
+========================================================================== */
+
+@keyframes modalFade {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes modalScale {
+
+    from {
+
+        opacity: 0;
+
+        transform: scale(0.96);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================================
+   Responsive
+========================================================================== */
+
+@media (max-width: 768px) {
+
+    .transaction-modal {
+
+        max-width: 100%;
+
+    }
+
+    .transaction-modal-header {
+
+        padding: 18px;
+
+    }
+
+    .transaction-modal-title h2 {
+
+        font-size: 22px;
+
+    }
+
+    .transaction-modal-body {
+
+        grid-template-columns: 1fr;
+
+        padding: 18px;
+
+    }
+
+    .transaction-modal-footer {
+
+        padding: 18px;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .transaction-modal-overlay {
+
+        padding: 12px;
+
+    }
+
+    .transaction-modal-header {
+
+        padding: 16px;
+
+    }
+
+    .transaction-modal-body {
+
+        padding: 16px;
+
+        gap: 14px;
+
+    }
+
+    .transaction-modal-footer {
+
+        padding: 16px;
+
+    }
+
+    .transaction-close-btn {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* ==========================================================================
+   Smooth Transition
+========================================================================== */
+
+.transaction-modal,
+.transaction-modal *,
+.transaction-detail-item {
+
+    transition:
+        background 0.30s ease,
+        color 0.30s ease,
+        border-color 0.30s ease,
+        box-shadow 0.30s ease;
+
+}

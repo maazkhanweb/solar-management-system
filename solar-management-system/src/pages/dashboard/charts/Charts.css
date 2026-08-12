@@ -1,0 +1,99 @@
+/* ============================================================================
+   File:
+   src/pages/dashboard/charts/Charts.css
+
+   Description:
+   Charts Page Styles
+============================================================================ */
+
+.charts-page {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 25px;
+
+}
+
+.charts-header {
+
+    margin-bottom: 10px;
+
+}
+
+.charts-header h1 {
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+    color: var(--text-primary);
+
+}
+
+.charts-header p {
+
+    font-size: 15px;
+
+    color: var(--text-secondary);
+
+}
+
+.charts-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px;
+
+}
+
+/* =========================================================
+   Light Theme
+========================================================= */
+
+[data-theme="light"] .charts-header h1 {
+
+    color: #1e293b;
+
+}
+
+[data-theme="light"] .charts-header p {
+
+    color: #64748b;
+
+}
+
+/* =========================================================
+   Dark Theme
+========================================================= */
+
+[data-theme="dark"] .charts-header h1 {
+
+    color: #ffffff;
+
+}
+
+[data-theme="dark"] .charts-header p {
+
+    color: #cbd5e1;
+
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .charts-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

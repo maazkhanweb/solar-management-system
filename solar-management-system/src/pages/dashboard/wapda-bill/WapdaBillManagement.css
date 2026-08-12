@@ -1,0 +1,290 @@
+/**
+===========================================================
+File:
+src/pages/dashboard/wapdaBill/WapdaBillManagement.css
+Part 1
+===========================================================
+*/
+
+.bill-management-page{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.bill-management-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.bill-management-header h1{
+
+    margin:0;
+
+    font-size:40px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+.bill-management-header p{
+
+    margin-top:8px;
+
+    font-size:16px;
+
+    color:var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Add Bill Button
+========================================================== */
+
+.primary-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    min-width:180px;
+
+    height:50px;
+
+    padding:0 24px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#2563eb;
+
+    color:#ffffff;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:all .3s ease;
+
+    box-shadow:0 10px 20px rgba(37,99,235,.25);
+
+}
+
+.primary-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 14px 28px rgba(37,99,235,.35);
+
+}
+
+.primary-btn:active{
+
+    transform:scale(.98);
+
+}
+
+/* ==========================================================
+   Search Section
+========================================================== */
+
+.bill-search-section{
+
+    background:var(--card-bg);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    padding:25px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+
+}
+/* ==========================================================
+   Table Wrapper
+========================================================== */
+
+.bill-table-wrapper{
+
+    background:var(--card-bg);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+
+}
+
+/* ==========================================================
+   Light Theme
+========================================================== */
+
+[data-theme="light"] .bill-management-page{
+
+    background:transparent;
+
+}
+
+[data-theme="light"] .bill-search-section{
+
+    background:#ffffff;
+
+    border-color:#e2e8f0;
+
+}
+
+[data-theme="light"] .bill-table-wrapper{
+
+    background:#ffffff;
+
+    border-color:#e2e8f0;
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .bill-management-page{
+
+    background:transparent;
+
+}
+
+[data-theme="dark"] .bill-management-header h1{
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .bill-management-header p{
+
+    color:#cbd5e1;
+
+}
+
+[data-theme="dark"] .bill-search-section{
+
+    background:#18273c;
+
+    border-color:#334155;
+
+}
+
+[data-theme="dark"] .bill-table-wrapper{
+
+    background:#18273c;
+
+    border-color:#334155;
+
+}
+
+[data-theme="dark"] .primary-btn{
+
+    background:#2563eb;
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .primary-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:992px){
+
+    .bill-management-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .primary-btn{
+
+        width:100%;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .bill-management-header h1{
+
+        font-size:30px;
+
+    }
+
+    .bill-management-header p{
+
+        font-size:14px;
+
+    }
+
+    .bill-search-section{
+
+        padding:18px;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .bill-management-header h1{
+
+        font-size:26px;
+
+    }
+
+    .primary-btn{
+
+        height:46px;
+
+        font-size:14px;
+
+    }
+
+}

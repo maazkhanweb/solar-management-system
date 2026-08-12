@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Models;
+
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+#[Fillable([
+    'name',
+    'email',
+    'phone',
+    'area_id',
+    'password',
+    'role',
+    'profile_image',
+    'status',
+    'last_login',
+])]
+
+#[Hidden([
+    'password',
+    'remember_token',
+])]
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * Attribute Casts
+     */
+    protected function casts(): array
+    {
+        return [
+
+            'email_verified_at' => 'datetime',
+
+            'last_login' => 'datetime',
+
+            'password' => 'hashed',
+
+        ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * User Area
+     */
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class);
+    }
+
+    /**
+     * Inventory Assignments
+     */
+    public function inventoryAssignments(): HasMany
+    {
+        return $this->hasMany(
+            InventoryAssignment::class,
+            'assigned_by'
+        );
+    }
+
+    /**
+     * Inventory Transactions
+     */
+    public function inventoryTransactions(): HasMany
+    {
+        return $this->hasMany(
+            InventoryTransaction::class,
+            'user_id'
+        );
+    }
+}

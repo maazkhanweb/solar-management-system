@@ -1,0 +1,257 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Bill;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+class BillService
+{
+    /**
+     * Get all bills with filters.
+     */
+    public function getAllBills(array $filters = []): LengthAwarePaginator
+    {
+        $query = Bill::with([
+
+            'createdBy',
+
+            'updatedBy',
+
+        ]);
+
+       /*
+|--------------------------------------------------------------------------
+| Role Based Access
+|--------------------------------------------------------------------------
+*/
+
+$user = Auth::user();
+
+if (
+
+    $user &&
+
+    $user->role === 'Manager'
+
+) {
+
+    $query->where(
+        'created_by',
+        $user->id
+    );
+
+}
+
+        /*
+        |--------------------------------------------------------------------------
+        | Search
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($filters['search'])) {
+
+            $search = trim($filters['search']);
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('consumer_name', 'like', "%{$search}%")
+
+                    ->orWhere('reference_number', 'like', "%{$search}%")
+
+                    ->orWhere('bill_address', 'like', "%{$search}%");
+
+            });
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Month
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($filters['month'])) {
+
+            $query->where('bill_month', $filters['month']);
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Year
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($filters['year'])) {
+
+            $query->where('bill_year', $filters['year']);
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Status
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($filters['status'])) {
+
+            $query->where('status', $filters['status']);
+
+        }
+
+        $perPage = $filters['per_page'] ?? 10;
+
+        return $query
+            ->latest()
+            ->paginate($perPage);
+    }
+
+    /**
+     * Store new bill.
+     */
+    public function storeBill(array $data): Bill
+    {
+        return DB::transaction(function () use ($data) {
+
+            if (
+
+                isset($data['bill_image']) &&
+
+                $data['bill_image'] instanceof UploadedFile
+
+            ) {
+
+                $data['bill_image'] = $data['bill_image']
+                    ->store('bills', 'public');
+
+            }
+
+            return Bill::create($data);
+
+        });
+    }
+
+    /**
+     * Update existing bill.
+     */
+    public function updateBill(Bill $bill, array $data): Bill
+    {
+        $this->authorizeBill($bill);
+
+        return DB::transaction(function () use ($bill, $data) {
+
+            if (
+
+                isset($data['bill_image']) &&
+
+                $data['bill_image'] instanceof UploadedFile
+
+            ) {
+
+                if (
+
+                    !empty($bill->bill_image) &&
+
+                    Storage::disk('public')->exists($bill->bill_image)
+
+                ) {
+
+                    Storage::disk('public')->delete($bill->bill_image);
+
+                }
+
+                $data['bill_image'] = $data['bill_image']
+                    ->store('bills', 'public');
+
+            }
+
+            $bill->update($data);
+
+            return $bill->fresh([
+
+                'createdBy',
+
+                'updatedBy',
+
+            ]);
+
+        });
+    }
+
+    /**
+     * Delete bill.
+     */
+    public function deleteBill(Bill $bill): bool
+    {
+        $this->authorizeBill($bill);
+
+        return DB::transaction(function () use ($bill) {
+
+            if (
+
+                !empty($bill->bill_image) &&
+
+                Storage::disk('public')->exists($bill->bill_image)
+
+            ) {
+
+                Storage::disk('public')->delete($bill->bill_image);
+
+            }
+
+            return $bill->delete();
+
+        });
+    }
+
+    /**
+     * Get single bill.
+     */
+    public function getBill(Bill $bill): Bill
+    {
+        $this->authorizeBill($bill);
+
+        return $bill->load([
+
+            'createdBy',
+
+            'updatedBy',
+
+        ]);
+    }
+
+    /**
+     * Authorize Bill Access
+     */
+    protected function authorizeBill(Bill $bill): void
+    {
+        $user = Auth::user();
+
+        if (
+
+            $user &&
+
+            $user->role === 'Manager' &&
+
+            $bill->created_by !== $user->id
+
+        ) {
+
+            throw new HttpException(
+
+                403,
+
+                'You are not authorized to access this bill.'
+
+            );
+
+        }
+    }
+}

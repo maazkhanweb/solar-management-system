@@ -1,0 +1,617 @@
+/* ==========================================================
+   Modal Overlay
+========================================================== */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, .75);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 9999;
+
+}
+
+/* ==========================================================
+   Inventory Modal
+========================================================== */
+
+.inventory-modal {
+
+    width: 900px;
+
+    max-width: 95%;
+
+    max-height: 95vh;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: 0 25px 60px rgba(0,0,0,.45);
+
+    animation: modalFade .25s ease;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes modalFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 28px;
+
+    background: var(--surface-color);
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+.modal-header h2 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================================
+   Close Button
+========================================================== */
+
+.close-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--background-color);
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 22px;
+
+    transition: .25s;
+
+}
+
+.close-btn:hover {
+
+    background: var(--table-hover);
+
+    color: var(--danger-color);
+
+}
+
+/* ==========================================================
+   Form
+========================================================== */
+
+.inventory-form {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.inventory-form::-webkit-scrollbar {
+
+    width: 8px;
+
+}
+
+.inventory-form::-webkit-scrollbar-thumb {
+
+    background: var(--border-color);
+
+    border-radius: 20px;
+
+}
+
+.inventory-form::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+/* ==========================================================
+   Grid
+========================================================== */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 22px;
+
+}
+
+/* ==========================================================
+   Form Group
+========================================================== */
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+/* ==========================================================
+   Label
+========================================================== */
+
+.form-group label {
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+.form-group input,
+
+.form-group select,
+
+.form-group textarea {
+
+    width: 100%;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--background-color);
+
+    color: var(--text-primary);
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .25s;
+
+    box-sizing: border-box;
+
+}
+
+/* ==========================================================
+   Input
+========================================================== */
+
+.form-group input,
+
+.form-group select {
+
+    height: 48px;
+
+    padding: 0 15px;
+
+}
+
+/* ==========================================================
+   Textarea
+========================================================== */
+
+.form-group textarea {
+
+    min-height: 120px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+
+}
+
+/* ==========================================================
+   Placeholder
+========================================================== */
+
+.form-group input::placeholder,
+
+.form-group textarea::placeholder {
+
+    color: var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Focus
+========================================================== */
+
+.form-group input:focus,
+
+.form-group select:focus,
+
+.form-group textarea:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow:
+
+        0 0 0 3px rgba(15,118,110,.20);
+
+}
+
+/* ==========================================================
+   Full Width Field
+========================================================== */
+
+.form-group.full-width {
+
+    grid-column: 1 / -1;
+
+}
+/* ==========================================================
+   Disabled Fields
+========================================================== */
+
+.form-group input:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+
+    opacity: .7;
+
+    cursor: not-allowed;
+
+}
+
+/* ==========================================================
+   Readonly Fields
+========================================================== */
+
+.form-group input[readonly],
+.form-group textarea[readonly] {
+
+    background: var(--table-header);
+
+    cursor: default;
+
+}
+
+/* ==========================================================
+   File Upload
+========================================================== */
+
+.form-group input[type="file"] {
+
+    height: auto;
+
+    padding: 12px;
+
+    cursor: pointer;
+
+}
+
+.form-group input[type="file"]::file-selector-button {
+
+    border: none;
+
+    padding: 8px 14px;
+
+    margin-right: 12px;
+
+    border-radius: 8px;
+
+    background: var(--primary-color);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
+
+    opacity: .9;
+
+}
+
+/* ==========================================================
+   Form Actions
+========================================================== */
+
+.inventory-form .form-actions {
+
+    grid-column: 1 / -1;
+
+    margin-top: 12px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border-color);
+
+}
+
+/* ==========================================================
+   Footer
+========================================================== */
+
+.modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 20px 28px;
+
+    background: var(--surface-color);
+
+    border-top: 1px solid var(--border-color);
+
+}
+
+/* ==========================================================
+   Loading State
+========================================================== */
+
+.inventory-modal.loading {
+
+    pointer-events: none;
+
+}
+
+.inventory-modal.loading .inventory-form {
+
+    opacity: .65;
+
+}
+
+/* ==========================================================
+   Dark Mode Improvements
+========================================================== */
+
+[data-theme="dark"] .inventory-modal {
+
+    background: #111C2D;
+
+    border-color: #253247;
+
+}
+
+[data-theme="dark"] .modal-header {
+
+    background: #111C2D;
+
+    border-bottom-color: #253247;
+
+}
+
+[data-theme="dark"] .modal-footer {
+
+    background: #111C2D;
+
+    border-top-color: #253247;
+
+}
+
+[data-theme="dark"] .form-group input,
+
+[data-theme="dark"] .form-group select,
+
+[data-theme="dark"] .form-group textarea {
+
+    background: #162338;
+
+    border-color: #2D415B;
+
+    color: #F8FAFC;
+
+}
+
+[data-theme="dark"] .form-group input::placeholder,
+
+[data-theme="dark"] .form-group textarea::placeholder {
+
+    color: #94A3B8;
+
+}
+
+[data-theme="dark"] .form-group input[readonly],
+
+[data-theme="dark"] .form-group textarea[readonly] {
+
+    background: #1B2C45;
+
+}
+
+[data-theme="dark"] .close-btn {
+
+    background: #162338;
+
+    color: #CBD5E1;
+
+}
+
+[data-theme="dark"] .close-btn:hover {
+
+    background: #22344C;
+
+    color: #FFFFFF;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:992px){
+
+    .inventory-modal{
+
+        width:95%;
+
+    }
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .form-group.full-width{
+
+        grid-column:span 1;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .inventory-form{
+
+        padding:20px;
+
+    }
+
+    .modal-header{
+
+        padding:18px 20px;
+
+    }
+
+    .modal-header h2{
+
+        font-size:22px;
+
+    }
+
+    .modal-footer{
+
+        padding:18px 20px;
+
+        flex-wrap:wrap;
+
+    }
+
+    .inventory-form .form-actions{
+
+        grid-column:span 1;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .inventory-modal{
+
+        max-height:96vh;
+
+    }
+
+    .inventory-form{
+
+        padding:16px;
+
+    }
+
+    .modal-header{
+
+        padding:16px;
+
+    }
+
+    .modal-footer{
+
+        padding:16px;
+
+    }
+
+}
+
+/* ==========================================================
+   End Of File
+========================================================== */

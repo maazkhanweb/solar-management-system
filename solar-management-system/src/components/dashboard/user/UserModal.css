@@ -1,0 +1,370 @@
+/* ==========================================================
+   Modal Overlay
+========================================================== */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(2, 6, 23, 0.65);
+
+    backdrop-filter: blur(6px);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    z-index: 9999;
+
+}
+
+/* ==========================================================
+   User Modal
+========================================================== */
+
+.user-modal {
+
+    width: 100%;
+
+    max-width: 680px;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    border: 1px solid var(--border-color);
+
+    box-shadow: 0 25px 60px rgba(0,0,0,.30);
+
+    animation: modalFade .25s ease;
+
+}
+
+@keyframes modalFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-20px) scale(.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 26px;
+
+    border-bottom: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+}
+
+.modal-header h2 {
+
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.close-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--background-color);
+
+    color: var(--text-secondary);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.close-btn:hover {
+
+    background: var(--danger-color);
+
+    color: #ffffff;
+
+}
+
+/* ==========================================================
+   Form
+========================================================== */
+
+.user-form {
+
+    padding: 28px;
+
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 22px;
+
+}
+
+/* ==========================================================
+   Form Group
+========================================================== */
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.form-group label {
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    height: 50px;
+
+    padding: 0 16px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    font-size: 15px;
+
+    font-family: inherit;
+
+    outline: none;
+
+    transition: .25s;
+
+}
+
+/* Force Dark Theme */
+
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select {
+
+    background: #1A2940 !important;
+
+    color: #F8FAFC !important;
+
+    border: 1px solid #334155 !important;
+
+}
+
+[data-theme="dark"] .form-group input::placeholder {
+
+    color: #94A3B8 !important;
+
+}
+
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group select:focus {
+
+    background: #1A2940 !important;
+
+    color: #F8FAFC !important;
+
+    border-color: var(--primary-color) !important;
+
+    box-shadow: 0 0 0 3px rgba(15,118,110,.18);
+
+}
+/* ==========================================================
+   Autofill Fix
+========================================================== */
+
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover,
+[data-theme="dark"] input:-webkit-autofill:focus,
+[data-theme="dark"] input:-webkit-autofill:active {
+
+    -webkit-box-shadow: 0 0 0 1000px #1A2940 inset !important;
+
+    -webkit-text-fill-color: #F8FAFC !important;
+
+    caret-color: #F8FAFC !important;
+
+    transition: background-color 9999s ease-in-out 0s;
+
+}
+
+[data-theme="dark"] textarea:-webkit-autofill,
+[data-theme="dark"] select:-webkit-autofill {
+
+    -webkit-box-shadow: 0 0 0 1000px #1A2940 inset !important;
+
+    -webkit-text-fill-color: #F8FAFC !important;
+
+}
+
+/* ==========================================================
+   Disabled Fields
+========================================================== */
+
+.form-group input:disabled,
+.form-group select:disabled {
+
+    opacity: .8;
+
+    cursor: not-allowed;
+
+}
+
+[data-theme="dark"] .form-group input:disabled,
+[data-theme="dark"] .form-group select:disabled {
+
+    background: #243247 !important;
+
+    color: #CBD5E1 !important;
+
+}
+
+/* ==========================================================
+   Form Actions
+========================================================== */
+
+.user-form .form-actions {
+
+    grid-column: 1 / -1;
+
+    margin-top: 10px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border-color);
+
+}
+
+/* ==========================================================
+   Light Theme
+========================================================== */
+
+:root .form-group input,
+:root .form-group select {
+
+    background: #FFFFFF;
+
+    color: #1E293B;
+
+    border: 1px solid #D7DEE8;
+
+}
+
+:root .form-group input::placeholder {
+
+    color: #94A3B8;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:768px){
+
+    .user-modal{
+
+        max-width:95%;
+
+    }
+
+    .user-form{
+
+        grid-template-columns:1fr;
+
+        padding:22px;
+
+        gap:18px;
+
+    }
+
+    .modal-header{
+
+        padding:18px 20px;
+
+    }
+
+    .modal-header h2{
+
+        font-size:26px;
+
+    }
+
+    .user-form .form-actions{
+
+        grid-column:span 1;
+
+    }
+
+}

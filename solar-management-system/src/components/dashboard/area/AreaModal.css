@@ -1,0 +1,415 @@
+/* ==========================================================
+   Modal Overlay
+========================================================== */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, .75);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 1000;
+
+}
+
+/* ==========================================================
+   Modal
+========================================================== */
+
+.modal {
+
+    width: 100%;
+    max-width: 550px;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    box-shadow: 0 25px 60px rgba(0,0,0,.45);
+
+    animation: modalAnimation .25s ease;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes modalAnimation {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 25px;
+
+    background: var(--surface-color);
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+.modal-header h2 {
+
+    margin: 0;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================================
+   Close Button
+========================================================== */
+
+.close-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--background-color);
+
+    color: var(--text-secondary);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    transition: .25s;
+
+}
+
+.close-btn:hover {
+
+    background: var(--table-hover);
+
+    color: var(--danger-color);
+
+}
+
+/* ==========================================================
+   Body
+========================================================== */
+
+.modal-body {
+
+    padding: 25px;
+
+}
+
+/* ==========================================================
+   Form Group
+========================================================== */
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-bottom: 20px;
+
+}
+
+.form-group:last-child {
+
+    margin-bottom: 0;
+
+}
+
+/* ==========================================================
+   Labels
+========================================================== */
+
+.form-group label {
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+/* ==========================================================
+   Inputs
+========================================================== */
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--background-color);
+
+    color: var(--text-primary);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .25s;
+
+    box-sizing: border-box;
+
+}
+
+.form-group input::placeholder {
+
+    color: var(--text-secondary);
+
+}
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 3px rgba(15,118,110,.20);
+
+}
+
+/* ==========================================================
+   Select
+========================================================== */
+
+.form-group select {
+
+    cursor: pointer;
+
+}
+
+/* ==========================================================
+   Disabled
+========================================================== */
+
+.form-group input:disabled,
+.form-group select:disabled {
+
+    opacity: .7;
+
+    cursor: not-allowed;
+
+}
+
+/* ==========================================================
+   Footer
+========================================================== */
+
+.modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 20px 25px;
+
+    border-top: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:768px) {
+
+    .modal {
+
+        max-width: 95%;
+
+    }
+
+    .modal-body {
+
+        padding: 20px;
+
+    }
+
+    .modal-footer {
+
+        padding: 18px;
+
+        flex-wrap: wrap;
+
+    }
+
+}
+
+/* ==========================================================
+   Modal Header Theme Fix
+========================================================== */
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 26px;
+
+    background:var(--surface-color);
+
+    border-bottom:1px solid var(--border-color);
+
+}
+
+.modal-header h2{
+
+    margin:0;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:var(--text-primary) !important;
+
+}
+
+/* ==========================================================
+   Close Button
+========================================================== */
+
+.close-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:10px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    background:var(--background-color);
+
+    color:var(--text-secondary) !important;
+
+    transition:.25s;
+
+}
+
+.close-btn:hover{
+
+    background:var(--danger-color);
+
+    color:#ffffff !important;
+
+}
+
+/* ==========================================================
+   Dark Mode Fix
+========================================================== */
+
+[data-theme="dark"] .modal-header{
+
+    background:#162234;
+
+    border-bottom:1px solid #334155;
+
+}
+
+[data-theme="dark"] .modal-header h2{
+
+    color:#F8FAFC !important;
+
+}
+
+[data-theme="dark"] .close-btn{
+
+    background:#1F2D44;
+
+    color:#CBD5E1 !important;
+
+}
+
+[data-theme="dark"] .close-btn:hover{
+
+    background:#EF4444;
+
+    color:#FFFFFF !important;
+
+}
