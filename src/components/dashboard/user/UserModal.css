@@ -1,0 +1,671 @@
+/*
+==========================================================
+File:
+src/components/dashboard/user/UserModal.css
+
+Description:
+User Management Add/Edit User Modal styling.
+Professional light and dark mode design.
+Header and close button are isolated to User Modal
+to prevent conflicts with other modals.
+==========================================================
+*/
+
+
+/* ==========================================================
+   MODAL OVERLAY
+========================================================== */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.72);
+
+    backdrop-filter: blur(5px);
+
+    -webkit-backdrop-filter: blur(5px);
+
+    z-index: 9999;
+
+}
+
+
+/* ==========================================================
+   USER MODAL
+========================================================== */
+
+.user-modal {
+
+    width: 100%;
+
+    max-width: 720px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 70px rgba(15, 23, 42, 0.25);
+
+    animation: userModalFade 0.25s ease;
+
+}
+
+
+/* ==========================================================
+   USER MODAL ANIMATION
+========================================================== */
+
+@keyframes userModalFade {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(-15px)
+            scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================
+   USER MODAL HEADER
+========================================================== */
+
+.user-modal .modal-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    min-height: 72px;
+
+    padding: 16px 26px;
+
+    background: #eef4ff;
+
+    border-bottom: 1px solid #d5e2f5;
+
+}
+
+
+/* ==========================================================
+   USER MODAL TITLE
+========================================================== */
+
+.user-modal .modal-header h2 {
+
+    margin: 0;
+
+    color: #17365f;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+}
+
+
+/* ==========================================================
+   USER MODAL CLOSE BUTTON
+========================================================== */
+
+.user-modal .close-btn {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #52657f;
+
+    font-size: 21px;
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.user-modal .close-btn:hover {
+
+    background: #fee2e2;
+
+    border-color: #fca5a5;
+
+    color: #dc2626;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* ==========================================================
+   USER FORM
+========================================================== */
+
+.user-modal form {
+
+    padding: 26px;
+
+    background: #ffffff;
+
+}
+
+
+/* ==========================================================
+   FORM GRID
+========================================================== */
+
+.user-modal .form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px 20px;
+
+}
+
+
+/* ==========================================================
+   FORM GROUP
+========================================================== */
+
+.user-modal .form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+}
+
+
+/* ==========================================================
+   LABEL
+========================================================== */
+
+.user-modal .form-group label {
+
+    margin-bottom: 8px;
+
+    color: #52657f;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+/* ==========================================================
+   INPUTS AND SELECTS
+========================================================== */
+
+.user-modal .form-group input,
+.user-modal .form-group select {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 15px;
+
+    border: 1px solid #d7dee8;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #243b5a !important;
+
+    -webkit-text-fill-color: #243b5a;
+
+    caret-color: #243b5a;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-sizing: border-box;
+
+}
+
+
+.user-modal .form-group input::placeholder {
+
+    color: #94a3b8;
+
+    opacity: 1;
+
+}
+
+
+/* ==========================================================
+   INPUT FOCUS
+========================================================== */
+
+.user-modal .form-group input:focus,
+.user-modal .form-group select:focus {
+
+    border-color: #2f5fb3;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(47, 95, 179, 0.10);
+
+}
+
+
+/* ==========================================================
+   DISABLED
+========================================================== */
+
+.user-modal .form-group input:disabled,
+.user-modal .form-group select:disabled {
+
+    background: #f8fafc;
+
+    color: #94a3b8;
+
+    -webkit-text-fill-color: #94a3b8;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   FORM ACTIONS
+========================================================== */
+
+.user-modal .form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 28px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #e2e8f0;
+
+}
+
+
+/* ==========================================================
+   LIGHT MODE AUTOFILL FIX
+========================================================== */
+
+.user-modal input:-webkit-autofill,
+.user-modal input:-webkit-autofill:hover,
+.user-modal input:-webkit-autofill:focus,
+.user-modal input:-webkit-autofill:active {
+
+    -webkit-box-shadow:
+        0 0 0 1000px #ffffff inset !important;
+
+    -webkit-text-fill-color: #243b5a !important;
+
+    color: #243b5a !important;
+
+    caret-color: #243b5a !important;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - USER MODAL
+========================================================== */
+
+[data-theme="dark"] .user-modal {
+
+    background: #1d2a3a;
+
+    border-color: #34465c;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.45);
+
+}
+
+
+/* ==========================================================
+   DARK MODE - HEADER
+========================================================== */
+
+[data-theme="dark"] .user-modal .modal-header {
+
+    background: #162234;
+
+    border-bottom-color: #34465c;
+
+}
+
+
+[data-theme="dark"] .user-modal .modal-header h2 {
+
+    color: #f8fafc;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - CLOSE BUTTON
+========================================================== */
+
+[data-theme="dark"] .user-modal .close-btn {
+
+    background: #1f2d44;
+
+    border-color: #405168;
+
+    color: #cbd5e1;
+
+}
+
+
+[data-theme="dark"] .user-modal .close-btn:hover {
+
+    background: #ef4444;
+
+    border-color: #ef4444;
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - FORM
+========================================================== */
+
+[data-theme="dark"] .user-modal form {
+
+    background: #1d2a3a;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - LABEL
+========================================================== */
+
+[data-theme="dark"] .user-modal .form-group label {
+
+    color: #cbd5e1;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - INPUTS
+========================================================== */
+
+[data-theme="dark"] .user-modal .form-group input,
+[data-theme="dark"] .user-modal .form-group select {
+
+    background: #263548 !important;
+
+    border-color: #405168;
+
+    color: #f8fafc !important;
+
+    -webkit-text-fill-color: #f8fafc !important;
+
+    caret-color: #ffffff !important;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - PLACEHOLDER
+========================================================== */
+
+[data-theme="dark"]
+.user-modal .form-group input::placeholder {
+
+    color: #94a3b8 !important;
+
+    opacity: 1;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - SELECT OPTIONS
+========================================================== */
+
+[data-theme="dark"]
+.user-modal .form-group select option {
+
+    background: #263548;
+
+    color: #f8fafc;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - INPUT FOCUS
+========================================================== */
+
+[data-theme="dark"] .user-modal .form-group input:focus,
+[data-theme="dark"] .user-modal .form-group select:focus {
+
+    background: #263548 !important;
+
+    color: #ffffff !important;
+
+    -webkit-text-fill-color: #ffffff !important;
+
+    caret-color: #ffffff !important;
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59, 130, 246, 0.14);
+
+}
+
+
+/* ==========================================================
+   DARK MODE - FORM ACTIONS
+========================================================== */
+
+[data-theme="dark"] .user-modal .form-actions {
+
+    border-top-color: #34465c;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - AUTOFILL
+========================================================== */
+
+[data-theme="dark"]
+.user-modal input:-webkit-autofill,
+[data-theme="dark"]
+.user-modal input:-webkit-autofill:hover,
+[data-theme="dark"]
+.user-modal input:-webkit-autofill:focus,
+[data-theme="dark"]
+.user-modal input:-webkit-autofill:active {
+
+    -webkit-box-shadow:
+        0 0 0 1000px #263548 inset !important;
+
+    -webkit-text-fill-color: #ffffff !important;
+
+    color: #ffffff !important;
+
+    caret-color: #ffffff !important;
+
+    border-color: #405168 !important;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .user-modal {
+
+        max-width: 95%;
+
+    }
+
+
+    .user-modal .modal-header {
+
+        padding: 16px 20px;
+
+    }
+
+
+    .user-modal .modal-header h2 {
+
+        font-size: 23px;
+
+    }
+
+
+    .user-modal form {
+
+        padding: 22px;
+
+    }
+
+
+    .user-modal .form-grid {
+
+        gap: 18px;
+
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 600px) {
+
+    .modal-overlay {
+
+        align-items: flex-start;
+
+        overflow-y: auto;
+
+    }
+
+
+    .user-modal {
+
+        margin: 20px 0;
+
+    }
+
+
+    .user-modal .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .user-modal .form-actions {
+
+        justify-content: stretch;
+
+    }
+
+
+    .user-modal .form-actions button {
+
+        flex: 1;
+
+    }
+
+}

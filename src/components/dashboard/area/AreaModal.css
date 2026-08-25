@@ -1,0 +1,420 @@
+/*
+==========================================================
+File:
+src/components/dashboard/area/AreaModal.css
+
+Description:
+Add/Edit Area Modal styling.
+Professional light and dark mode design.
+Header and close button are isolated to Area Modal
+to prevent conflicts with User Modal and other components.
+==========================================================
+*/
+
+
+/* ==========================================================
+   AREA MODAL OVERLAY
+========================================================== */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.75);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    z-index: 9999;
+
+}
+
+
+/* ==========================================================
+   AREA MODAL
+========================================================== */
+
+.modal {
+
+    width: 100%;
+
+    max-width: 550px;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.45);
+
+    animation: areaModalAnimation 0.25s ease;
+
+}
+
+
+/* ==========================================================
+   AREA MODAL ANIMATION
+========================================================== */
+
+@keyframes areaModalAnimation {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   AREA MODAL HEADER
+========================================================== */
+
+.modal .modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    min-height: 72px;
+
+    padding: 16px 25px;
+
+    background: #eef4ff;
+
+    border-bottom: 1px solid #d5e2f5;
+
+}
+
+
+/* ==========================================================
+   AREA MODAL TITLE
+========================================================== */
+
+.modal .modal-header h2 {
+
+    margin: 0;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    color: #17365f;
+
+}
+
+
+/* ==========================================================
+   AREA MODAL CLOSE BUTTON
+========================================================== */
+
+.modal .close-btn {
+
+    width: 40px;
+
+    height: 40px;
+
+    padding: 0;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #52657f;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+
+    font-size: 21px;
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.modal .close-btn:hover {
+
+    background: #fee2e2;
+
+    border-color: #fca5a5;
+
+    color: #dc2626;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* ==========================================================
+   AREA MODAL BODY
+========================================================== */
+
+.modal .modal-body {
+
+    padding: 25px;
+
+}
+
+
+/* ==========================================================
+   AREA FORM GROUP
+========================================================== */
+
+.modal .form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-bottom: 20px;
+
+}
+
+
+.modal .form-group:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+/* ==========================================================
+   AREA LABELS
+========================================================== */
+
+.modal .form-group label {
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+
+/* ==========================================================
+   AREA INPUTS
+========================================================== */
+
+.modal .form-group input,
+.modal .form-group select {
+
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--background-color);
+
+    color: var(--text-primary);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+
+    box-sizing: border-box;
+
+}
+
+
+.modal .form-group input::placeholder {
+
+    color: var(--text-secondary);
+
+}
+
+
+.modal .form-group input:focus,
+.modal .form-group select:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(15, 118, 110, 0.20);
+
+}
+
+
+/* ==========================================================
+   AREA SELECT
+========================================================== */
+
+.modal .form-group select {
+
+    cursor: pointer;
+
+}
+
+
+/* ==========================================================
+   DISABLED
+========================================================== */
+
+.modal .form-group input:disabled,
+.modal .form-group select:disabled {
+
+    opacity: 0.7;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   AREA MODAL FOOTER
+========================================================== */
+
+.modal .modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 20px 25px;
+
+    border-top: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .modal {
+
+        max-width: 95%;
+
+    }
+
+
+    .modal .modal-body {
+
+        padding: 20px;
+
+    }
+
+
+    .modal .modal-footer {
+
+        padding: 18px;
+
+        flex-wrap: wrap;
+
+    }
+
+}
+
+
+/* ==========================================================
+   DARK MODE - AREA HEADER
+========================================================== */
+
+[data-theme="dark"] .modal .modal-header {
+
+    background: #162234;
+
+    border-bottom-color: #334155;
+
+}
+
+
+[data-theme="dark"] .modal .modal-header h2 {
+
+    color: #f8fafc !important;
+
+}
+
+
+/* ==========================================================
+   DARK MODE - AREA CLOSE BUTTON
+========================================================== */
+
+[data-theme="dark"] .modal .close-btn {
+
+    background: #1f2d44;
+
+    border-color: #405168;
+
+    color: #cbd5e1 !important;
+
+}
+
+
+[data-theme="dark"] .modal .close-btn:hover {
+
+    background: #ef4444;
+
+    border-color: #ef4444;
+
+    color: #ffffff !important;
+
+}

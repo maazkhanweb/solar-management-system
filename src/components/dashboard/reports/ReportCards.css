@@ -1,0 +1,168 @@
+/* =========================================================
+   Report Cards
+========================================================= */
+
+.report-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* =========================================================
+   Card
+========================================================= */
+
+.report-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.report-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   Icon
+========================================================= */
+
+.report-card-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 30px;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   Content
+========================================================= */
+
+.report-card-content {
+    flex: 1;
+}
+
+.report-card-content h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.report-card-content h2 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+/* =========================================================
+   Light Theme
+========================================================= */
+
+[data-theme="light"] .report-card {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .report-card-content h4 {
+    color: #64748b;
+}
+
+[data-theme="light"] .report-card-content h2 {
+    color: #0f172a;
+}
+
+/* =========================================================
+   Dark Theme
+========================================================= */
+
+[data-theme="dark"] .report-card {
+    background: #18273c;
+    border-color: #2d415b;
+}
+
+[data-theme="dark"] .report-card:hover {
+    background: #203149;
+}
+
+[data-theme="dark"] .report-card-content h4 {
+    color: #cbd5e1;
+}
+
+[data-theme="dark"] .report-card-content h2 {
+    color: #ffffff;
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .report-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .report-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .report-card {
+        padding: 18px;
+    }
+
+    .report-card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 26px;
+    }
+
+    .report-card-content h4 {
+        font-size: 16px;
+    }
+
+    .report-card-content h2 {
+        font-size: 32px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .report-card {
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .report-card-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+    }
+
+    .report-card-content h4 {
+        font-size: 15px;
+    }
+
+    .report-card-content h2 {
+        font-size: 28px;
+    }
+
+}

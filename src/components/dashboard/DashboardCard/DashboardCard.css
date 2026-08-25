@@ -1,0 +1,257 @@
+/* ==========================================================
+   Dashboard Card
+========================================================== */
+
+.dashboard-card {
+
+    width: 100%;
+
+    min-height: 165px;
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition: all .35s ease;
+
+    box-shadow: var(--shadow-md);
+
+}
+
+/* ==========================================================
+   Top Glow
+========================================================== */
+
+.dashboard-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 4px;
+
+    background: linear-gradient(
+        90deg,
+        #16D3B4,
+        #0F766E,
+        #16D3B4
+    );
+
+}
+
+/* ==========================================================
+   Hover
+========================================================== */
+
+.dashboard-card:hover {
+
+    transform: translateY(-8px);
+
+    border-color: var(--primary-color);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.18),
+        0 0 20px rgba(22,211,180,.18);
+
+}
+
+.dashboard-card:active {
+
+    transform: scale(.98);
+
+}
+
+/* ==========================================================
+   Card Layout
+========================================================== */
+
+.card-top {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+/* ==========================================================
+   Icon
+========================================================== */
+
+.card-icon {
+
+    width: 68px;
+
+    height: 68px;
+
+    border-radius: 18px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 30px;
+
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #16D3B4,
+        #0F766E
+    );
+
+    box-shadow:
+        0 10px 25px rgba(22,211,180,.28);
+
+    transition: all .35s ease;
+
+}
+
+.dashboard-card:hover .card-icon {
+
+    transform: rotate(8deg) scale(1.08);
+
+}
+
+/* ==========================================================
+   Content
+========================================================== */
+
+.card-info {
+
+    flex: 1;
+
+}
+
+.card-info h4 {
+
+    margin: 0;
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+}
+
+.card-info h2 {
+
+    margin: 8px 0;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.card-info p {
+
+    margin: 0;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    color: var(--success-color);
+
+}
+
+/* ==========================================================
+   Dark Mode
+========================================================== */
+
+[data-theme="dark"] .dashboard-card {
+
+    background: linear-gradient(
+        180deg,
+        #0E1B28,
+        #132535
+    );
+
+    border: 1px solid #1D435C;
+
+}
+
+[data-theme="dark"] .dashboard-card:hover {
+
+    box-shadow:
+        0 25px 45px rgba(0,0,0,.45),
+        0 0 22px rgba(22,211,180,.20);
+
+}
+
+[data-theme="dark"] .card-info h4 {
+
+    color: #9FB4C5;
+
+}
+
+[data-theme="dark"] .card-info h2 {
+
+    color: #ffffff;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+.dashboard-card{
+
+padding:20px;
+
+}
+
+.card-icon{
+
+width:60px;
+
+height:60px;
+
+font-size:26px;
+
+}
+
+.card-info h2{
+
+font-size:28px;
+
+}
+
+}

@@ -1,0 +1,215 @@
+/* ==========================================================
+   Area Management
+========================================================== */
+
+.area-management {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.area-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+.area-header h1 {
+
+    margin: 0;
+
+    font-size: 44px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.area-header p {
+
+    margin-top: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 16px;
+
+}
+
+/* ==========================================================
+   Add Button
+========================================================== */
+
+.add-area-btn {
+
+    height: 48px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    background: linear-gradient(
+        135deg,
+        #2563EB,
+        #1D4ED8
+    );
+
+    transition: .30s;
+
+    box-shadow: 0 10px 25px rgba(37,99,235,.25);
+
+}
+
+.add-area-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 15px 35px rgba(37,99,235,.35);
+
+}
+
+/* ==========================================================
+   Search
+========================================================== */
+
+.area-search {
+
+    width: 100%;
+
+}
+
+.area-search input {
+
+    width: 320px;
+
+    max-width: 100%;
+
+    height: 46px;
+
+    padding: 0 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid var(--border-color);
+
+    background: var(--surface-color);
+
+    color: var(--text-primary);
+
+    outline: none;
+
+    transition: .30s;
+
+}
+
+.area-search input::placeholder {
+
+    color: var(--text-secondary);
+
+}
+
+.area-search input:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 4px rgba(15,118,110,.12);
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .area-header h1{
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .area-header p{
+
+    color:#AFC3D4;
+
+}
+
+[data-theme="dark"] .area-search input{
+
+    background:#132535;
+
+    border-color:#234056;
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .area-search input::placeholder{
+
+    color:#8FA8BC;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:992px){
+
+.area-header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.area-header h1{
+
+font-size:36px;
+
+}
+
+.area-search input{
+
+width:100%;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.area-header h1{
+
+font-size:30px;
+
+}
+
+}

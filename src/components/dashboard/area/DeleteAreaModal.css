@@ -1,0 +1,65 @@
+.delete-area-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.delete-area-modal{
+    width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+
+.delete-area-modal h2{
+    margin-bottom: 15px;
+    color: #1E293B;
+}
+
+.delete-area-modal p{
+    color: #64748B;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.delete-area-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.delete-area-cancel-btn,
+.delete-area-btn{
+    min-width: 120px;
+    height: 42px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.delete-area-cancel-btn{
+    background: #E2E8F0;
+    color: #334155;
+}
+
+.delete-area-cancel-btn:hover{
+    background: #CBD5E1;
+}
+
+.delete-area-btn{
+    background: #EF4444;
+    color: white;
+}
+
+.delete-area-btn:hover{
+    background: #DC2626;
+}

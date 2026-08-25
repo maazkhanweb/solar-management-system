@@ -1,0 +1,320 @@
+/* ==========================================================================
+   Reports Filters
+========================================================================== */
+
+.report-filters{
+
+    background:var(--card-background);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    padding:24px;
+
+    box-shadow:var(--shadow-sm);
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
+    gap:20px;
+
+    transition:.3s;
+
+}
+
+.report-filters:hover{
+
+    box-shadow:var(--shadow-md);
+
+}
+
+/* ==========================================================================
+   Filter Group
+========================================================================== */
+
+.filter-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.filter-group label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--text-primary);
+
+}
+
+/* ==========================================================================
+   Inputs
+========================================================================== */
+
+.filter-group input,
+
+.filter-group select{
+
+    width:100%;
+
+    height:48px;
+
+    padding:0 14px;
+
+    border:1px solid var(--border-color);
+
+    border-radius:12px;
+
+    outline:none;
+
+    background:var(--card-background);
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    transition:.3s;
+
+}
+
+.filter-group input::placeholder{
+
+    color:var(--text-secondary);
+
+}
+
+.filter-group input:focus,
+
+.filter-group select:focus{
+
+    border-color:var(--primary-color);
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.18);
+
+}
+
+/* ==========================================================================
+   Search
+========================================================================== */
+
+.search-group{
+
+    grid-column:span 2;
+
+}
+
+.search-group input{
+
+    width:100%;
+
+}
+/* ==========================================================================
+   Buttons
+========================================================================== */
+
+.filter-buttons{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:12px;
+
+}
+
+.reset-btn,
+
+.apply-btn{
+
+    height:48px;
+
+    padding:0 22px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:all .30s ease;
+
+}
+
+.reset-btn{
+
+    background:#64748B;
+
+    color:#ffffff;
+
+}
+
+.reset-btn:hover{
+
+    background:#475569;
+
+    transform:translateY(-2px);
+
+}
+
+.apply-btn{
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+}
+
+.apply-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(15,118,110,.25);
+
+}
+
+/* ==========================================================================
+   Dark Theme
+========================================================================== */
+
+[data-theme="dark"] .report-filters{
+
+    background:#111C2D;
+
+    border-color:#253247;
+
+}
+
+[data-theme="dark"] .filter-group input,
+
+[data-theme="dark"] .filter-group select{
+
+    background:#162338;
+
+    border-color:#2D415B;
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .filter-group input::placeholder{
+
+    color:#94A3B8;
+
+}
+
+[data-theme="dark"] .filter-group select{
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .filter-group option{
+
+    background:#162338;
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator{
+
+    filter:invert(1);
+
+}
+
+/* ==========================================================================
+   Responsive
+========================================================================== */
+
+@media (max-width:992px){
+
+    .search-group{
+
+        grid-column:span 1;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .report-filters{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .filter-buttons{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .reset-btn,
+
+    .apply-btn{
+
+        width:100%;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .report-filters{
+
+        padding:18px;
+
+        gap:16px;
+
+    }
+
+    .filter-group input,
+
+    .filter-group select,
+
+    .reset-btn,
+
+    .apply-btn{
+
+        height:44px;
+
+        font-size:13px;
+
+    }
+
+}
+
+/* ==========================================================================
+   Smooth Transition
+========================================================================== */
+
+.report-filters *{
+
+    transition:
+
+        background .30s ease,
+
+        color .30s ease,
+
+        border-color .30s ease,
+
+        box-shadow .30s ease,
+
+        transform .30s ease;
+
+}

@@ -1,0 +1,498 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/inventory-transaction/TransactionDetailsModal.css
+ *
+ * Description:
+ * Styling for Inventory Transaction Details Modal.
+ * Clean white modal design matching User and Area modals.
+ * ============================================================================
+ */
+
+
+/* ============================================================================
+   MODAL OVERLAY
+============================================================================ */
+
+.transaction-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.55);
+
+    backdrop-filter: blur(4px);
+
+    -webkit-backdrop-filter: blur(4px);
+
+    z-index: 9999;
+
+    animation: modalFade 0.25s ease;
+}
+
+
+/* ============================================================================
+   MODAL
+============================================================================ */
+
+.transaction-modal {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 760px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.20);
+
+    animation: modalScale 0.25s ease;
+}
+
+
+/* ============================================================================
+   HEADER
+============================================================================ */
+
+.transaction-modal-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 28px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+
+.transaction-modal-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.transaction-modal-title svg {
+    font-size: 24px;
+
+    color: #2563eb;
+}
+
+
+.transaction-modal-title h2 {
+    margin: 0;
+
+    font-size: 26px;
+
+    font-weight: 700;
+
+    color: #15325f;
+}
+
+
+/* ============================================================================
+   CLOSE BUTTON
+============================================================================ */
+
+.transaction-modal-close {
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    outline: none;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #f1f5f9;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.transaction-modal-close svg {
+    font-size: 22px;
+
+    color: #64748b;
+}
+
+
+.transaction-modal-close:hover {
+    background: #e2e8f0;
+
+    transform: scale(1.03);
+}
+
+
+.transaction-modal-close:hover svg {
+    color: #334155;
+}
+
+
+/* ============================================================================
+   BODY
+============================================================================ */
+
+.transaction-modal-body {
+    padding: 24px 28px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================================
+   DETAIL ITEM
+============================================================================ */
+
+.transaction-detail-item {
+    background: #ffffff;
+
+    border: 1px solid #dbe2ea;
+
+    border-radius: 12px;
+
+    padding: 14px 16px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.transaction-detail-item span {
+    font-size: 12px;
+
+    font-weight: 500;
+
+    color: #64748b;
+}
+
+
+.transaction-detail-item strong {
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #15325f;
+
+    word-break: break-word;
+}
+
+
+/* ============================================================================
+   FULL WIDTH
+============================================================================ */
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+
+/* ============================================================================
+   FOOTER
+============================================================================ */
+
+.transaction-modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    padding: 18px 28px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ============================================================================
+   CLOSE BUTTON
+============================================================================ */
+
+.transaction-close-btn {
+    border: none;
+
+    outline: none;
+
+    cursor: pointer;
+
+    padding: 11px 26px;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    box-shadow:
+        0 5px 12px rgba(37, 99, 235, 0.20);
+}
+
+
+.transaction-close-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 16px rgba(37, 99, 235, 0.25);
+}
+
+
+.transaction-close-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================================
+   DARK THEME
+============================================================================ */
+
+[data-theme="dark"] .transaction-modal {
+    background: #ffffff;
+
+    border-color: #dbe2ea;
+}
+
+
+[data-theme="dark"] .transaction-modal-header {
+    background: #ffffff;
+
+    border-bottom-color: #e2e8f0;
+}
+
+
+[data-theme="dark"] .transaction-modal-title h2 {
+    color: #15325f;
+}
+
+
+[data-theme="dark"] .transaction-modal-title svg {
+    color: #2563eb;
+}
+
+
+[data-theme="dark"] .transaction-modal-close {
+    background: #f1f5f9;
+}
+
+
+[data-theme="dark"] .transaction-modal-close svg {
+    color: #64748b;
+}
+
+
+[data-theme="dark"] .transaction-modal-close:hover {
+    background: #e2e8f0;
+}
+
+
+[data-theme="dark"] .transaction-modal-close:hover svg {
+    color: #334155;
+}
+
+
+[data-theme="dark"] .transaction-modal-body {
+    background: #ffffff;
+}
+
+
+[data-theme="dark"] .transaction-detail-item {
+    background: #ffffff;
+
+    border-color: #dbe2ea;
+}
+
+
+[data-theme="dark"] .transaction-detail-item span {
+    color: #64748b;
+}
+
+
+[data-theme="dark"] .transaction-detail-item strong {
+    color: #15325f;
+}
+
+
+[data-theme="dark"] .transaction-modal-footer {
+    background: #ffffff;
+
+    border-top-color: #e2e8f0;
+}
+
+
+/* ============================================================================
+   ANIMATION
+============================================================================ */
+
+@keyframes modalFade {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes modalScale {
+
+    from {
+        opacity: 0;
+
+        transform: scale(0.96) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: scale(1) translateY(0);
+    }
+
+}
+
+
+/* ============================================================================
+   RESPONSIVE
+============================================================================ */
+
+@media (max-width: 768px) {
+
+    .transaction-modal-overlay {
+        padding: 14px;
+    }
+
+
+    .transaction-modal {
+        max-width: 100%;
+
+        max-height: 92vh;
+
+        overflow-y: auto;
+    }
+
+
+    .transaction-modal-header {
+        padding: 18px 20px;
+    }
+
+
+    .transaction-modal-title h2 {
+        font-size: 22px;
+    }
+
+
+    .transaction-modal-body {
+        grid-template-columns: 1fr;
+
+        padding: 18px;
+
+        gap: 14px;
+    }
+
+
+    .transaction-modal-footer {
+        padding: 18px 20px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .transaction-modal-overlay {
+        padding: 10px;
+    }
+
+
+    .transaction-modal-header {
+        padding: 16px;
+    }
+
+
+    .transaction-modal-body {
+        padding: 16px;
+
+        gap: 12px;
+    }
+
+
+    .transaction-modal-footer {
+        padding: 16px;
+    }
+
+
+    .transaction-close-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* ============================================================================
+   SMOOTH TRANSITION
+============================================================================ */
+
+.transaction-modal *,
+.transaction-detail-item {
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}

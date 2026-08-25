@@ -1,0 +1,308 @@
+/* ==========================================================================
+   Transaction Filters
+========================================================================== */
+
+.transaction-filters{
+
+    width:100%;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/* ==========================================================================
+   Search
+========================================================================== */
+
+.transaction-search{
+
+    flex:1;
+
+    min-width:280px;
+
+    position:relative;
+
+}
+
+.transaction-search input{
+
+    width:100%;
+
+    height:48px;
+
+    padding:0 16px;
+
+    border:1px solid var(--border-color);
+
+    border-radius:12px;
+
+    background:var(--card-bg);
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.transaction-search input::placeholder{
+
+    color:var(--text-secondary);
+
+}
+
+.transaction-search input:focus{
+
+    border-color:var(--primary-color);
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.18);
+
+}
+
+/* ==========================================================================
+   Select + Date
+========================================================================== */
+
+.transaction-filters select,
+
+.transaction-filters input[type="text"],
+
+.transaction-filters input[type="date"]{
+
+    min-width:190px;
+
+    height:48px;
+
+    padding:0 14px;
+
+    border:1px solid var(--border-color);
+
+    border-radius:12px;
+
+    background:var(--card-bg);
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.transaction-filters select:focus,
+
+.transaction-filters input[type="text"]:focus,
+
+.transaction-filters input[type="date"]:focus{
+
+    border-color:var(--primary-color);
+
+    box-shadow:0 0 0 3px rgba(15,118,110,.18);
+
+}
+
+/* ==========================================================================
+   Calendar Icon
+========================================================================== */
+
+.transaction-filters input[type="date"]::-webkit-calendar-picker-indicator{
+
+    cursor:pointer;
+
+    opacity:.8;
+
+}
+/* ==========================================================================
+   Reset Button
+========================================================================== */
+
+.transaction-reset-btn{
+
+    height:48px;
+
+    padding:0 22px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.transaction-reset-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(15,118,110,.25);
+
+}
+
+.transaction-reset-btn svg{
+
+    font-size:18px;
+
+}
+
+/* ==========================================================================
+   Dark Theme
+========================================================================== */
+
+[data-theme="dark"] .transaction-search input,
+
+[data-theme="dark"] .transaction-filters select,
+
+[data-theme="dark"] .transaction-filters input[type="text"],
+
+[data-theme="dark"] .transaction-filters input[type="date"]{
+
+    background:#162338;
+
+    color:#F8FAFC;
+
+    border-color:#2D415B;
+
+}
+
+[data-theme="dark"] .transaction-search input::placeholder{
+
+    color:#94A3B8;
+
+}
+
+[data-theme="dark"] .transaction-filters select{
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .transaction-filters option{
+
+    background:#162338;
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .transaction-filters input[type="date"]::-webkit-calendar-picker-indicator{
+
+    filter:invert(1);
+
+}
+
+/* ==========================================================================
+   Responsive
+========================================================================== */
+
+@media (max-width:1200px){
+
+    .transaction-filters{
+
+        gap:14px;
+
+    }
+
+    .transaction-search{
+
+        min-width:100%;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .transaction-filters{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .transaction-search,
+
+    .transaction-filters select,
+
+    .transaction-filters input[type="text"],
+
+    .transaction-filters input[type="date"],
+
+    .transaction-reset-btn{
+
+        width:100%;
+
+        min-width:100%;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .transaction-search input,
+
+    .transaction-filters select,
+
+    .transaction-filters input[type="text"],
+
+    .transaction-filters input[type="date"],
+
+    .transaction-reset-btn{
+
+        height:44px;
+
+        font-size:13px;
+
+    }
+
+}
+
+/* ==========================================================================
+   Smooth Transition
+========================================================================== */
+
+.transaction-filters *{
+
+    transition:
+
+        background .30s ease,
+
+        color .30s ease,
+
+        border-color .30s ease,
+
+        box-shadow .30s ease;
+
+}
