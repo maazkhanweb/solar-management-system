@@ -1,0 +1,15 @@
+﻿.git
+.env
+.env.*
+vendor
+node_modules
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+public/storage
+public/hot
+public/build
+npm-debug.log
+Dockerfile
