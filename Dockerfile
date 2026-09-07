@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y \
     intl \
     zip \
     && a2enmod rewrite \
-    && sed -ri -e 's!/var/www/html!\!g' \
+    && sed -ri -e 's!/var/www/html!/var/www/html/public!g' \
        /etc/apache2/sites-available/*.conf \
        /etc/apache2/apache2.conf \
        /etc/apache2/conf-available/*.conf \
@@ -64,4 +64,6 @@ RUN php artisan storage:link || true
 EXPOSE 80
 
 CMD ["apache2-foreground"]
+
+
 
