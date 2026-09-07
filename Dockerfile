@@ -23,9 +23,9 @@ COPY solar-management-api/public ./public
 RUN npm run build
 
 
-FROM php:8.3-apache
+FROM php:8.3-cli
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
@@ -39,14 +39,7 @@ RUN apt-get update && apt-get install -y \
     bcmath \
     intl \
     zip \
-    && a2enmod rewrite \
-    && sed -ri -e 's!/var/www/html!/var/www/html/public!g' \
-       /etc/apache2/sites-available/*.conf \
-       /etc/apache2/apache2.conf \
-       /etc/apache2/conf-available/*.conf \
     && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /var/www/html
 
 COPY --from=composer /app ./
 COPY --from=frontend /app/public/build ./public/build
@@ -59,11 +52,6 @@ RUN mkdir -p storage/framework/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-RUN php artisan storage:link || true
+EXPOSE 8080
 
-EXPOSE 80
-
-CMD ["apache2-foreground"]
-
-
-
+CMD ["/bin/sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]

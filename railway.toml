@@ -3,5 +3,4 @@ builder = "DOCKERFILE"
 dockerfilePath = "/Dockerfile"
 
 [deploy]
-startCommand = "/bin/sh -c 'php artisan migrate --force && apache2-foreground'"
-
+startCommand = "/bin/sh -c 'php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}'"
