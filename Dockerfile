@@ -23,7 +23,7 @@ COPY solar-management-api/public ./public
 RUN npm run build
 
 
-FROM php:8.3-cli
+FROM php:8.4-cli
 
 WORKDIR /var/www/html
 
@@ -55,3 +55,5 @@ RUN mkdir -p storage/framework/cache \
 EXPOSE 8080
 
 CMD ["/bin/sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+
+
