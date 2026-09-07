@@ -1,10 +1,33 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| File:
+| app/Services/InventoryService.php
+|
+| Description:
+| Handles inventory operations.
+|
+| Features:
+| - Inventory listing
+| - New inventory creation
+| - Existing inventory quantity merging
+| - Damaged quantity management
+| - Damage reason management
+| - Available stock calculation
+| - Inventory update
+| - Inventory assignment
+| - Inventory deletion
+| - Low stock / out of stock queries
+|--------------------------------------------------------------------------
+*/
+
 namespace App\Services;
 
 use App\Models\InventoryItem;
+
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
 
 class InventoryService
@@ -14,90 +37,471 @@ class InventoryService
      */
     public function getAll(): Collection
     {
-        $query = InventoryItem::with('area');
-
-        /*
-        |--------------------------------------------------------------------------
-        | Manager can view only his Area Inventory
-        |--------------------------------------------------------------------------
-        */
-
-        $user = Auth::user();
-
-        if (
-
-            $user->role === 'Manager'
-
-        ) {
-
-            $query->where(
-
-                'area_id',
-
-                $user->area_id
-
-            );
-
-        }
-
-        return $query
+        return InventoryItem::with('area')
             ->latest()
             ->get();
     }
 
+
     /**
      * Store Inventory Item
+     *
+     * If the same Item Type and Item Name already exist,
+     * the new quantity is merged into the existing inventory.
      */
     public function store(array $data): InventoryItem
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Only Administrator
-        |--------------------------------------------------------------------------
-        */
+        return DB::transaction(
 
-        if (
+            function () use ($data) {
 
-            Auth::user()->role !== 'Administrator'
+                /*
+                |--------------------------------------------------------------------------
+                | Find Existing Matching Inventory
+                |--------------------------------------------------------------------------
+                */
 
-        ) {
+                $existingInventory =
 
-            abort(403);
+                    InventoryItem::where(
 
-        }
+                        'item_type',
 
-        return DB::transaction(function () use ($data) {
+                        $data['item_type']
 
-            /*
-            |--------------------------------------------------------------------------
-            | Default Status
-            |--------------------------------------------------------------------------
-            */
+                    )
 
-            $data['status'] = $data['status'] ?? 'Available';
+                    ->whereRaw(
 
-            /*
-            |--------------------------------------------------------------------------
-            | Stock Initialization
-            |--------------------------------------------------------------------------
-            */
+                        'LOWER(item_name) = ?',
 
-            $quantity = (int) ($data['quantity'] ?? 0);
+                        [
 
-            $data['quantity'] = $quantity;
+                            strtolower(
 
-            $data['available_quantity'] = $quantity;
+                                trim(
 
-            $data['assigned_quantity'] = 0;
+                                    $data['item_name']
 
-            $data['damaged_quantity'] = 0;
+                                )
 
-            $data['minimum_stock'] = $data['minimum_stock'] ?? 5;
+                            ),
 
-            return InventoryItem::create($data);
+                        ]
 
-        });
+                    )
+
+                    ->lockForUpdate()
+
+                    ->first();
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Damage Information
+                |--------------------------------------------------------------------------
+                */
+
+                $newQuantity =
+
+                    (int) (
+
+                        $data['quantity']
+
+                        ?? 0
+
+                    );
+
+
+                $newDamagedQuantity =
+
+                    (int) (
+
+                        $data['damaged_quantity']
+
+                        ?? 0
+
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Merge Existing Inventory
+                |--------------------------------------------------------------------------
+                */
+
+                if ($existingInventory) {
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Add New Quantity
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingInventory->quantity +=
+
+                        $newQuantity;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Add Damaged Quantity
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingInventory->damaged_quantity +=
+
+                        $newDamagedQuantity;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Add Available Quantity
+                    |--------------------------------------------------------------------------
+                    |
+                    | New available stock =
+                    | New quantity - New damaged quantity
+                    |
+                    */
+
+                    $newAvailableQuantity =
+
+                        $newQuantity -
+
+                        $newDamagedQuantity;
+
+
+                    if ($newAvailableQuantity < 0) {
+
+                        $newAvailableQuantity = 0;
+
+                    }
+
+
+                    $existingInventory->available_quantity +=
+
+                        $newAvailableQuantity;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Preserve Serial Numbers
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingSerials = collect(
+
+                        preg_split(
+
+                            '/[,\n]+/',
+
+                            $existingInventory->serial_number
+
+                        )
+
+                    )
+
+                    ->map(
+
+                        fn ($serial) => trim($serial)
+
+                    )
+
+                    ->filter();
+
+
+                    $newSerials = collect(
+
+                        preg_split(
+
+                            '/[,\n]+/',
+
+                            $data['serial_number']
+
+                        )
+
+                    )
+
+                    ->map(
+
+                        fn ($serial) => trim($serial)
+
+                    )
+
+                    ->filter();
+
+
+                    $mergedSerials =
+
+                        $existingSerials
+
+                            ->merge($newSerials)
+
+                            ->unique(
+
+                                fn ($serial) =>
+
+                                    strtolower($serial)
+
+                            )
+
+                            ->values()
+
+                            ->implode(', ');
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Update Serial Numbers
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingInventory->serial_number =
+
+                        $mergedSerials;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Minimum Stock
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingInventory->minimum_stock =
+
+                        $data['minimum_stock']
+
+                        ??
+
+                        $existingInventory->minimum_stock;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Damage Reason
+                    |--------------------------------------------------------------------------
+                    |
+                    | If the newly added inventory contains damaged items,
+                    | store the new reason.
+                    |
+                    */
+
+                    if (
+
+                        $newDamagedQuantity > 0
+
+                        &&
+
+                        !empty(
+
+                            $data['damage_reason']
+
+                            ?? null
+
+                        )
+
+                    ) {
+
+                        $newDamageReason =
+
+                            trim(
+
+                                $data['damage_reason']
+
+                            );
+
+
+                        $existingDamageReason =
+
+                            trim(
+
+                                $existingInventory->damage_reason
+
+                                ?? ''
+
+                            );
+
+
+                        if (
+
+                            $existingDamageReason !== ''
+
+                        ) {
+
+                            if (
+
+                                stripos(
+
+                                    $existingDamageReason,
+
+                                    $newDamageReason
+
+                                ) === false
+
+                            ) {
+
+                                $existingInventory->damage_reason =
+
+                                    $existingDamageReason
+
+                                    . '; '
+
+                                    . $newDamageReason;
+
+                            }
+
+                        } else {
+
+                            $existingInventory->damage_reason =
+
+                                $newDamageReason;
+
+                        }
+
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Save Existing Inventory
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $existingInventory->save();
+
+
+                    return $existingInventory
+
+                        ->fresh()
+
+                        ->load('area');
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Create New Inventory Item
+                |--------------------------------------------------------------------------
+                */
+
+                $data['status'] =
+
+                    $data['status']
+
+                    ??
+
+                    'Available';
+
+
+                $data['quantity'] =
+
+                    $newQuantity;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Damaged Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $data['damaged_quantity'] =
+
+                    $newDamagedQuantity;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Available Quantity
+                |--------------------------------------------------------------------------
+                |
+                | Available = Total - Damaged
+                |
+                */
+
+                $availableQuantity =
+
+                    $newQuantity -
+
+                    $newDamagedQuantity;
+
+
+                if ($availableQuantity < 0) {
+
+                    $availableQuantity = 0;
+
+                }
+
+
+                $data['available_quantity'] =
+
+                    $availableQuantity;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Assigned Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $data['assigned_quantity'] =
+
+                    0;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Minimum Stock
+                |--------------------------------------------------------------------------
+                */
+
+                $data['minimum_stock'] =
+
+                    $data['minimum_stock']
+
+                    ??
+
+                    5;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Damage Reason
+                |--------------------------------------------------------------------------
+                |
+                | If there are no damaged items, don't store
+                | an unnecessary damage reason.
+                |
+                */
+
+                if (
+
+                    $newDamagedQuantity <= 0
+
+                ) {
+
+                    $data['damage_reason'] = null;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Create Inventory
+                |--------------------------------------------------------------------------
+                */
+
+                return InventoryItem::create(
+
+                    $data
+
+                );
+
+            }
+
+        );
     }
+
 
     /**
      * Update Inventory Item
@@ -107,89 +511,243 @@ class InventoryService
         array $data
     ): InventoryItem {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Manager cannot update another Area Inventory
-        |--------------------------------------------------------------------------
-        */
+        return DB::transaction(
 
-        if (
+            function () use (
 
-            Auth::user()->role === 'Manager'
+                $inventory,
 
-            &&
-
-            $inventory->area_id != Auth::user()->area_id
-
-        ) {
-
-            abort(403);
-
-        }
-
-        return DB::transaction(function () use (
-
-            $inventory,
-
-            $data
-
-        ) {
-
-            /*
-            |--------------------------------------------------------------------------
-            | Total Quantity cannot be
-            | less than Assigned Quantity
-            |--------------------------------------------------------------------------
-            */
-
-            if (
-
-                isset($data['quantity'])
-
-                &&
-
-                $data['quantity'] < $inventory->assigned_quantity
+                $data
 
             ) {
 
+                /*
+                |--------------------------------------------------------------------------
+                | Get Current Assigned Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $assignedQuantity =
+
+                    (int) (
+
+                        $inventory->assigned_quantity
+
+                        ?? 0
+
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Get New Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $quantity =
+
+                    isset($data['quantity'])
+
+                    ?
+
+                    (int) $data['quantity']
+
+                    :
+
+                    (int) $inventory->quantity;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Get New Damaged Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $damagedQuantity =
+
+                    array_key_exists(
+
+                        'damaged_quantity',
+
+                        $data
+
+                    )
+
+                    ?
+
+                    (int) (
+
+                        $data['damaged_quantity']
+
+                        ?? 0
+
+                    )
+
+                    :
+
+                    (int) (
+
+                        $inventory->damaged_quantity
+
+                        ?? 0
+
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Prevent Invalid Damaged Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+
+                    $damagedQuantity > $quantity
+
+                ) {
+
+                    $damagedQuantity =
+
+                        $quantity;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Total Quantity Cannot Be Less Than
+                | Assigned + Damaged Quantity
+                |--------------------------------------------------------------------------
+                */
+
+                $minimumRequiredQuantity =
+
+                    $assignedQuantity +
+
+                    $damagedQuantity;
+
+
+                if (
+
+                    $quantity <
+
+                    $minimumRequiredQuantity
+
+                ) {
+
+                    $quantity =
+
+                        $minimumRequiredQuantity;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update Quantity
+                |--------------------------------------------------------------------------
+                */
+
                 $data['quantity'] =
 
-                    $inventory->assigned_quantity;
+                    $quantity;
 
-            }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Recalculate Available Stock
-            |--------------------------------------------------------------------------
-            */
+                /*
+                |--------------------------------------------------------------------------
+                | Update Damaged Quantity
+                |--------------------------------------------------------------------------
+                */
 
-            if (isset($data['quantity'])) {
+                $data['damaged_quantity'] =
+
+                    $damagedQuantity;
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Recalculate Available Stock
+                |--------------------------------------------------------------------------
+                |
+                | Available =
+                | Total - Assigned - Damaged
+                |
+                */
+
+                $availableQuantity =
+
+                    $quantity -
+
+                    $assignedQuantity -
+
+                    $damagedQuantity;
+
+
+                if ($availableQuantity < 0) {
+
+                    $availableQuantity = 0;
+
+                }
+
 
                 $data['available_quantity'] =
 
-                    $data['quantity']
+                    $availableQuantity;
 
-                    -
 
-                    $inventory->assigned_quantity
+                /*
+                |--------------------------------------------------------------------------
+                | Damage Reason
+                |--------------------------------------------------------------------------
+                |
+                | If damaged quantity is zero,
+                | remove the damage reason.
+                |
+                */
 
-                    -
+                if (
 
-                    $inventory->damaged_quantity;
+                    $damagedQuantity <= 0
+
+                ) {
+
+                    $data['damage_reason'] = null;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update Inventory
+                |--------------------------------------------------------------------------
+                */
+
+                $inventory->update(
+
+                    $data
+
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Return Fresh Inventory
+                |--------------------------------------------------------------------------
+                */
+
+                return $inventory
+
+                    ->fresh()
+
+                    ->load('area');
 
             }
 
-            $inventory->update($data);
-
-            return $inventory
-                ->fresh()
-                ->load('area');
-
-        });
-
+        );
     }
-        /**
+
+
+    /**
      * Temporary Assignment
      *
      * This method will be removed after
@@ -200,51 +758,52 @@ class InventoryService
         array $data
     ): InventoryItem {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Only Administrator
-        |--------------------------------------------------------------------------
-        */
+        return DB::transaction(
 
-        if (
+            function () use (
 
-            Auth::user()->role !== 'Administrator'
+                $inventory,
 
-        ) {
+                $data
 
-            abort(403);
+            ) {
 
-        }
+                $inventory->update([
 
-        return DB::transaction(function () use (
+                    'area_id' =>
 
-            $inventory,
+                        $data['area_id'],
 
-            $data
+                    'installation_date' =>
 
-        ) {
+                        $data['installation_date'],
 
-            $inventory->update([
+                    'remarks' =>
 
-                'area_id' => $data['area_id'],
+                        $data['remarks']
 
-                'installation_date' =>
-                    $data['installation_date'],
+                        ??
 
-                'remarks' =>
-                    $data['remarks'] ?? null,
+                        null,
 
-                'status' => 'Installed',
+                    'status' =>
 
-            ]);
+                        'Installed',
 
-            return $inventory
-                ->fresh()
-                ->load('area');
+                ]);
 
-        });
 
+                return $inventory
+
+                    ->fresh()
+
+                    ->load('area');
+
+            }
+
+        );
     }
+
 
     /**
      * Delete Inventory Item
@@ -253,31 +812,21 @@ class InventoryService
         InventoryItem $inventory
     ): bool {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Only Administrator
-        |--------------------------------------------------------------------------
-        */
+        return DB::transaction(
 
-        if (
+            function () use (
 
-            Auth::user()->role !== 'Administrator'
+                $inventory
 
-        ) {
+            ) {
 
-            abort(403);
+                return $inventory->delete();
 
-        }
+            }
 
-        return DB::transaction(function () use (
-            $inventory
-        ) {
-
-            return $inventory->delete();
-
-        });
-
+        );
     }
+
 
     /**
      * Get Single Inventory Item
@@ -286,114 +835,42 @@ class InventoryService
         InventoryItem $inventory
     ): InventoryItem {
 
-        /*
-        |--------------------------------------------------------------------------
-        | Manager cannot access another Area Inventory
-        |--------------------------------------------------------------------------
-        */
+        return $inventory->load(
 
-        if (
+            'area'
 
-            Auth::user()->role === 'Manager'
-
-            &&
-
-            $inventory->area_id != Auth::user()->area_id
-
-        ) {
-
-            abort(403);
-
-        }
-
-        return $inventory->load('area');
-
+        );
     }
+
 
     /**
      * Low Stock Items
      */
     public function getLowStock(): Collection
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Administrator
-        |--------------------------------------------------------------------------
-        */
+        return InventoryItem::whereColumn(
 
-        if (
+            'available_quantity',
 
-            Auth::user()->role === 'Administrator'
+            '<=',
 
-        ) {
+            'minimum_stock'
 
-            return InventoryItem::whereColumn(
-                'available_quantity',
-                '<=',
-                'minimum_stock'
-            )->get();
-
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Manager
-        |--------------------------------------------------------------------------
-        */
-
-        return InventoryItem::where(
-            'area_id',
-            Auth::user()->area_id
-        )
-            ->whereColumn(
-                'available_quantity',
-                '<=',
-                'minimum_stock'
-            )
-            ->get();
-
+        )->get();
     }
+
 
     /**
      * Out Of Stock Items
      */
     public function getOutOfStock(): Collection
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Administrator
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-
-            Auth::user()->role === 'Administrator'
-
-        ) {
-
-            return InventoryItem::where(
-                'available_quantity',
-                0
-            )->get();
-
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Manager
-        |--------------------------------------------------------------------------
-        */
-
         return InventoryItem::where(
-            'area_id',
-            Auth::user()->area_id
-        )
-            ->where(
-                'available_quantity',
-                0
-            )
-            ->get();
 
+            'available_quantity',
+
+            0
+
+        )->get();
     }
-
 }

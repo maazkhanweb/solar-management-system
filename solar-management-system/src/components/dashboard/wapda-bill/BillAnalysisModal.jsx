@@ -1,11 +1,12 @@
 /**
- * ===========================================================
+ * ============================================================================
  * File:
  * src/components/dashboard/wapda-bill/BillAnalysisModal.jsx
  *
  * Description:
- * Bill Analysis Popup Modal
- * ===========================================================
+ * Bill Analysis popup modal.
+ * Displays bill information and solar performance analysis.
+ * ============================================================================
  */
 
 import { useEffect } from "react";
@@ -16,34 +17,35 @@ import BillAnalysisCard from "./BillAnalysisCard";
 
 import "./BillAnalysisModal.css";
 
+
 function BillAnalysisModal({
-
     isOpen,
-
     bill,
-
     analysis,
-
     onClose,
-
 }) {
 
     useEffect(() => {
 
+        if (!isOpen) {
+            return;
+        }
+
+
         const handleEscape = (event) => {
 
             if (event.key === "Escape") {
-
                 onClose();
-
             }
 
         };
+
 
         document.addEventListener(
             "keydown",
             handleEscape
         );
+
 
         return () => {
 
@@ -54,13 +56,26 @@ function BillAnalysisModal({
 
         };
 
-    }, [onClose]);
+    }, [isOpen, onClose]);
+
 
     if (!isOpen) {
-
         return null;
-
     }
+
+
+    const areaName =
+        bill?.area_name ||
+        bill?.area?.area_name ||
+        bill?.bill_address ||
+        bill?.address ||
+        "-";
+
+
+    const billAmount =
+        bill?.bill_amount ??
+        "-";
+
 
     return (
 
@@ -76,31 +91,25 @@ function BillAnalysisModal({
                 }
             >
 
-                {/* ===========================
-                    Header
-                ============================ */}
-
                 <div className="bill-analysis-modal-header">
 
                     <div>
 
                         <h2>
-
                             Bill Analysis
-
                         </h2>
 
                         <p>
-
                             AI Generated Solar Performance Report
-
                         </p>
 
                     </div>
 
+
                     <button
                         type="button"
                         onClick={onClose}
+                        aria-label="Close analysis"
                     >
 
                         <RiCloseLine />
@@ -109,81 +118,65 @@ function BillAnalysisModal({
 
                 </div>
 
-                {/* ===========================
-                    Bill Info
-                ============================ */}
 
                 <div className="bill-info-grid">
 
                     <div>
 
                         <span>
-
                             Consumer
-
                         </span>
 
                         <strong>
-
-                            {bill?.consumer_name}
-
+                            {bill?.consumer_name || "-"}
                         </strong>
 
                     </div>
 
+
                     <div>
 
                         <span>
-
                             Reference No
-
                         </span>
 
                         <strong>
-
-                            {bill?.reference_number}
-
+                            {bill?.reference_number || "-"}
                         </strong>
 
                     </div>
 
+
                     <div>
 
                         <span>
-
                             Area
-
                         </span>
 
                         <strong>
-
-                            {bill?.area?.area_name ?? "-"}
-
+                            {areaName}
                         </strong>
 
                     </div>
 
+
                     <div>
 
                         <span>
-
                             Bill Amount
-
                         </span>
 
                         <strong>
-
-                            Rs. {bill?.bill_amount}
-
+                            {billAmount === "-"
+                                ? "-"
+                                : `Rs. ${billAmount}`
+                            }
                         </strong>
 
                     </div>
 
                 </div>
 
-                {/* ===========================
-                    Analysis Card
-                ============================ */}
 
                 <BillAnalysisCard
                     analysis={analysis}
@@ -196,5 +189,6 @@ function BillAnalysisModal({
     );
 
 }
+
 
 export default BillAnalysisModal;

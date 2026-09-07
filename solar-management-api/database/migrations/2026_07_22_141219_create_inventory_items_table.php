@@ -15,11 +15,23 @@ return new class extends Migration
 
             $table->id();
 
+            /*
+            |--------------------------------------------------------------------------
+            | Inventory Type
+            |--------------------------------------------------------------------------
+            */
+
             $table->enum('item_type', [
                 'inverter',
                 'solar_panel',
                 'battery',
             ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Basic Item Information
+            |--------------------------------------------------------------------------
+            */
 
             $table->string('item_name');
 
@@ -35,15 +47,37 @@ return new class extends Migration
             |--------------------------------------------------------------------------
             */
 
-            $table->unsignedInteger('quantity')->default(0);
+            $table->unsignedInteger('quantity')
+                ->default(0);
 
-            $table->unsignedInteger('available_quantity')->default(0);
+            $table->unsignedInteger('available_quantity')
+                ->default(0);
 
-            $table->unsignedInteger('assigned_quantity')->default(0);
+            $table->unsignedInteger('assigned_quantity')
+                ->default(0);
 
-            $table->unsignedInteger('damaged_quantity')->default(0);
+            $table->unsignedInteger('damaged_quantity')
+                ->default(0);
 
-            $table->unsignedInteger('minimum_stock')->default(5);
+            $table->unsignedInteger('minimum_stock')
+                ->default(5);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Damage Information
+            |--------------------------------------------------------------------------
+            |
+            | Stores the reason why inventory items were marked as damaged.
+            | Example:
+            | - Physical damage
+            | - Water damage
+            | - Electrical fault
+            | - Broken during transportation
+            |
+            */
+
+            $table->text('damage_reason')
+                ->nullable();
 
             /*
             |--------------------------------------------------------------------------
@@ -61,16 +95,39 @@ return new class extends Migration
                 'Installed',
             ])->default('Available');
 
+            /*
+            |--------------------------------------------------------------------------
+            | Area Relationship
+            |--------------------------------------------------------------------------
+            */
+
             $table->foreignId('area_id')
                 ->nullable()
                 ->constrained('areas')
                 ->nullOnDelete();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Installation Information
+            |--------------------------------------------------------------------------
+            */
 
             $table->date('installation_date')
                 ->nullable();
 
             $table->date('removed_date')
                 ->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Existing Remarks
+            |--------------------------------------------------------------------------
+            |
+            | Kept in database for existing records/backward compatibility.
+            | The Remarks field has already been removed from the frontend
+            | Add/Edit Inventory form.
+            |
+            */
 
             $table->text('remarks')
                 ->nullable();

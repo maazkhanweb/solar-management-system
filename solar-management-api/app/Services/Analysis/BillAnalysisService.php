@@ -2,97 +2,116 @@
 
 namespace App\Services\Analysis;
 
+/**
+ * ===========================================================
+ * File:
+ * app/Services/Analysis/BillAnalysisService.php
+ *
+ * Description:
+ * Calculates WAPDA bill and solar generation analysis.
+ * Difference units can now be positive or negative so the
+ * frontend can identify surplus and shortage generation.
+ * ===========================================================
+ */
+
 class BillAnalysisService
 {
     /**
      * Analyze Bill
      */
-   public function analyze(
-    float $unitsConsumed,
-    float $generatedUnits,
-    float $billAmount,
-    ?string $generationLossReason = null
-): array {
+    public function analyze(
+        float $unitsConsumed,
+        float $generatedUnits,
+        float $billAmount,
+        ?string $generationLossReason = null
+    ): array {
+
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Difference Units
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
+        |
+        | Positive:
+        | Solar generated more units than consumed.
+        |
+        | Negative:
+        | Solar generated fewer units than consumed.
         */
 
-        $differenceUnits = max(
-            0,
-            $unitsConsumed - $generatedUnits
-        );
+        $differenceUnits =
+            $generatedUnits -
+            $unitsConsumed;
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Unit Rate
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
         $unitRate = 0;
 
         if ($unitsConsumed > 0) {
 
-            $unitRate = $billAmount / $unitsConsumed;
+            $unitRate =
+                $billAmount /
+                $unitsConsumed;
 
         }
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Solar Coverage
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
         $coverage = 0;
 
         if ($unitsConsumed > 0) {
 
-            $coverage = (
-
-                $generatedUnits /
-
-                $unitsConsumed
-
-            ) * 100;
+            $coverage =
+                (
+                    $generatedUnits /
+                    $unitsConsumed
+                ) * 100;
 
         }
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | WAPDA Dependency
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
-        $dependency = 100 - $coverage;
+        $dependency = max(
+            0,
+            100 - $coverage
+        );
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Estimated Saving
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
         $estimatedSaving =
-
             $generatedUnits *
-
             $unitRate;
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Efficiency
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
-        if ($coverage >= 90) {
+        if ($coverage >= 100) {
 
             $efficiency = "Excellent";
 
-        } elseif ($coverage >= 80) {
+        } elseif ($coverage >= 90) {
 
             $efficiency = "Very Good";
 
-        } elseif ($coverage >= 70) {
+        } elseif ($coverage >= 80) {
 
             $efficiency = "Good";
 
@@ -107,16 +126,17 @@ class BillAnalysisService
         }
 
         /*
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         | Response
-        |--------------------------------------------------------------------------
+        |------------------------------------------------------------------
         */
 
         return [
 
             "success" => true,
 
-            "message" => "Bill analyzed successfully.",
+            "message" =>
+                "Bill analyzed successfully.",
 
             "analysis" => [
 
@@ -160,10 +180,13 @@ class BillAnalysisService
                     2
                 ),
 
-                "efficiency" => $efficiency,
-                "generation_loss_reason" => $generationLossReason,
+                "efficiency" =>
+                    $efficiency,
 
-            ]
+                "generation_loss_reason" =>
+                    $generationLossReason,
+
+            ],
 
         ];
 

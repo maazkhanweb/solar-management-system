@@ -1,22 +1,60 @@
-import { useEffect, useMemo, useState } from "react";
+/**
+ * ============================================================================
+ * File:
+ * src/pages/dashboard/inventory/InventoryManagement.jsx
+ *
+ * Description:
+ * Main Inventory Management page.
+ *
+ * Features:
+ * - Inverter summary card
+ * - Solar Panel summary card
+ * - Battery summary card
+ * - Low Stock summary card
+ * - Clickable category cards
+ * - Category detail modal
+ * - Total / Available / Assigned inventory views
+ * - Manufacturer-wise inventory grouping
+ * - Assignment details with Area, Date and Assigned By
+ * - Existing search and filters
+ * - Existing inventory CRUD
+ * - Existing inventory assignment and return functionality
+ * - Success popup for Add, Edit and Delete actions
+ * ============================================================================
+ */
+
+import {
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import "./InventoryManagement.css";
 
 import authService from "../../../services/authService";
+
 import inventoryService from "../../../services/inventoryService";
 
 import InventoryTable from "../../../components/dashboard/inventory/InventoryTable";
+
 import InventoryModal from "../../../components/dashboard/inventory/InventoryModal";
+
 import DeleteInventoryModal from "../../../components/dashboard/inventory/DeleteInventoryModal";
+
 import AssignInventoryModal from "../../../components/dashboard/inventory/AssignInventoryModal";
+
+import InventoryCategoryModal from "../../../components/dashboard/inventory/InventoryCategoryModal";
+
 
 function InventoryManagement() {
 
-    /* ==========================================
-       States
-    ========================================== */
+    /* ========================================================================
+       INVENTORY STATE
+    ======================================================================== */
 
     const [inventory, setInventory] = useState([]);
+
+    const [assignments, setAssignments] = useState([]);
 
     const [areas, setAreas] = useState([]);
 
@@ -24,59 +62,145 @@ function InventoryManagement() {
 
     const [assignLoading, setAssignLoading] = useState(false);
 
-    /* ==========================================
-       Search & Filters
-    ========================================== */
+
+    /* ========================================================================
+       SEARCH & FILTERS
+    ======================================================================== */
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    const [itemTypeFilter, setItemTypeFilter] = useState("All");
+    const [itemTypeFilter, setItemTypeFilter] =
+        useState("All");
 
-    const [statusFilter, setStatusFilter] = useState("All");
+    const [statusFilter, setStatusFilter] =
+        useState("All");
 
-    const [conditionFilter, setConditionFilter] = useState("All");
+    const [conditionFilter, setConditionFilter] =
+        useState("All");
 
-    /* ==========================================
-       Inventory Modal
-    ========================================== */
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    /* ========================================================================
+       INVENTORY MODAL
+    ======================================================================== */
 
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [isModalOpen, setIsModalOpen] =
+        useState(false);
 
-    /* ==========================================
-       Delete Modal
-    ========================================== */
+    const [selectedItem, setSelectedItem] =
+        useState(null);
 
-    const [deleteModal, setDeleteModal] = useState(false);
 
-    const [deleteItem, setDeleteItem] = useState(null);
+    /* ========================================================================
+       DELETE MODAL
+    ======================================================================== */
 
-    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [deleteModal, setDeleteModal] =
+        useState(false);
 
-    /* ==========================================
-       Assign Modal
-    ========================================== */
+    const [deleteItem, setDeleteItem] =
+        useState(null);
 
-    const [assignModalOpen, setAssignModalOpen] = useState(false);
+    const [deleteLoading, setDeleteLoading] =
+        useState(false);
 
-    const [selectedInventory, setSelectedInventory] = useState(null);
 
-    /* ==========================================
-       Initial Load
-    ========================================== */
+    /* ========================================================================
+       ASSIGN MODAL
+    ======================================================================== */
+
+    const [assignModalOpen, setAssignModalOpen] =
+        useState(false);
+
+    const [selectedInventory, setSelectedInventory] =
+        useState(null);
+
+
+    /* ========================================================================
+       CATEGORY DETAILS MODAL
+    ======================================================================== */
+
+    const [categoryModalOpen, setCategoryModalOpen] =
+        useState(false);
+
+    const [selectedCategory, setSelectedCategory] =
+        useState(null);
+
+
+    /* ========================================================================
+       SUCCESS POPUP
+    ======================================================================== */
+
+    const [successPopup, setSuccessPopup] =
+        useState({
+
+            isOpen: false,
+
+            title: "",
+
+            message: "",
+
+        });
+
+
+    /* ========================================================================
+       SHOW SUCCESS POPUP
+    ======================================================================== */
+
+    const showSuccessPopup = (
+        title,
+        message
+    ) => {
+
+        setSuccessPopup({
+
+            isOpen: true,
+
+            title,
+
+            message,
+
+        });
+
+    };
+
+
+    /* ========================================================================
+       CLOSE SUCCESS POPUP
+    ======================================================================== */
+
+    const closeSuccessPopup = () => {
+
+        setSuccessPopup({
+
+            isOpen: false,
+
+            title: "",
+
+            message: "",
+
+        });
+
+    };
+
+
+    /* ========================================================================
+       INITIAL LOAD
+    ======================================================================== */
 
     useEffect(() => {
 
         loadInventory();
 
+        loadAssignments();
+
         loadAreas();
 
     }, []);
 
-    /* ==========================================
-       Load Inventory
-    ========================================== */
+
+    /* ========================================================================
+       LOAD INVENTORY
+    ======================================================================== */
 
     const loadInventory = async () => {
 
@@ -87,19 +211,24 @@ function InventoryManagement() {
             const response =
                 await inventoryService.getInventory();
 
-            setInventory(response.data);
+            setInventory(
+                Array.isArray(response?.data)
+                    ? response.data
+                    : []
+            );
 
-        }
+        } catch (error) {
 
-        catch (error) {
+            console.error(
+                "Failed to load inventory:",
+                error
+            );
 
-            console.error(error);
+            alert(
+                "Failed to load inventory."
+            );
 
-            alert("Failed to load inventory.");
-
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
@@ -107,9 +236,41 @@ function InventoryManagement() {
 
     };
 
-    /* ==========================================
-       Load Areas
-    ========================================== */
+
+    /* ========================================================================
+       LOAD ASSIGNMENTS
+    ======================================================================== */
+
+    const loadAssignments = async () => {
+
+        try {
+
+            const response =
+                await inventoryService.getAssignments();
+
+            setAssignments(
+                Array.isArray(response)
+                    ? response
+                    : []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load inventory assignments:",
+                error
+            );
+
+            setAssignments([]);
+
+        }
+
+    };
+
+
+    /* ========================================================================
+       LOAD AREAS
+    ======================================================================== */
 
     const loadAreas = async () => {
 
@@ -118,22 +279,29 @@ function InventoryManagement() {
             const response =
                 await authService.getAreas();
 
-            setAreas(response.areas.data);
+            setAreas(
+                response?.areas?.data || []
+            );
 
-        }
+        } catch (error) {
 
-        catch (error) {
+            console.error(
+                "Failed to load areas:",
+                error
+            );
 
-            console.error(error);
-
-            alert("Failed to load areas.");
+            alert(
+                "Failed to load areas."
+            );
 
         }
 
     };
-        /* ==========================================
-       Inventory Modal Functions
-    ========================================== */
+
+
+    /* ========================================================================
+       INVENTORY MODAL FUNCTIONS
+    ======================================================================== */
 
     const openAddModal = () => {
 
@@ -143,6 +311,7 @@ function InventoryManagement() {
 
     };
 
+
     const closeModal = () => {
 
         setSelectedItem(null);
@@ -150,6 +319,7 @@ function InventoryManagement() {
         setIsModalOpen(false);
 
     };
+
 
     const handleEdit = (item) => {
 
@@ -159,15 +329,38 @@ function InventoryManagement() {
 
     };
 
+
+    /* ========================================================================
+       SAVE INVENTORY
+    ======================================================================== */
+
     const handleSave = async () => {
+
+        const isEditMode =
+            selectedItem !== null;
 
         await loadInventory();
 
+        await loadAssignments();
+
+        showSuccessPopup(
+
+            isEditMode
+                ? "Inventory Updated"
+                : "Inventory Added",
+
+            isEditMode
+                ? "Inventory has been updated successfully."
+                : "Inventory has been added successfully."
+
+        );
+
     };
 
-    /* ==========================================
-       Delete Inventory
-    ========================================== */
+
+    /* ========================================================================
+       DELETE INVENTORY
+    ======================================================================== */
 
     const handleDeleteClick = (item) => {
 
@@ -177,7 +370,15 @@ function InventoryManagement() {
 
     };
 
+
     const handleDelete = async () => {
+
+        if (!deleteItem) {
+
+            return;
+
+        }
+
 
         try {
 
@@ -187,25 +388,31 @@ function InventoryManagement() {
                 deleteItem.id
             );
 
-            alert("Inventory deleted successfully.");
-
             setDeleteModal(false);
 
             setDeleteItem(null);
 
             await loadInventory();
 
-        }
+            await loadAssignments();
 
-        catch (error) {
+            showSuccessPopup(
+
+                "Inventory Deleted",
+
+                "Inventory has been deleted successfully."
+
+            );
+
+        } catch (error) {
 
             console.error(error);
 
-            alert("Failed to delete inventory.");
+            alert(
+                "Failed to delete inventory."
+            );
 
-        }
-
-        finally {
+        } finally {
 
             setDeleteLoading(false);
 
@@ -213,9 +420,10 @@ function InventoryManagement() {
 
     };
 
-    /* ==========================================
-       Assign Inventory
-    ========================================== */
+
+    /* ========================================================================
+       ASSIGN INVENTORY
+    ======================================================================== */
 
     const handleAssignClick = (item) => {
 
@@ -225,15 +433,20 @@ function InventoryManagement() {
 
     };
 
+
     const handleAssign = async (formData) => {
 
         try {
 
             setAssignLoading(true);
 
-            await inventoryService.assignInventory(formData);
+            await inventoryService.assignInventory(
+                formData
+            );
 
-            alert("Inventory assigned successfully.");
+            alert(
+                "Inventory assigned successfully."
+            );
 
             setAssignModalOpen(false);
 
@@ -241,20 +454,21 @@ function InventoryManagement() {
 
             await loadInventory();
 
-        }
+            await loadAssignments();
 
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
             alert(
+
                 error?.response?.data?.message ||
+
                 "Failed to assign inventory."
+
             );
 
-        }
-
-        finally {
+        } finally {
 
             setAssignLoading(false);
 
@@ -262,51 +476,307 @@ function InventoryManagement() {
 
     };
 
-    /* ==========================================
-       Return Inventory
-    ========================================== */
+
+    /* ========================================================================
+       RETURN INVENTORY
+    ======================================================================== */
 
     const handleReturn = async (item) => {
 
         try {
 
-            await inventoryService.returnInventory(item.id);
+            await inventoryService.returnInventory(
+                item.id
+            );
 
-            alert("Inventory returned successfully.");
+            alert(
+                "Inventory returned successfully."
+            );
 
             await loadInventory();
 
-        }
+            await loadAssignments();
 
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
             alert(
+
                 error?.response?.data?.message ||
+
                 "Failed to return inventory."
+
             );
 
         }
 
     };
-        /* ==========================================
-       Enterprise Search & Filters
-    ========================================== */
+
+
+    /* ========================================================================
+       CATEGORY CONFIGURATION
+    ======================================================================== */
+
+    const categoryConfig = {
+
+        inverter: {
+
+            key: "inverter",
+
+            title: "Inverters",
+
+            singular: "Inverter",
+
+        },
+
+        solar_panel: {
+
+            key: "solar_panel",
+
+            title: "Solar Panels",
+
+            singular: "Solar Panel",
+
+        },
+
+        battery: {
+
+            key: "battery",
+
+            title: "Batteries",
+
+            singular: "Battery",
+
+        },
+
+    };
+
+
+    /* ========================================================================
+       CATEGORY STATISTICS
+    ======================================================================== */
+
+    const categoryStatistics = useMemo(() => {
+
+        const getStats = (type) => {
+
+            const items = inventory.filter(
+
+                (item) =>
+
+                    item.item_type === type
+
+            );
+
+
+            return {
+
+                total: items.reduce(
+
+                    (sum, item) =>
+
+                        sum +
+
+                        Number(
+                            item.quantity || 0
+                        ),
+
+                    0
+
+                ),
+
+                available: items.reduce(
+
+                    (sum, item) =>
+
+                        sum +
+
+                        Number(
+                            item.available_quantity || 0
+                        ),
+
+                    0
+
+                ),
+
+                assigned: items.reduce(
+
+                    (sum, item) =>
+
+                        sum +
+
+                        Number(
+                            item.assigned_quantity || 0
+                        ),
+
+                    0
+
+                ),
+
+                items,
+
+            };
+
+        };
+
+
+        return {
+
+            inverter:
+                getStats("inverter"),
+
+            solar_panel:
+                getStats("solar_panel"),
+
+            battery:
+                getStats("battery"),
+
+        };
+
+    }, [inventory]);
+
+
+    /* ========================================================================
+       LOW STOCK STATISTICS
+       IMPORTANT:
+       User requested below 5, therefore < minimum_stock.
+    ======================================================================== */
+
+    const lowStockDetails = useMemo(() => {
+
+        const lowStockItems =
+            inventory.filter((item) => {
+
+                const available =
+                    Number(
+                        item.available_quantity || 0
+                    );
+
+                const minimum =
+                    Number(
+                        item.minimum_stock ?? 5
+                    );
+
+                return available < minimum;
+
+            });
+
+
+        const byType = {
+
+            inverter: lowStockItems.filter(
+
+                (item) =>
+                    item.item_type === "inverter"
+
+            ).length,
+
+            solar_panel: lowStockItems.filter(
+
+                (item) =>
+                    item.item_type === "solar_panel"
+
+            ).length,
+
+            battery: lowStockItems.filter(
+
+                (item) =>
+                    item.item_type === "battery"
+
+            ).length,
+
+        };
+
+
+        return {
+
+            count: lowStockItems.length,
+
+            items: lowStockItems,
+
+            byType,
+
+        };
+
+    }, [inventory]);
+
+
+    /* ========================================================================
+       OPEN CATEGORY MODAL
+    ======================================================================== */
+
+    const openCategoryModal = (type) => {
+
+        const config =
+            categoryConfig[type];
+
+        if (!config) {
+
+            return;
+
+        }
+
+
+        setSelectedCategory({
+
+            ...config,
+
+            statistics:
+                categoryStatistics[type],
+
+        });
+
+        setCategoryModalOpen(true);
+
+    };
+
+
+    /* ========================================================================
+       CLOSE CATEGORY MODAL
+    ======================================================================== */
+
+    const closeCategoryModal = () => {
+
+        setCategoryModalOpen(false);
+
+        setSelectedCategory(null);
+
+    };
+
+
+    /* ========================================================================
+       SEARCH & FILTERS
+    ======================================================================== */
 
     const filteredInventory = useMemo(() => {
 
         return inventory.filter((item) => {
 
-            const search = searchTerm.toLowerCase();
+            const search =
+                searchTerm
+                    .toLowerCase()
+                    .trim();
+
 
             const matchesSearch =
 
-                item.item_name?.toLowerCase().includes(search) ||
+                item.item_name
+                    ?.toLowerCase()
+                    .includes(search)
 
-                item.serial_number?.toLowerCase().includes(search) ||
+                ||
 
-                item.manufacturer?.toLowerCase().includes(search);
+                item.serial_number
+                    ?.toLowerCase()
+                    .includes(search)
+
+                ||
+
+                item.manufacturer
+                    ?.toLowerCase()
+                    .includes(search);
+
 
             const matchesType =
 
@@ -314,25 +784,42 @@ function InventoryManagement() {
 
                     ? true
 
-                    : item.item_type === itemTypeFilter;
+                    : item.item_type ===
+                      itemTypeFilter;
 
-            let stockStatus = "Available";
 
-            if (item.available_quantity === 0) {
+            let stockStatus =
+                "Available";
 
-                stockStatus = "Out of Stock";
+
+            if (
+                Number(
+                    item.available_quantity || 0
+                ) === 0
+            ) {
+
+                stockStatus =
+                    "Out of Stock";
 
             }
 
             else if (
 
-                item.available_quantity <= item.minimum_stock
+                Number(
+                    item.available_quantity || 0
+                ) <
+
+                Number(
+                    item.minimum_stock ?? 5
+                )
 
             ) {
 
-                stockStatus = "Low Stock";
+                stockStatus =
+                    "Low Stock";
 
             }
+
 
             const matchesStatus =
 
@@ -340,7 +827,9 @@ function InventoryManagement() {
 
                     ? true
 
-                    : stockStatus === statusFilter;
+                    : stockStatus ===
+                      statusFilter;
+
 
             const matchesCondition =
 
@@ -348,7 +837,9 @@ function InventoryManagement() {
 
                     ? true
 
-                    : item.condition === conditionFilter;
+                    : item.condition ===
+                      conditionFilter;
+
 
             return (
 
@@ -378,47 +869,50 @@ function InventoryManagement() {
 
     ]);
 
-    /* ==========================================
-       Summary Statistics
-    ========================================== */
 
-    const statistics = useMemo(() => ({
+    /* ========================================================================
+       DYNAMIC FILTER OPTIONS
+    ======================================================================== */
 
-        totalItems: inventory.length,
+    const itemTypes = [
 
-        availableStock: inventory.reduce(
+        "All",
 
-            (sum, item) =>
+        ...new Set(
 
-                sum + (item.available_quantity || 0),
+            inventory.map(
 
-            0
+                (item) =>
+                    item.item_type
 
-        ),
-
-        assignedStock: inventory.reduce(
-
-            (sum, item) =>
-
-                sum + (item.assigned_quantity || 0),
-
-            0
+            )
 
         ),
 
-        lowStockItems: inventory.filter(
+    ];
 
-            (item) =>
 
-                item.available_quantity <= item.minimum_stock
+    const conditions = [
 
-        ).length,
+        "All",
 
-    }), [inventory]);
+        ...new Set(
 
-    /* ==========================================
-       Reset Filters
-    ========================================== */
+            inventory.map(
+
+                (item) =>
+                    item.condition
+
+            )
+
+        ),
+
+    ];
+
+
+    /* ========================================================================
+       RESET FILTERS
+    ======================================================================== */
 
     const resetFilters = () => {
 
@@ -432,66 +926,34 @@ function InventoryManagement() {
 
     };
 
-    /* ==========================================
-       Dynamic Dropdown Values
-    ========================================== */
 
-    const itemTypes = [
-
-        "All",
-
-        ...new Set(
-
-            inventory.map(
-
-                (item) => item.item_type
-
-            )
-
-        ),
-
-    ];
-
-    const conditions = [
-
-        "All",
-
-        ...new Set(
-
-            inventory.map(
-
-                (item) => item.condition
-
-            )
-
-        ),
-
-    ];
-        /* ==========================================
-       JSX
-    ========================================== */
+    /* ========================================================================
+       RENDER
+    ======================================================================== */
 
     return (
 
         <section className="inventory-management">
 
-            {/* ==========================================
-                Header
-            ========================================== */}
+
+            {/* =================================================================
+                HEADER
+            ================================================================= */}
 
             <div className="inventory-header">
 
                 <div>
 
-                    <h1>Inventory Management</h1>
+                    <h1>
+                        Inventory Management
+                    </h1>
 
                     <p>
-
                         Manage all warehouse inventory.
-
                     </p>
 
                 </div>
+
 
                 <button
 
@@ -507,49 +969,216 @@ function InventoryManagement() {
 
             </div>
 
-            {/* ==========================================
-                Summary Cards
-            ========================================== */}
+
+            {/* =================================================================
+                CATEGORY SUMMARY CARDS
+            ================================================================= */}
 
             <div className="inventory-summary">
 
-                <div className="summary-card">
 
-                    <h3>Total Items</h3>
+                {/* =============================================================
+                    INVERTERS
+                ============================================================= */}
 
-                    <h2>{statistics.totalItems}</h2>
+                <button
 
-                </div>
+                    type="button"
 
-                <div className="summary-card">
+                    className="summary-card summary-card-clickable"
 
-                    <h3>Available Stock</h3>
+                    onClick={() =>
+                        openCategoryModal(
+                            "inverter"
+                        )
+                    }
 
-                    <h2>{statistics.availableStock}</h2>
+                >
 
-                </div>
+                    <h3>
+                        Inverters
+                    </h3>
 
-                <div className="summary-card">
+                    <h2>
+                        {
+                            categoryStatistics
+                                .inverter
+                                .total
+                        }
+                    </h2>
 
-                    <h3>Assigned Stock</h3>
+                    <span className="summary-card-hint">
 
-                    <h2>{statistics.assignedStock}</h2>
+                        View inverter details
 
-                </div>
+                    </span>
 
-                <div className="summary-card">
+                </button>
 
-                    <h3>Low Stock Items</h3>
 
-                    <h2>{statistics.lowStockItems}</h2>
+                {/* =============================================================
+                    SOLAR PANELS
+                ============================================================= */}
+
+                <button
+
+                    type="button"
+
+                    className="summary-card summary-card-clickable"
+
+                    onClick={() =>
+                        openCategoryModal(
+                            "solar_panel"
+                        )
+                    }
+
+                >
+
+                    <h3>
+                        Solar Panels
+                    </h3>
+
+                    <h2>
+                        {
+                            categoryStatistics
+                                .solar_panel
+                                .total
+                        }
+                    </h2>
+
+                    <span className="summary-card-hint">
+
+                        View solar panel details
+
+                    </span>
+
+                </button>
+
+
+                {/* =============================================================
+                    BATTERIES
+                ============================================================= */}
+
+                <button
+
+                    type="button"
+
+                    className="summary-card summary-card-clickable"
+
+                    onClick={() =>
+                        openCategoryModal(
+                            "battery"
+                        )
+                    }
+
+                >
+
+                    <h3>
+                        Batteries
+                    </h3>
+
+                    <h2>
+                        {
+                            categoryStatistics
+                                .battery
+                                .total
+                        }
+                    </h2>
+
+                    <span className="summary-card-hint">
+
+                        View battery details
+
+                    </span>
+
+                </button>
+
+
+                {/* =============================================================
+                    LOW STOCK
+                ============================================================= */}
+
+                <div className="summary-card low-stock-summary-card">
+
+                    <h3>
+                        Low Stock Items
+                    </h3>
+
+                    <h2>
+                        {
+                            lowStockDetails.count
+                        }
+                    </h2>
+
+
+                    <div className="low-stock-breakdown">
+
+                        <span>
+
+                            Inverters:
+
+                            <strong>
+
+                                {" "}
+
+                                {
+                                    lowStockDetails
+                                        .byType
+                                        .inverter
+                                }
+
+                            </strong>
+
+                        </span>
+
+
+                        <span>
+
+                            Solar Panels:
+
+                            <strong>
+
+                                {" "}
+
+                                {
+                                    lowStockDetails
+                                        .byType
+                                        .solar_panel
+                                }
+
+                            </strong>
+
+                        </span>
+
+
+                        <span>
+
+                            Batteries:
+
+                            <strong>
+
+                                {" "}
+
+                                {
+                                    lowStockDetails
+                                        .byType
+                                        .battery
+                                }
+
+                            </strong>
+
+                        </span>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            {/* ==========================================
-                Search & Filters
-            ========================================== */}
+
+            {/* =================================================================
+                SEARCH & FILTERS
+            ================================================================= */}
 
             <div className="inventory-toolbar">
 
@@ -564,118 +1193,122 @@ function InventoryManagement() {
                     value={searchTerm}
 
                     onChange={(e) =>
-
-                        setSearchTerm(e.target.value)
-
+                        setSearchTerm(
+                            e.target.value
+                        )
                     }
 
                 />
+
 
                 <select
 
                     value={itemTypeFilter}
 
                     onChange={(e) =>
-
-                        setItemTypeFilter(e.target.value)
-
+                        setItemTypeFilter(
+                            e.target.value
+                        )
                     }
 
                 >
 
                     {
 
-                        itemTypes.map((type) => (
+                        itemTypes.map(
 
-                            <option
+                            (type) => (
 
-                                key={type}
+                                <option
 
-                                value={type}
+                                    key={type}
 
-                            >
+                                    value={type}
 
-                                {type}
+                                >
 
-                            </option>
+                                    {type}
 
-                        ))
+                                </option>
+
+                            )
+
+                        )
 
                     }
 
                 </select>
+
 
                 <select
 
                     value={statusFilter}
 
                     onChange={(e) =>
-
-                        setStatusFilter(e.target.value)
-
+                        setStatusFilter(
+                            e.target.value
+                        )
                     }
 
                 >
 
                     <option value="All">
-
                         All Status
-
                     </option>
 
                     <option value="Available">
-
                         Available
-
                     </option>
 
                     <option value="Low Stock">
-
                         Low Stock
-
                     </option>
 
                     <option value="Out of Stock">
-
                         Out of Stock
-
                     </option>
 
                 </select>
+
 
                 <select
 
                     value={conditionFilter}
 
                     onChange={(e) =>
-
-                        setConditionFilter(e.target.value)
-
+                        setConditionFilter(
+                            e.target.value
+                        )
                     }
 
                 >
 
                     {
 
-                        conditions.map((condition) => (
+                        conditions.map(
 
-                            <option
+                            (condition) => (
 
-                                key={condition}
+                                <option
 
-                                value={condition}
+                                    key={condition}
 
-                            >
+                                    value={condition}
 
-                                {condition}
+                                >
 
-                            </option>
+                                    {condition}
 
-                        ))
+                                </option>
+
+                            )
+
+                        )
 
                     }
 
                 </select>
+
 
                 <button
 
@@ -691,9 +1324,10 @@ function InventoryManagement() {
 
             </div>
 
-            {/* ==========================================
-                Results Count
-            ========================================== */}
+
+            {/* =================================================================
+                RESULTS COUNT
+            ================================================================= */}
 
             {
 
@@ -704,25 +1338,19 @@ function InventoryManagement() {
                         Showing
 
                         <strong>
-
                             {" "}
-
-                            {filteredInventory.length}
-
-                            {" "}
-
+                            {
+                                filteredInventory.length
+                            }{" "}
                         </strong>
 
                         of
 
                         <strong>
-
                             {" "}
-
-                            {inventory.length}
-
-                            {" "}
-
+                            {
+                                inventory.length
+                            }{" "}
                         </strong>
 
                         Inventory Items
@@ -733,9 +1361,10 @@ function InventoryManagement() {
 
             }
 
-            {/* ==========================================
-                No Results
-            ========================================== */}
+
+            {/* =================================================================
+                NO RESULTS
+            ================================================================= */}
 
             {
 
@@ -746,15 +1375,11 @@ function InventoryManagement() {
                     <div className="inventory-empty">
 
                         <h3>
-
                             No Inventory Found
-
                         </h3>
 
                         <p>
-
                             No inventory matches the selected filters.
-
                         </p>
 
                     </div>
@@ -763,9 +1388,10 @@ function InventoryManagement() {
 
             }
 
-            {/* ==========================================
-                Loading / Table
-            ========================================== */}
+
+            {/* =================================================================
+                INVENTORY TABLE
+            ================================================================= */}
 
             {
 
@@ -774,9 +1400,7 @@ function InventoryManagement() {
                     <div className="inventory-loading">
 
                         <h3>
-
                             Loading Inventory...
-
                         </h3>
 
                     </div>
@@ -785,24 +1409,34 @@ function InventoryManagement() {
 
                     <InventoryTable
 
-                        inventory={filteredInventory}
+                        inventory={
+                            filteredInventory
+                        }
 
                         onEdit={handleEdit}
 
-                        onAssign={handleAssignClick}
+                        onAssign={
+                            handleAssignClick
+                        }
 
-                        onReturn={handleReturn}
+                        onReturn={
+                            handleReturn
+                        }
 
-                        onDelete={handleDeleteClick}
+                        onDelete={
+                            handleDeleteClick
+                        }
 
                     />
 
                 )
 
             }
-                        {/* ==========================================
-                Inventory Modal
-            ========================================== */}
+
+
+            {/* =================================================================
+                ADD / EDIT INVENTORY MODAL
+            ================================================================= */}
 
             <InventoryModal
 
@@ -816,9 +1450,10 @@ function InventoryManagement() {
 
             />
 
-            {/* ==========================================
-                Assign Inventory Modal
-            ========================================== */}
+
+            {/* =================================================================
+                ASSIGN INVENTORY MODAL
+            ================================================================= */}
 
             <AssignInventoryModal
 
@@ -842,9 +1477,10 @@ function InventoryManagement() {
 
             />
 
-            {/* ==========================================
-                Delete Inventory Modal
-            ========================================== */}
+
+            {/* =================================================================
+                DELETE INVENTORY MODAL
+            ================================================================= */}
 
             <DeleteInventoryModal
 
@@ -866,10 +1502,33 @@ function InventoryManagement() {
 
             />
 
+
+            {/* =================================================================
+                CATEGORY DETAILS MODAL
+            ================================================================= */}
+
+            <InventoryCategoryModal
+
+                isOpen={categoryModalOpen}
+
+                category={selectedCategory}
+
+                inventory={inventory}
+
+                assignments={assignments}
+
+                onClose={closeCategoryModal}
+
+            />
+
+
+           
+
         </section>
 
     );
 
 }
+
 
 export default InventoryManagement;

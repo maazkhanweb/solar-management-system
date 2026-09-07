@@ -3,131 +3,147 @@
 namespace App\Services\OCR;
 
 use App\Services\OCR\Prompts\PakistanElectricityBillPrompt;
+use App\Services\OCR\Prompts\SolarMonthlyReportPrompt;
 use App\Services\OCR\Responses\BillResponseFormatter;
+use App\Services\OCR\Responses\SolarReportResponseFormatter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Throwable;
 
 class GeminiVisionOCRService
 {
-    /**
-     * Gemini API Key
-     */
     protected string $apiKey;
 
-    /**
-     * Gemini Model
-     */
     protected string $model;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->apiKey = config('gemini.api_key');
+
         $this->model = config('gemini.model');
     }
 
-    /**
-     * Extract Data From Pakistan Electricity Bill
-     *
-     * @param UploadedFile $image
-     * @return array
-     */
-    public function extract(UploadedFile $image): array
-    {
-        try {
+    public function extract(
+        UploadedFile $image
+    ): array {
 
-            /*
-            |--------------------------------------------------------------------------
-            | Validate Uploaded Image
-            |--------------------------------------------------------------------------
-            */
+        return $this->processImage(
+
+            $image,
+
+            PakistanElectricityBillPrompt::generate(),
+
+            "wapda"
+
+        );
+
+    }
+
+    public function extractSolar(
+        UploadedFile $image
+    ): array {
+
+        return $this->processImage(
+
+            $image,
+
+            SolarMonthlyReportPrompt::generate(),
+
+            "solar"
+
+        );
+
+    }
+
+    protected function processImage(
+        UploadedFile $image,
+        string $prompt,
+        string $documentType
+    ): array {
+
+        try {
 
             if (!$image->isValid()) {
 
                 return [
+
                     "success" => false,
+
                     "message" => "Invalid uploaded image."
+
                 ];
 
             }
-
-            /*
-            |--------------------------------------------------------------------------
-            | Validate API Key
-            |--------------------------------------------------------------------------
-            */
 
             if (empty($this->apiKey)) {
 
                 return [
+
                     "success" => false,
+
                     "message" => "Gemini API Key is missing."
+
                 ];
 
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Convert Image To Base64
-            |--------------------------------------------------------------------------
-            */
-
             $imageData = base64_encode(
-                file_get_contents($image->getRealPath())
+
+                file_get_contents(
+                    $image->getRealPath()
+                )
+
             );
 
             $mimeType = $image->getMimeType();
 
-            /*
-            |--------------------------------------------------------------------------
-            | Generate Prompt
-            |--------------------------------------------------------------------------
-            */
-
-            $prompt = PakistanElectricityBillPrompt::generate();
-
-            /*
-            |--------------------------------------------------------------------------
-            | Build Gemini URL
-            |--------------------------------------------------------------------------
-            */
-
             $url =
                 "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent";
 
-            /*
-            |--------------------------------------------------------------------------
-            | Send Request To Gemini
-            |--------------------------------------------------------------------------
-            */
-
             $response = Http::acceptJson()
+
                 ->withHeaders([
+
                     "x-goog-api-key" => $this->apiKey,
+
                 ])
-                ->timeout(config("gemini.timeout", 120))
-                ->post($url, [
 
-                    "contents" => [
+                ->timeout(
 
-                        [
+                    config(
+                        "gemini.timeout",
+                        120
+                    )
 
-                            "parts" => [
+                )
 
-                                [
-                                    "text" => $prompt
-                                ],
+                ->post(
 
-                                [
+                    $url,
 
-                                    "inline_data" => [
+                    [
 
-                                        "mime_type" => $mimeType,
+                        "contents" => [
 
-                                        "data" => $imageData
+                            [
+
+                                "parts" => [
+
+                                    [
+
+                                        "text" => $prompt
+
+                                    ],
+
+                                    [
+
+                                        "inline_data" => [
+
+                                            "mime_type" => $mimeType,
+
+                                            "data" => $imageData
+
+                                        ]
 
                                     ]
 
@@ -135,23 +151,35 @@ class GeminiVisionOCRService
 
                             ]
 
+                        ],
+
+                        "generationConfig" => [
+
+                            "temperature" => (float) config(
+                                "gemini.temperature",
+                                0
+                            ),
+
+                            "topP" => (float) config(
+                                "gemini.top_p",
+                                0.95
+                            ),
+
+                            "topK" => (int) config(
+                                "gemini.top_k",
+                                40
+                            ),
+
+                            "maxOutputTokens" => (int) config(
+                                "gemini.max_output_tokens",
+                                2048
+                            ),
+
                         ]
-
-                    ],
-
-                    "generationConfig" => [
-
-                        "temperature" => (float) config("gemini.temperature", 0),
-
-                        "topP" => (float) config("gemini.top_p", 0.95),
-
-                        "topK" => (int) config("gemini.top_k", 40),
-
-                        "maxOutputTokens" => (int) config("gemini.max_output_tokens", 2048),
 
                     ]
 
-                ]);
+                );
 
             if (!$response->successful()) {
 
@@ -159,11 +187,14 @@ class GeminiVisionOCRService
 
                     "success" => false,
 
-                    "message" => "Gemini Vision API request failed.",
+                    "message" =>
+                        "Gemini Vision API request failed.",
 
-                    "status" => $response->status(),
+                    "status" =>
+                        $response->status(),
 
-                    "response" => $response->json(),
+                    "response" =>
+                        $response->json(),
 
                 ];
 
@@ -172,8 +203,11 @@ class GeminiVisionOCRService
             $result = $response->json();
 
             $text = data_get(
+
                 $result,
+
                 "candidates.0.content.parts.0.text"
+
             );
 
             if (!$text) {
@@ -182,7 +216,8 @@ class GeminiVisionOCRService
 
                     "success" => false,
 
-                    "message" => "Gemini returned empty response.",
+                    "message" =>
+                        "Gemini returned empty response.",
 
                     "response" => $result,
 
@@ -190,7 +225,17 @@ class GeminiVisionOCRService
 
             }
 
-            return BillResponseFormatter::format($text);
+            if ($documentType === "solar") {
+
+                return SolarReportResponseFormatter::format(
+                    $text
+                );
+
+            }
+
+            return BillResponseFormatter::format(
+                $text
+            );
 
         } catch (Throwable $exception) {
 
@@ -200,11 +245,14 @@ class GeminiVisionOCRService
 
                 "success" => false,
 
-                "message" => $exception->getMessage(),
+                "message" =>
+                    $exception->getMessage(),
 
-                "file" => $exception->getFile(),
+                "file" =>
+                    $exception->getFile(),
 
-                "line" => $exception->getLine(),
+                "line" =>
+                    $exception->getLine(),
 
             ];
 

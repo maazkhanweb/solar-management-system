@@ -7,17 +7,11 @@ use Illuminate\Validation\Rule;
 
 class UpdateBillRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Validation Rules
-     */
     public function rules(): array
     {
         return [
@@ -32,8 +26,12 @@ class UpdateBillRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('bills', 'reference_number')
-                    ->ignore($this->route('bill')),
+                Rule::unique(
+                    'bills',
+                    'reference_number'
+                )->ignore(
+                    $this->route('bill')
+                ),
             ],
 
             'bill_month' => [
@@ -48,17 +46,29 @@ class UpdateBillRequest extends FormRequest
                 'digits:4',
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Bill Address
-            |--------------------------------------------------------------------------
-            */
-
             'bill_address' => [
                 'nullable',
                 'string',
                 'max:500',
             ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Area
+            |--------------------------------------------------------------------------
+            */
+
+            'area_id' => [
+                'nullable',
+                'integer',
+                'exists:areas,id',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Bill Information
+            |--------------------------------------------------------------------------
+            */
 
             'units_consumed' => [
                 'required',
@@ -91,6 +101,12 @@ class UpdateBillRequest extends FormRequest
                 ]),
             ],
 
+            /*
+            |--------------------------------------------------------------------------
+            | Analysis
+            |--------------------------------------------------------------------------
+            */
+
             'generation_loss_reason' => [
                 'nullable',
                 'string',
@@ -102,6 +118,12 @@ class UpdateBillRequest extends FormRequest
                 'string',
             ],
 
+            /*
+            |--------------------------------------------------------------------------
+            | Images
+            |--------------------------------------------------------------------------
+            */
+
             'bill_image' => [
                 'nullable',
                 'image',
@@ -110,21 +132,21 @@ class UpdateBillRequest extends FormRequest
             ],
 
             /*
-|--------------------------------------------------------------------------
-| OCR
-|--------------------------------------------------------------------------
-*/
+            |--------------------------------------------------------------------------
+            | OCR
+            |--------------------------------------------------------------------------
+            */
 
-'ocr_status' => [
-    'nullable',
-    'boolean',
-],
+            'ocr_status' => [
+                'nullable',
+                'boolean',
+            ],
 
-'ocr_confidence' => [
-    'nullable',
-    'numeric',
-    'between:0,100',
-],
+            'ocr_confidence' => [
+                'nullable',
+                'numeric',
+                'between:0,100',
+            ],
 
         ];
     }

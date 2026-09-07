@@ -5,11 +5,15 @@ namespace App\Services\OCR\Responses;
 class BillResponseFormatter
 {
     /**
-     * Format Gemini Response
+     * File Location:
+     * app/Services/OCR/Responses/BillResponseFormatter.php
      *
-     * @param string $response
-     * @return array
+     * Description:
+     * Formats Gemini OCR response for Pakistan electricity bills.
+     * Includes bill address, area name, bill details,
+     * OCR status, and confidence score.
      */
+
     public static function format(string $response): array
     {
         /*
@@ -20,11 +24,23 @@ class BillResponseFormatter
 
         $response = trim($response);
 
-        $response = preg_replace('/^```json/i', '', $response);
+        $response = preg_replace(
+            '/^```json/i',
+            '',
+            $response
+        );
 
-        $response = preg_replace('/^```/i', '', $response);
+        $response = preg_replace(
+            '/^```/i',
+            '',
+            $response
+        );
 
-        $response = preg_replace('/```$/', '', $response);
+        $response = preg_replace(
+            '/```$/',
+            '',
+            $response
+        );
 
         $response = trim($response);
 
@@ -34,16 +50,15 @@ class BillResponseFormatter
         |--------------------------------------------------------------------------
         */
 
-        $data = json_decode($response, true);
+        $data = json_decode(
+            $response,
+            true
+        );
 
         if (
-
             json_last_error() !== JSON_ERROR_NONE ||
-
             !is_array($data)
-
         ) {
-
             return [
 
                 "success" => false,
@@ -53,7 +68,6 @@ class BillResponseFormatter
                 "raw_response" => $response,
 
             ];
-
         }
 
         /*
@@ -62,7 +76,9 @@ class BillResponseFormatter
         |--------------------------------------------------------------------------
         */
 
-        $confidence = self::calculateConfidence($data);
+        $confidence = self::calculateConfidence(
+            $data
+        );
 
         /*
         |--------------------------------------------------------------------------
@@ -102,6 +118,16 @@ class BillResponseFormatter
 
                 /*
                 |--------------------------------------------------------------------------
+                | Bill Address
+                |--------------------------------------------------------------------------
+                */
+
+                "bill_address" => self::cleanString(
+                    $data["bill_address"] ?? null
+                ),
+
+                /*
+                |--------------------------------------------------------------------------
                 | Area Name
                 |--------------------------------------------------------------------------
                 */
@@ -130,42 +156,37 @@ class BillResponseFormatter
 
                 "ocr_confidence" => $confidence,
 
-            ]
+            ],
 
         ];
-
     }
-        /**
+
+    /**
      * Calculate OCR Confidence
      */
     protected static function calculateConfidence(
         array $data
     ): float {
-
         $score = 0;
 
         /*
         |--------------------------------------------------------------------------
-        | Consumer Name (15)
+        | Consumer Name (10)
         |--------------------------------------------------------------------------
         */
 
         if (!empty($data["consumer_name"])) {
-
-            $score += 15;
-
+            $score += 10;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Reference Number (20)
+        | Reference Number (15)
         |--------------------------------------------------------------------------
         */
 
         if (!empty($data["reference_number"])) {
-
-            $score += 20;
-
+            $score += 15;
         }
 
         /*
@@ -175,9 +196,7 @@ class BillResponseFormatter
         */
 
         if (!empty($data["bill_month"])) {
-
             $score += 10;
-
         }
 
         /*
@@ -187,49 +206,56 @@ class BillResponseFormatter
         */
 
         if (!empty($data["bill_year"])) {
-
             $score += 10;
-
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Units Consumed (20)
+        | Units Consumed (15)
         |--------------------------------------------------------------------------
         */
 
-        if (!empty($data["units_consumed"])) {
-
-            $score += 20;
-
+        if (
+            $data["units_consumed"] !== null &&
+            $data["units_consumed"] !== ""
+        ) {
+            $score += 15;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Bill Amount (20)
+        | Bill Amount (15)
         |--------------------------------------------------------------------------
         */
 
-        if (!empty($data["bill_amount"])) {
-
-            $score += 20;
-
+        if (
+            $data["bill_amount"] !== null &&
+            $data["bill_amount"] !== ""
+        ) {
+            $score += 15;
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Area Name (5)
+        | Bill Address (15)
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($data["bill_address"])) {
+            $score += 15;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Area Name (10)
         |--------------------------------------------------------------------------
         */
 
         if (!empty($data["area_name"])) {
-
-            $score += 5;
-
+            $score += 10;
         }
 
         return (float) $score;
-
     }
 
     /**
@@ -238,23 +264,19 @@ class BillResponseFormatter
     protected static function cleanString(
         mixed $value
     ): ?string {
-
         if ($value === null) {
-
             return null;
-
         }
 
-        $value = trim((string) $value);
+        $value = trim(
+            (string) $value
+        );
 
         if ($value === "") {
-
             return null;
-
         }
 
         return $value;
-
     }
 
     /**
@@ -263,37 +285,24 @@ class BillResponseFormatter
     protected static function cleanInteger(
         mixed $value
     ): ?int {
-
         if (
-
             $value === null ||
-
             $value === ""
-
         ) {
-
             return null;
-
         }
 
         $value = preg_replace(
-
             '/[^0-9]/',
-
             '',
-
             (string) $value
-
         );
 
         if ($value === "") {
-
             return null;
-
         }
 
         return (int) $value;
-
     }
 
     /**
@@ -302,53 +311,33 @@ class BillResponseFormatter
     protected static function cleanNumber(
         mixed $value
     ): ?float {
-
         if (
-
             $value === null ||
-
             $value === ""
-
         ) {
-
             return null;
-
         }
 
         $value = str_replace(
-
             ',',
-
             '',
-
             (string) $value
-
         );
 
         $value = preg_replace(
-
             '/[^0-9.]/',
-
             '',
-
             $value
-
         );
 
         if (
-
             $value === "" ||
-
             !is_numeric($value)
-
         ) {
-
             return null;
-
         }
 
         return (float) $value;
-
     }
 
     /**
@@ -357,7 +346,6 @@ class BillResponseFormatter
     protected static function cleanStatus(
         mixed $value
     ): string {
-
         $value = strtolower(
             trim((string) $value)
         );
@@ -369,7 +357,5 @@ class BillResponseFormatter
             default => "Unpaid",
 
         };
-
     }
-
 }

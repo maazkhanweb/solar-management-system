@@ -14,6 +14,7 @@ class BillAnalysisController extends Controller
      */
     protected BillAnalysisService $analysisService;
 
+
     /**
      * Constructor
      */
@@ -25,6 +26,7 @@ class BillAnalysisController extends Controller
 
     }
 
+
     /**
      * Analyze Bill
      */
@@ -34,38 +36,51 @@ class BillAnalysisController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Calculate Analysis
+        | Load Area Relation
         |--------------------------------------------------------------------------
         */
 
-        $analysis = $this->analysisService->analyze(
+        $bill->load(
+            'area'
+        );
 
-    (float) $bill->units_consumed,
-
-    (float) $bill->generated_units,
-
-    (float) $bill->bill_amount,
-
-    $bill->generation_loss_reason
-
-);
 
         /*
         |--------------------------------------------------------------------------
-        | Extra Information
+        | Analyze Bill
         |--------------------------------------------------------------------------
         */
 
-        $analysis['consumer_name'] = $bill->consumer_name;
+        $response = $this->analysisService->analyze(
 
-        $analysis['reference_number'] = $bill->reference_number;
+            (float) $bill->units_consumed,
 
-        $analysis['area_name'] = optional($bill->area)->area_name;
+            (float) $bill->generated_units,
 
-        $analysis['bill_amount'] = $bill->bill_amount;
+            (float) $bill->bill_amount
 
-        $analysis['generation_loss_reason'] =
-            $bill->generation_loss_reason;
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add Bill Specific Information
+        |--------------------------------------------------------------------------
+        */
+
+        $response['analysis']['area'] =
+
+            $bill->area?->area_name
+
+            ?? '-';
+
+
+        $response['analysis']['generation_loss_reason'] =
+
+            $bill->generation_loss_reason
+
+            ?? '-';
+
 
         /*
         |--------------------------------------------------------------------------
@@ -73,7 +88,9 @@ class BillAnalysisController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        return response()->json($analysis);
+        return response()->json(
+            $response
+        );
 
     }
 }

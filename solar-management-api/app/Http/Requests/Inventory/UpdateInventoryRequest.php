@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| File:
+| app/Http/Requests/Inventory/UpdateInventoryRequest.php
+|
+| Description:
+| Validation rules for updating Inventory.
+| Handles damaged quantity and damage reason.
+|--------------------------------------------------------------------------
+*/
+
 namespace App\Http\Requests\Inventory;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +35,8 @@ class UpdateInventoryRequest extends FormRequest
 
             'item_type' => [
                 'required',
-                'in:inverter,solar_panel,battery',
+                'string',
+                'max:255',
             ],
 
             'item_name' => [
@@ -41,8 +53,10 @@ class UpdateInventoryRequest extends FormRequest
 
                 'max:255',
 
-                Rule::unique('inventory_items', 'serial_number')
-                    ->ignore($this->inventory),
+                Rule::unique(
+                    'inventory_items',
+                    'serial_number'
+                )->ignore($this->inventory),
 
             ],
 
@@ -57,24 +71,61 @@ class UpdateInventoryRequest extends FormRequest
                 'numeric',
                 'min:0',
             ],
+
             'battery_health' => [
-    'nullable',
-    'numeric',
-    'min:0',
-    'max:100',
-],
+                'nullable',
+                'numeric',
+                'min:0',
+                'max:100',
+            ],
 
             'quantity' => [
-    'required',
-    'integer',
-    'min:1',
-],
+                'required',
+                'integer',
+                'min:1',
+            ],
 
-'minimum_stock' => [
-    'nullable',
-    'integer',
-    'min:0',
-],
+            /*
+            |--------------------------------------------------------------------------
+            | Damaged Quantity
+            |--------------------------------------------------------------------------
+            */
+
+            'damaged_quantity' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'lte:quantity',
+            ],
+
+            /*
+            |--------------------------------------------------------------------------
+            | Damage Reason
+            |--------------------------------------------------------------------------
+            |
+            | Required only when damaged quantity is greater than 0.
+            |
+            */
+
+            'damage_reason' => [
+                'nullable',
+                'string',
+                'max:1000',
+
+                Rule::requiredIf(function () {
+
+                    return (int) (
+                        $this->input('damaged_quantity') ?? 0
+                    ) > 0;
+
+                }),
+            ],
+
+            'minimum_stock' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
 
             'condition' => [
                 'required',
@@ -116,25 +167,59 @@ class UpdateInventoryRequest extends FormRequest
     {
         return [
 
-            'item_type.required' => 'Item type is required.',
+            'item_type.required' =>
+                'Item type is required.',
 
-            'item_name.required' => 'Item name is required.',
+            'item_name.required' =>
+                'Item name is required.',
 
-            'serial_number.required' => 'Serial number is required.',
+            'serial_number.required' =>
+                'Serial number is required.',
 
-            'serial_number.unique' => 'Serial number already exists.',
+            'serial_number.unique' =>
+                'Serial number already exists.',
 
-            'manufacturer.required' => 'Manufacturer is required.',
+            'manufacturer.required' =>
+                'Manufacturer is required.',
 
-            'capacity.required' => 'Capacity is required.',
+            'capacity.required' =>
+                'Capacity is required.',
 
-            'capacity.numeric' => 'Capacity must be numeric.',
+            'capacity.numeric' =>
+                'Capacity must be numeric.',
 
-            'condition.required' => 'Condition is required.',
+            'quantity.required' =>
+                'Quantity is required.',
 
-            'status.required' => 'Status is required.',
+            'quantity.integer' =>
+                'Quantity must be a whole number.',
 
-            'area_id.exists' => 'Selected area does not exist.',
+            'quantity.min' =>
+                'Quantity must be at least 1.',
+
+            'damaged_quantity.integer' =>
+                'Damaged quantity must be a whole number.',
+
+            'damaged_quantity.min' =>
+                'Damaged quantity cannot be negative.',
+
+            'damaged_quantity.lte' =>
+                'Damaged quantity cannot be greater than total quantity.',
+
+            'damage_reason.required' =>
+                'Damage reason is required when damaged quantity is greater than 0.',
+
+            'damage_reason.string' =>
+                'Damage reason must be a valid text.',
+
+            'condition.required' =>
+                'Condition is required.',
+
+            'status.required' =>
+                'Status is required.',
+
+            'area_id.exists' =>
+                'Selected area does not exist.',
 
         ];
     }

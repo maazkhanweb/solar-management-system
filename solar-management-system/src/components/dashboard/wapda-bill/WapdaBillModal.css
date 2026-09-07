@@ -1,819 +1,1059 @@
-/* ===========================================================
-   WAPDA BILL MODAL
-   PART 1
-   Overlay + Modal + Header + Body
-=========================================================== */
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/wapda-bill/WapdaBillModal.css
+ *
+ * Description:
+ * Compact WAPDA Bill Modal.
+ * Full form visible without internal or page scrolling.
+ * OCR preview remains compact after bill upload.
+ * ============================================================================
+ */
 
-/* ===========================================================
-   Overlay
-=========================================================== */
 
-.modal-overlay {
+/* ============================================================================
+   PAGE / BODY SCROLL LOCK WHEN BILL MODAL IS OPEN
+============================================================================ */
 
-    position: fixed;
-
-    inset: 0;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 30px;
-
-    background: rgba(15, 23, 42, .65);
-
-    backdrop-filter: blur(8px);
-
-    z-index: 9999;
-
-    animation: overlayFade .25s ease;
-
+body:has(.bill-modal) {
+    overflow: hidden !important;
 }
 
-@keyframes overlayFade {
 
-    from {
+/* ============================================================================
+   BILL MODAL OVERLAY
+============================================================================ */
 
-        opacity: 0;
+.modal-overlay:has(.bill-modal) {
 
-    }
+    position: fixed !important;
 
-    to {
+    inset: 0 !important;
 
-        opacity: 1;
+    width: 100% !important;
 
-    }
+    height: 100vh !important;
 
+    max-height: 100vh !important;
+
+    padding: 8px !important;
+
+    box-sizing: border-box;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    overflow-y: hidden !important;
+
+    overflow-x: hidden !important;
+
+    overscroll-behavior: none !important;
+
+    z-index: 9999 !important;
 }
 
-/* ===========================================================
-   Modal
-=========================================================== */
+
+/* ============================================================================
+   BILL MODAL
+============================================================================ */
 
 .bill-modal {
 
+    width: 100% !important;
+
+    max-width: 1080px !important;
+
+    /*
+     * Keep the complete modal inside the browser viewport.
+     */
+    max-height: calc(100vh - 16px) !important;
+
+    height: auto !important;
+
+    min-height: 0 !important;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+    /*
+     * Never create modal scrolling.
+     */
+    overflow: hidden !important;
+
+    overflow-y: hidden !important;
+
+    overflow-x: hidden !important;
+
+    overscroll-behavior: none !important;
+}
+
+
+/* ============================================================================
+   HEADER
+============================================================================ */
+
+.bill-modal .modal-header {
+
     width: 100%;
 
-    max-width: 1180px;
+    height: 58px;
 
-    max-height: 92vh;
+    min-height: 58px;
+
+    box-sizing: border-box;
+
+    padding: 8px 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    border-radius: 18px 18px 0 0;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+}
+
+
+.bill-modal .modal-header h2 {
+
+    margin: 0;
+
+    padding: 0;
+
+    color: #15325f;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* ============================================================================
+   CLOSE BUTTON
+============================================================================ */
+
+.bill-modal .close-btn {
+
+    width: 38px;
+
+    height: 38px;
+
+    min-width: 38px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    transition: 0.2s;
+}
+
+
+.bill-modal .close-btn:hover {
+
+    background: #e2e8f0;
+
+    color: #334155;
+}
+
+
+/* ============================================================================
+   BILL FORM
+============================================================================ */
+
+.bill-form {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    row-gap: 6px;
+
+    column-gap: 24px;
+
+    padding: 9px 24px 10px;
+
+    margin: 0;
+
+    min-width: 0;
+
+    /*
+     * Form itself must never create a scrollbar.
+     */
+    overflow: hidden !important;
+
+    overflow-y: hidden !important;
+
+    overflow-x: hidden !important;
+
+    scrollbar-width: none;
+
+    -ms-overflow-style: none;
+}
+
+
+.bill-form::-webkit-scrollbar {
+
+    display: none !important;
+
+    width: 0 !important;
+
+    height: 0 !important;
+}
+
+
+/* ============================================================================
+   FORM GROUP
+============================================================================ */
+
+.bill-form .form-group {
+
+    min-width: 0;
+
+    width: 100%;
+
+    margin: 0;
+
+    padding: 0;
 
     display: flex;
 
     flex-direction: column;
 
-    overflow: hidden;
+    gap: 2px;
 
-    border-radius: 20px;
-
-    background: var(--card-bg);
-
-    border: 1px solid var(--border-color);
-
-    box-shadow: 0 30px 70px rgba(0,0,0,.25);
-
-    animation: modalOpen .35s ease;
-
+    box-sizing: border-box;
 }
 
-@keyframes modalOpen {
 
-    from {
+/* ============================================================================
+   LABEL
+============================================================================ */
 
-        opacity: 0;
-
-        transform: translateY(-20px) scale(.98);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0) scale(1);
-
-    }
-
-}
-
-/* ===========================================================
-   Header
-=========================================================== */
-
-.modal-header {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    padding: 24px 30px;
-
-    background: #2563eb;
-
-    color: #ffffff;
-
-    flex-shrink: 0;
-
-}
-
-.modal-header h2 {
+.bill-form .form-group label {
 
     margin: 0;
 
-    font-size: 28px;
+    padding: 0;
 
-    font-weight: 700;
+    font-size: 10px;
 
+    font-weight: 500;
+
+    line-height: 12px;
+
+    color: #334155;
 }
 
-.modal-header p {
 
-    margin-top: 6px;
+/* ============================================================================
+   INPUT / SELECT
+============================================================================ */
 
-    font-size: 14px;
+.bill-form input,
+.bill-form select {
 
-    opacity: .92;
+    width: 100%;
 
-}
+    height: 31px;
 
-/* ===========================================================
-   Close Button
-=========================================================== */
+    min-height: 31px;
 
-.close-btn {
+    max-height: 31px;
 
-    width: 46px;
+    box-sizing: border-box;
 
-    height: 46px;
+    padding: 0 9px;
 
-    border: none;
+    margin: 0;
 
-    border-radius: 12px;
+    border: 1px solid #d5dce5;
 
-    background: rgba(255,255,255,.18);
-
-    color: #ffffff;
-
-    cursor: pointer;
-
-    transition: .30s;
-
-    font-size: 18px;
-
-}
-
-.close-btn:hover {
+    border-radius: 7px;
 
     background: #ffffff;
 
-    color: #2563eb;
+    color: #334155;
 
-    transform: rotate(90deg);
+    font-size: 11px;
 
+    line-height: 31px;
+
+    outline: none;
+
+    transition: 0.2s;
 }
 
-/* ===========================================================
-   Body
-=========================================================== */
 
-.bill-form {
+/* ============================================================================
+   PLACEHOLDER
+============================================================================ */
 
-    flex: 1;
+.bill-form input::placeholder {
 
-    overflow-y: auto;
+    color: #94a3b8;
 
-    padding: 30px;
-
-    display: grid;
-
-    grid-template-columns: repeat(2,1fr);
-
-    gap: 28px;
-
-    background: var(--page-bg);
-
+    opacity: 1;
 }
 
-/* ===========================================================
-   Section Card
-=========================================================== */
 
-.form-section {
+/* ============================================================================
+   SELECT
+============================================================================ */
 
-    background: var(--card-bg);
+.bill-form select {
 
-    border: 1px solid var(--border-color);
-
-    border-radius: 18px;
-
-    padding: 24px;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-
+    cursor: pointer;
 }
 
-.form-section-title {
 
-    display: flex;
+/* ============================================================================
+   INPUT FOCUS
+============================================================================ */
 
-    align-items: center;
+.bill-form input:focus,
+.bill-form select:focus {
 
-    gap: 12px;
+    border-color: #3568c4;
 
-    margin-bottom: 22px;
-
-    font-size: 20px;
-
-    font-weight: 700;
-
-    color: var(--text-primary);
-
+    box-shadow:
+        0 0 0 2px rgba(53, 104, 196, 0.08);
 }
 
-.form-section-title i {
 
-    color: #2563eb;
+/* ============================================================================
+   TEXTAREA
+============================================================================ */
 
-    font-size: 22px;
+.bill-form textarea {
 
+    width: 100%;
+
+    height: 45px;
+
+    min-height: 45px;
+
+    max-height: 45px;
+
+    box-sizing: border-box;
+
+    padding: 6px 9px;
+
+    margin: 0;
+
+    border: 1px solid #d5dce5;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #334155;
+
+    font-size: 11px;
+
+    outline: none;
+
+    resize: none;
+
+    overflow: hidden;
 }
 
-/* ===========================================================
-   Grid
-=========================================================== */
 
-.form-grid {
-
-    display: grid;
-
-    grid-template-columns: repeat(2,1fr);
-
-    gap: 20px;
-
-}
+/* ============================================================================
+   FULL WIDTH
+============================================================================ */
 
 .full-width {
 
     grid-column: 1 / -1;
 
+    width: 100%;
 }
 
-/* ===========================================================
-   Divider
-=========================================================== */
 
-.section-divider {
+/* ============================================================================
+   OCR ROW
+============================================================================ */
 
-    height: 1px;
+.bill-ocr-row {
 
-    margin: 25px 0;
+    grid-column: 1 / -1;
 
-    background: var(--border-color);
+    width: 100%;
 
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
 }
 
-/* ===========================================================
-   Light Theme
-=========================================================== */
 
-[data-theme="light"] .bill-modal {
+/* ============================================================================
+   OCR ITEM
+============================================================================ */
 
-    background: #ffffff;
+.bill-ocr-item {
 
-}
+    width: 100%;
 
-[data-theme="light"] .bill-form {
+    min-width: 0;
 
-    background: #f8fafc;
+    height: auto;
 
-}
+    min-height: 0;
 
-[data-theme="light"] .form-section {
+    margin: 0;
 
-    background: #ffffff;
-
-}
-
-/* ===========================================================
-   Dark Theme
-=========================================================== */
-
-[data-theme="dark"] .bill-modal {
-
-    background: #18273c;
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .bill-form {
-
-    background: #0f172a;
-
-}
-
-[data-theme="dark"] .form-section {
-
-    background: #18273c;
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .form-section-title {
-
-    color: #ffffff;
-
-}
-/* ===========================================================
-   FORM ELEMENTS
-=========================================================== */
-
-.form-group {
+    padding: 0;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 8px;
+    gap: 2px;
 
+    box-sizing: border-box;
+
+    overflow: hidden;
 }
 
-.form-group label {
 
-    font-size: 14px;
+.bill-ocr-item label {
 
-    font-weight: 600;
+    margin: 0;
 
-    color: var(--text-secondary);
+    padding: 0;
 
+    font-size: 10px;
+
+    font-weight: 500;
+
+    line-height: 12px;
+
+    color: #334155;
 }
 
-.form-group label span {
 
-    color: #ef4444;
+/* ============================================================================
+   OCR BUTTON
+============================================================================ */
 
+.bill-ocr-item button {
+
+    width: fit-content;
+
+    height: 31px;
+
+    min-height: 31px;
+
+    max-height: 31px;
+
+    padding: 0 13px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+
+    line-height: 31px;
 }
 
-/* ===========================================================
-   INPUTS
-=========================================================== */
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+/* ============================================================================
+   OCR UPLOAD CONTAINER
+============================================================================ */
+
+.ocr-upload-container {
 
     width: 100%;
 
-    border: 1px solid var(--border-color);
+    min-width: 0;
 
-    border-radius: 14px;
+    display: flex;
 
-    background: var(--input-bg);
+    flex-direction: column;
 
-    color: var(--text-primary);
+    gap: 2px;
 
-    font-size: 14px;
-
-    outline: none;
-
-    transition: .3s;
-
+    overflow: hidden;
 }
 
-.form-group input,
-.form-group select {
 
-    height: 50px;
+/* ============================================================================
+   OCR TITLE
+============================================================================ */
 
-    padding: 0 16px;
+.ocr-upload-title {
 
+    margin: 0;
+
+    padding: 0;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    line-height: 12px;
+
+    color: #334155;
 }
 
-.form-group textarea {
 
-    min-height: 120px;
+/* ============================================================================
+   OCR UPLOAD BUTTON
+============================================================================ */
 
-    padding: 14px 16px;
+.ocr-upload-button {
 
-    resize: vertical;
+    width: fit-content;
 
-}
+    height: 31px;
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+    min-height: 31px;
 
-    color: var(--text-muted);
+    max-height: 31px;
 
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-
-    border-color: #2563eb;
-
-    box-shadow: 0 0 0 4px rgba(37,99,235,.12);
-
-}
-
-/* ===========================================================
-   Disabled
-=========================================================== */
-
-.form-group input:disabled,
-.form-group textarea:disabled,
-.form-group select:disabled {
-
-    background: #e5e7eb;
-
-    color: #64748b;
-
-    cursor: not-allowed;
-
-}
-
-/* ===========================================================
-   File Upload
-=========================================================== */
-
-.form-group input[type="file"] {
-
-    height: auto;
-
-    padding: 14px;
-
-    border: 2px dashed var(--border-color);
-
-    background: var(--page-bg);
-
-    cursor: pointer;
-
-}
-
-.form-group input[type="file"]:hover {
-
-    border-color: #2563eb;
-
-}
-
-.form-group input[type="file"]::file-selector-button {
-
-    margin-right: 16px;
-
-    padding: 10px 18px;
+    padding: 0 13px;
 
     border: none;
 
-    border-radius: 10px;
+    border-radius: 7px;
 
     background: #2563eb;
 
     color: #ffffff;
 
+    font-size: 11px;
+
     font-weight: 600;
+
+    line-height: 31px;
 
     cursor: pointer;
 
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
-.form-group input[type="file"]::file-selector-button:hover {
+
+.ocr-upload-button:hover:not(:disabled) {
 
     background: #1d4ed8;
 
+    transform: translateY(-1px);
 }
 
-/* ===========================================================
-   OCR Card
-=========================================================== */
 
-.ocr-card {
+.ocr-upload-button:disabled {
 
-    margin-top: 20px;
+    opacity: 0.6;
 
-    padding: 24px;
+    cursor: not-allowed;
 
-    border-radius: 18px;
-
-    background: var(--card-bg);
-
-    border: 1px solid var(--border-color);
-
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-
+    transform: none;
 }
 
-.ocr-card-title {
+
+/* ============================================================================
+   OCR PREVIEW
+   IMPORTANT:
+   Uploaded bill image MUST remain very small.
+   This prevents the modal from becoming taller after upload.
+============================================================================ */
+
+.ocr-preview {
+
+    width: 100% !important;
+
+    height: 42px !important;
+
+    min-height: 42px !important;
+
+    max-height: 42px !important;
+
+    box-sizing: border-box;
 
     display: flex;
 
     align-items: center;
 
-    gap: 10px;
+    justify-content: flex-start;
 
-    margin-bottom: 18px;
+    overflow: hidden !important;
 
-    font-size: 18px;
+    border: 1px solid #e2e8f0;
 
-    font-weight: 700;
+    border-radius: 6px;
 
-    color: var(--text-primary);
-
+    background: #f8fafc;
 }
 
-.ocr-card-title i {
 
-    color: #2563eb;
+/* ============================================================================
+   OCR PREVIEW IMAGE
+============================================================================ */
 
-    font-size: 22px;
-
-}
-
-/* ===========================================================
-   OCR Upload
-=========================================================== */
-
-.ocr-upload {
-
-    padding: 40px 20px;
-
-    text-align: center;
-
-    border: 2px dashed var(--border-color);
-
-    border-radius: 16px;
-
-    background: var(--page-bg);
-
-    transition: .3s;
-
-}
-
-.ocr-upload:hover {
-
-    border-color: #2563eb;
-
-}
-
-.ocr-upload-icon {
-
-    font-size: 50px;
-
-    color: #2563eb;
-
-    margin-bottom: 15px;
-
-}
-
-.ocr-upload h4 {
-
-    margin-bottom: 10px;
-
-    color: var(--text-primary);
-
-    font-size: 18px;
-
-}
-
-.ocr-upload p {
-
-    color: var(--text-secondary);
-
-    font-size: 14px;
-
-}
-
-/* ===========================================================
-   Image Preview
-=========================================================== */
-
-.bill-preview {
-
-    margin-top: 22px;
-
-    overflow: hidden;
-
-    border-radius: 16px;
-
-    border: 1px solid var(--border-color);
-
-}
-
-.bill-preview img {
-
-    width: 100%;
+.ocr-preview img {
 
     display: block;
 
+    width: auto !important;
+
+    height: 38px !important;
+
+    max-width: 100% !important;
+
+    max-height: 38px !important;
+
+    object-fit: contain;
+
+    object-position: left center;
 }
 
-/* ===========================================================
-   AI Success
-=========================================================== */
 
-.ai-success {
+/* ============================================================================
+   OCR FILE NAME
+============================================================================ */
+
+.ocr-file-name {
+
+    max-width: 100%;
+
+    margin: 1px 0 0;
+
+    padding: 0;
+
+    font-size: 9px;
+
+    line-height: 10px;
+
+    color: #64748b;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================================
+   OCR SUCCESS MESSAGE
+============================================================================ */
+
+.ocr-success {
+
+    margin: 1px 0 0;
+
+    padding: 0;
+
+    font-size: 9px;
+
+    line-height: 10px;
+
+    color: #16a34a;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================================
+   FORM ACTIONS
+============================================================================ */
+
+.bill-form .form-actions {
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    margin: 2px 0 0;
+
+    padding: 7px 0 0;
+
+    border-top: 1px solid #e2e8f0;
 
     display: flex;
 
     align-items: center;
 
-    gap: 10px;
+    justify-content: flex-end;
 
-    margin-top: 18px;
+    gap: 8px;
 
-    padding: 14px 18px;
-
-    border-radius: 14px;
-
-    background: rgba(34,197,94,.15);
-
-    color: #22c55e;
-
-    font-weight: 600;
-
+    flex-shrink: 0;
 }
 
-.ai-success i {
 
-    font-size: 20px;
+/* ============================================================================
+   ACTION BUTTONS
+============================================================================ */
 
+.bill-form .form-actions button {
+
+    height: 34px;
+
+    min-height: 34px;
+
+    max-height: 34px;
+
+    padding: 0 18px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
 }
 
-/* ===========================================================
-   Errors
-=========================================================== */
 
-.form-error {
+/* ============================================================================
+   REMOVE SCROLLBAR FROM EVERYTHING INSIDE BILL MODAL
+============================================================================ */
 
-    margin-top: 6px;
+.bill-modal,
+.bill-modal *,
+.bill-modal *::before,
+.bill-modal *::after {
 
-    font-size: 13px;
+    scrollbar-width: none !important;
 
-    color: #ef4444;
-
+    -ms-overflow-style: none !important;
 }
 
-.input-error {
 
-    border-color: #ef4444 !important;
+.bill-modal::-webkit-scrollbar,
+.bill-modal *::-webkit-scrollbar {
 
+    display: none !important;
+
+    width: 0 !important;
+
+    height: 0 !important;
 }
 
-.input-success {
 
-    border-color: #22c55e !important;
+/* ============================================================================
+   PREVENT INTERNAL SCROLLING CONTAINERS
+============================================================================ */
 
+.bill-modal .modal-body,
+.bill-modal .modal-content,
+.bill-modal .form-container {
+
+    max-height: none !important;
+
+    height: auto !important;
+
+    overflow: visible !important;
+
+    overflow-y: visible !important;
+
+    overflow-x: hidden !important;
 }
 
-/* ===========================================================
-   Dark Mode
-=========================================================== */
 
-[data-theme="dark"] .form-group label {
+/* ============================================================================
+   RESPONSIVE - TABLET
+============================================================================ */
 
-    color: #cbd5e1;
+@media (max-width: 900px) {
 
-}
+    .modal-overlay:has(.bill-modal) {
 
-[data-theme="dark"] .form-group input,
-[data-theme="dark"] .form-group select,
-[data-theme="dark"] .form-group textarea {
+        padding: 6px !important;
 
-    background: #223550;
-
-    border-color: #334155;
-
-    color: #ffffff;
-
-}
-
-[data-theme="dark"] .form-group input::placeholder,
-[data-theme="dark"] .form-group textarea::placeholder {
-
-    color: #94a3b8;
-
-}
-
-[data-theme="dark"] .form-group input:disabled,
-[data-theme="dark"] .form-group textarea:disabled,
-[data-theme="dark"] .form-group select:disabled {
-
-    background: #1e293b;
-
-    color: #94a3b8;
-
-}
-
-[data-theme="dark"] .ocr-card {
-
-    background: #18273c;
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .ocr-card-title {
-
-    color: #ffffff;
-
-}
-
-[data-theme="dark"] .ocr-upload {
-
-    background: #223550;
-
-    border-color: #475569;
-
-}
-
-[data-theme="dark"] .ocr-upload h4 {
-
-    color: #ffffff;
-
-}
-
-[data-theme="dark"] .ocr-upload p {
-
-    color: #cbd5e1;
-
-}
-
-[data-theme="dark"] .bill-preview {
-
-    border-color: #334155;
-
-}
-
-/* ===========================================================
-   Responsive
-=========================================================== */
-
-@media (max-width: 992px) {
-
-    .bill-form {
-
-        grid-template-columns: 1fr;
-
+        overflow: hidden !important;
     }
 
-}
-
-@media (max-width: 768px) {
-
-    .modal-overlay {
-
-        padding: 15px;
-
-    }
 
     .bill-modal {
 
-        max-height: 95vh;
+        max-width: 100% !important;
 
+        max-height: calc(100vh - 12px) !important;
+
+        border-radius: 15px;
     }
 
-    .modal-header {
 
-        padding: 20px;
+    .bill-modal .modal-header {
 
+        height: 54px;
+
+        min-height: 54px;
+
+        padding: 7px 16px;
     }
 
-    .modal-header h2 {
 
-        font-size: 22px;
+    .bill-modal .modal-header h2 {
 
+        font-size: 21px;
     }
+
+
+    .bill-modal .close-btn {
+
+        width: 34px;
+
+        height: 34px;
+
+        min-width: 34px;
+
+        font-size: 19px;
+    }
+
 
     .bill-form {
 
-        padding: 20px;
+        gap: 5px 16px;
 
+        padding: 7px 16px 9px;
     }
 
-    .form-grid {
+
+    .bill-form input,
+    .bill-form select {
+
+        height: 29px;
+
+        min-height: 29px;
+
+        max-height: 29px;
+
+        font-size: 10px;
+    }
+
+
+    .bill-form .form-group label,
+    .bill-ocr-item label,
+    .ocr-upload-title {
+
+        font-size: 9px;
+
+        line-height: 10px;
+    }
+
+
+    .bill-ocr-row {
+
+        gap: 16px;
+    }
+
+
+    .bill-ocr-item button,
+    .ocr-upload-button {
+
+        height: 29px;
+
+        min-height: 29px;
+
+        max-height: 29px;
+
+        font-size: 10px;
+
+        line-height: 29px;
+    }
+
+
+    .ocr-preview {
+
+        height: 36px !important;
+
+        min-height: 36px !important;
+
+        max-height: 36px !important;
+    }
+
+
+    .ocr-preview img {
+
+        height: 32px !important;
+
+        max-height: 32px !important;
+    }
+}
+
+
+/* ============================================================================
+   MOBILE
+============================================================================ */
+
+@media (max-width: 600px) {
+
+    .modal-overlay:has(.bill-modal) {
+
+        align-items: center !important;
+
+        padding: 5px !important;
+
+        overflow: hidden !important;
+    }
+
+
+    .bill-modal {
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        max-height: calc(100vh - 10px) !important;
+
+        border-radius: 12px;
+    }
+
+
+    .bill-modal .modal-header {
+
+        height: 48px;
+
+        min-height: 48px;
+
+        padding: 6px 12px;
+
+        border-radius: 12px 12px 0 0;
+    }
+
+
+    .bill-modal .modal-header h2 {
+
+        font-size: 18px;
+    }
+
+
+    .bill-modal .close-btn {
+
+        width: 31px;
+
+        height: 31px;
+
+        min-width: 31px;
+
+        font-size: 17px;
+    }
+
+
+    .bill-form {
 
         grid-template-columns: 1fr;
 
+        row-gap: 5px;
+
+        padding: 6px 12px 8px;
     }
 
-}
 
-@media (max-width: 480px) {
+    .bill-ocr-row {
 
-    .bill-form {
+        grid-template-columns: 1fr;
 
-        padding: 15px;
-
+        gap: 5px;
     }
 
-    .form-section {
 
-        padding: 18px;
+    .bill-form input,
+    .bill-form select {
 
+        height: 28px;
+
+        min-height: 28px;
+
+        max-height: 28px;
+
+        font-size: 10px;
     }
 
+
+    .bill-form .form-actions {
+
+        padding-top: 5px;
+
+        gap: 6px;
+    }
+
+
+    .bill-form .form-actions button {
+
+        height: 30px;
+
+        min-height: 30px;
+
+        padding: 0 13px;
+
+        font-size: 10px;
+    }
+
+
+    .ocr-preview {
+
+        height: 34px !important;
+
+        min-height: 34px !important;
+
+        max-height: 34px !important;
+    }
+
+
+    .ocr-preview img {
+
+        height: 30px !important;
+
+        max-height: 30px !important;
+    }
 }

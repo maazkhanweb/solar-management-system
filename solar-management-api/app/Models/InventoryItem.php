@@ -33,6 +33,8 @@ class InventoryItem extends Model
 
         'damaged_quantity',
 
+        'damage_reason',
+
         'minimum_stock',
 
         'condition',

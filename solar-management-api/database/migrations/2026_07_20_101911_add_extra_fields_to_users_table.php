@@ -4,6 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * ============================================================================
+ * File:
+ * database/migrations/2026_07_20_101911_add_extra_fields_to_users_table.php
+ *
+ * Description:
+ * Adds additional user information fields.
+ * Area assignment is handled separately after the areas table is created.
+ * ============================================================================
+ */
+
 return new class extends Migration
 {
     /**
@@ -14,9 +25,9 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             /*
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             | User Information
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             */
 
             $table->string('phone', 20)
@@ -24,22 +35,9 @@ return new class extends Migration
                 ->after('email');
 
             /*
-            |--------------------------------------------------------------------------
-            | Area Assignment
-            |--------------------------------------------------------------------------
-            */
-
-            $table->foreignId('area_id')
-                ->nullable()
-                ->after('phone')
-                ->constrained('areas')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            /*
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             | Role
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             */
 
             $table->enum('role', [
@@ -50,13 +48,14 @@ return new class extends Migration
 
                 'Operator',
 
-            ])->default('Operator')
-              ->after('password');
+            ])
+                ->default('Operator')
+                ->after('password');
 
             /*
-            |--------------------------------------------------------------------------
-            | Profile
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
+            | Profile Image
+            |------------------------------------------------------------------
             */
 
             $table->string('profile_image')
@@ -64,9 +63,9 @@ return new class extends Migration
                 ->after('role');
 
             /*
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             | Status
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             */
 
             $table->enum('status', [
@@ -75,13 +74,14 @@ return new class extends Migration
 
                 'Inactive',
 
-            ])->default('Active')
-              ->after('profile_image');
+            ])
+                ->default('Active')
+                ->after('profile_image');
 
             /*
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             | Last Login
-            |--------------------------------------------------------------------------
+            |------------------------------------------------------------------
             */
 
             $table->timestamp('last_login')
@@ -98,14 +98,18 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->dropConstrainedForeignId('area_id');
-
             $table->dropColumn([
+
                 'phone',
+
                 'role',
+
                 'profile_image',
+
                 'status',
+
                 'last_login',
+
             ]);
 
         });

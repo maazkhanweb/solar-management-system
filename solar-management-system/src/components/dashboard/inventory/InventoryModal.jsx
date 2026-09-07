@@ -1,24 +1,90 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/inventory/InventoryModal.jsx
+ *
+ * Description:
+ * Add and Edit Inventory modal.
+ *
+ * Features:
+ * - Add inventory
+ * - Edit inventory
+ * - Inline form validation
+ * - Damaged quantity support
+ * - Damage reason support
+ * - Inventory status support
+ * - Remarks field removed
+ * - Custom success/error alert
+ * ============================================================================
+ */
+
 import { useEffect, useState } from "react";
 
 import FormActions from "../../common/FormActions";
+
+import MasterSelect from "../../common/MasterSelect/MasterSelect";
+
+import AlertModal from "../../common/AlertModal/AlertModal";
 
 import "./InventoryModal.css";
 
 import inventoryService from "../../../services/inventoryService";
 
+
 function InventoryModal({
-
     isOpen,
-
     onClose,
-
     onSave,
-
     selectedItem,
-
 }) {
 
+    /* =========================================================================
+       Loading State
+    ========================================================================= */
+
     const [loading, setLoading] = useState(false);
+
+
+    /* =========================================================================
+       Validation Errors
+    ========================================================================= */
+
+    const [errors, setErrors] = useState({});
+
+
+    /* =========================================================================
+       Custom Alert State
+    ========================================================================= */
+
+    const [alertData, setAlertData] = useState({
+
+        isOpen: false,
+
+        message: "",
+
+        type: "success",
+
+    });
+
+
+    /* =========================================================================
+       Dynamic Item Types
+    ========================================================================= */
+
+    const [itemTypes, setItemTypes] = useState([
+
+        "inverter",
+
+        "solar_panel",
+
+        "battery",
+
+    ]);
+
+
+    /* =========================================================================
+       Form Data
+    ========================================================================= */
 
     const [formData, setFormData] = useState({
 
@@ -38,13 +104,161 @@ function InventoryModal({
 
         condition: "New",
 
-        battery_health: 100,
-
         status: "Available",
 
-        remarks: "",
+        damaged_quantity: 0,
+
+        damage_reason: "",
 
     });
+
+
+    /* =========================================================================
+       Show Alert
+    ========================================================================= */
+
+    const showAlert = (
+        message,
+        type = "success"
+    ) => {
+
+        setAlertData({
+
+            isOpen: true,
+
+            message,
+
+            type,
+
+        });
+
+    };
+
+
+    /* =========================================================================
+       Close Alert
+    ========================================================================= */
+
+    const closeAlert = () => {
+
+        setAlertData((prev) => ({
+
+            ...prev,
+
+            isOpen: false,
+
+        }));
+
+    };
+
+
+    /* =========================================================================
+       Load Item Types
+    ========================================================================= */
+
+    const loadItemTypes = async () => {
+
+        try {
+
+            const response =
+                await inventoryService.getInventory();
+
+
+            const defaultTypes = [
+
+                "inverter",
+
+                "solar_panel",
+
+                "battery",
+
+            ];
+
+
+            const inventoryItems =
+
+                response.inventory
+
+                ||
+
+                response.data
+
+                ||
+
+                response
+
+                ||
+
+                [];
+
+
+            const existingTypes = Array.from(
+
+                new Set(
+
+                    Array.isArray(inventoryItems)
+
+                        ? inventoryItems
+
+                            .map(
+                                (item) =>
+                                    item.item_type
+                            )
+
+                            .filter(Boolean)
+
+                        : []
+
+                )
+
+            );
+
+
+            const allTypes = Array.from(
+
+                new Set([
+
+                    ...defaultTypes,
+
+                    ...existingTypes,
+
+                ])
+
+            );
+
+
+            setItemTypes(allTypes);
+
+        } catch (error) {
+
+            console.error(
+                "Failed to load item types:",
+                error
+            );
+
+        }
+
+    };
+
+
+    /* =========================================================================
+       Load Item Types When Modal Opens
+    ========================================================================= */
+
+    useEffect(() => {
+
+        if (isOpen) {
+
+            loadItemTypes();
+
+        }
+
+    }, [isOpen]);
+
+
+    /* =========================================================================
+       Load Selected Item For Edit
+    ========================================================================= */
 
     useEffect(() => {
 
@@ -52,30 +266,70 @@ function InventoryModal({
 
             setFormData({
 
-                item_type: selectedItem.item_type || "inverter",
+                item_type:
+                    selectedItem.item_type
+                    ||
+                    "inverter",
 
-                item_name: selectedItem.item_name || "",
+                item_name:
+                    selectedItem.item_name
+                    ||
+                    "",
 
-                serial_number: selectedItem.serial_number || "",
+                serial_number:
+                    selectedItem.serial_number
+                    ||
+                    "",
 
-                manufacturer: selectedItem.manufacturer || "",
+                manufacturer:
+                    selectedItem.manufacturer
+                    ||
+                    "",
 
-                capacity: selectedItem.capacity || "",
+                capacity:
+                    selectedItem.capacity
+                    ??
+                    "",
 
-                quantity: selectedItem.quantity || "",
+                quantity:
+                    selectedItem.quantity
+                    ??
+                    "",
 
                 minimum_stock:
-                    selectedItem.minimum_stock || 5,
+                    selectedItem.minimum_stock
+                    ??
+                    5,
 
-                condition: selectedItem.condition || "New",
+                condition:
+                    selectedItem.condition
+                    ||
+                    "New",
 
-                battery_health: selectedItem.battery_health || 100,
+                /*
+                 * IMPORTANT:
+                 * Status was missing from the edit form.
+                 * Laravel UpdateInventoryRequest requires it.
+                 */
+                status:
+                    selectedItem.status
+                    ||
+                    "Available",
 
-                status: selectedItem.status || "Available",
+                damaged_quantity:
+                    selectedItem.damaged_quantity
+                    ??
+                    0,
 
-                remarks: selectedItem.remarks || "",
+                damage_reason:
+                    selectedItem.damage_reason
+                    ||
+                    "",
 
             });
+
+
+            setErrors({});
 
         } else {
 
@@ -83,7 +337,12 @@ function InventoryModal({
 
         }
 
-    }, [selectedItem]);
+    }, [selectedItem, isOpen]);
+
+
+    /* =========================================================================
+       Reset Form
+    ========================================================================= */
 
     const resetForm = () => {
 
@@ -105,19 +364,172 @@ function InventoryModal({
 
             condition: "New",
 
-            battery_health: 100,
-
             status: "Available",
 
-            remarks: "",
+            damaged_quantity: 0,
+
+            damage_reason: "",
 
         });
 
+
+        setErrors({});
+
     };
+
+
+    /* =========================================================================
+       Validate Form
+    ========================================================================= */
+
+    const validateForm = () => {
+
+        const newErrors = {};
+
+
+        /* ---------------------------------------------------------------------
+           Item Name
+        --------------------------------------------------------------------- */
+
+        if (!formData.item_name.trim()) {
+
+            newErrors.item_name =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Serial Number
+        --------------------------------------------------------------------- */
+
+        if (!formData.serial_number.trim()) {
+
+            newErrors.serial_number =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Manufacturer
+        --------------------------------------------------------------------- */
+
+        if (!formData.manufacturer.trim()) {
+
+            newErrors.manufacturer =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Capacity
+        --------------------------------------------------------------------- */
+
+        if (
+            formData.capacity === ""
+            ||
+            formData.capacity === null
+        ) {
+
+            newErrors.capacity =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Quantity
+        --------------------------------------------------------------------- */
+
+        if (
+            formData.quantity === ""
+            ||
+            formData.quantity === null
+        ) {
+
+            newErrors.quantity =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Status
+        --------------------------------------------------------------------- */
+
+        if (!formData.status) {
+
+            newErrors.status =
+                "This field is required.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Damaged Quantity
+        --------------------------------------------------------------------- */
+
+        const quantity =
+            Number(formData.quantity || 0);
+
+        const damagedQuantity =
+            Number(formData.damaged_quantity || 0);
+
+
+        if (damagedQuantity < 0) {
+
+            newErrors.damaged_quantity =
+                "Damaged quantity cannot be negative.";
+
+        }
+
+
+        if (damagedQuantity > quantity) {
+
+            newErrors.damaged_quantity =
+                "Damaged quantity cannot be greater than total quantity.";
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Damage Reason
+           Required only when damaged quantity is greater than 0.
+        --------------------------------------------------------------------- */
+
+        if (
+            damagedQuantity > 0
+            &&
+            !formData.damage_reason.trim()
+        ) {
+
+            newErrors.damage_reason =
+                "Please enter the damage reason.";
+
+        }
+
+
+        setErrors(newErrors);
+
+
+        return Object.keys(newErrors).length === 0;
+
+    };
+
+
+    /* =========================================================================
+       Normal Input Change
+    ========================================================================= */
 
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value,
+        } = e.target;
+
 
         setFormData((prev) => ({
 
@@ -127,35 +539,103 @@ function InventoryModal({
 
         }));
 
+
+        /* ---------------------------------------------------------------------
+           Automatically clear damage reason when damaged quantity is 0.
+        --------------------------------------------------------------------- */
+
+        if (
+            name === "damaged_quantity"
+            &&
+            Number(value || 0) === 0
+        ) {
+
+            setFormData((prev) => ({
+
+                ...prev,
+
+                damaged_quantity: value,
+
+                damage_reason: "",
+
+            }));
+
+        }
+
+
+        /* ---------------------------------------------------------------------
+           Remove Error When User Starts Typing
+        --------------------------------------------------------------------- */
+
+        if (errors[name]) {
+
+            setErrors((prev) => {
+
+                const updatedErrors = {
+                    ...prev,
+                };
+
+
+                delete updatedErrors[name];
+
+
+                return updatedErrors;
+
+            });
+
+        }
+
     };
+
+
+    /* =========================================================================
+       Item Type Change
+    ========================================================================= */
+
+    const handleItemTypeChange = (value) => {
+
+        setFormData((prev) => ({
+
+            ...prev,
+
+            item_type: value,
+
+        }));
+
+    };
+
+
+    /* =========================================================================
+       Submit Form
+    ========================================================================= */
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        if (
 
-            !formData.item_name ||
+        /* ---------------------------------------------------------------------
+           Run Inline Validation
+        --------------------------------------------------------------------- */
 
-            !formData.serial_number ||
+        const isValid = validateForm();
 
-            !formData.manufacturer ||
 
-            !formData.capacity ||
-
-            !formData.quantity
-
-        ) {
-
-            alert("Please fill all required fields.");
+        if (!isValid) {
 
             return;
 
         }
 
+
         try {
 
             setLoading(true);
+
+
+            /* -----------------------------------------------------------------
+               Update Inventory
+            ----------------------------------------------------------------- */
 
             if (selectedItem) {
 
@@ -167,9 +647,38 @@ function InventoryModal({
 
                 );
 
-                alert("Inventory updated successfully.");
 
-            } else {
+                await loadItemTypes();
+
+
+                if (onSave) {
+
+                    await onSave();
+
+                }
+
+
+                resetForm();
+
+                onClose();
+
+
+                showAlert(
+
+                    "Inventory updated successfully.",
+
+                    "success"
+
+                );
+
+            }
+
+
+            /* -----------------------------------------------------------------
+               Create Inventory
+            ----------------------------------------------------------------- */
+
+            else {
 
                 await inventoryService.createInventory(
 
@@ -177,25 +686,89 @@ function InventoryModal({
 
                 );
 
-                alert("Inventory created successfully.");
+
+                await loadItemTypes();
+
+
+                if (onSave) {
+
+                    await onSave();
+
+                }
+
+
+                resetForm();
+
+                onClose();
+
+
+                showAlert(
+
+                    "Inventory created successfully.",
+
+                    "success"
+
+                );
 
             }
-
-            if (onSave) {
-
-                await onSave();
-
-            }
-
-            resetForm();
-
-            onClose();
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Inventory save error:",
+                error
+            );
 
-            alert("Failed to save inventory.");
+
+            /* -----------------------------------------------------------------
+               Backend Validation Error
+            ----------------------------------------------------------------- */
+
+            const backendErrors =
+                error?.response?.data?.errors;
+
+
+            if (backendErrors) {
+
+                const formattedErrors = {};
+
+
+                Object.keys(backendErrors).forEach(
+                    (field) => {
+
+                        formattedErrors[field] =
+                            Array.isArray(
+                                backendErrors[field]
+                            )
+
+                                ? backendErrors[field][0]
+
+                                : backendErrors[field];
+
+                    }
+                );
+
+
+                setErrors(formattedErrors);
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------------------------------
+               Backend General Error
+            ----------------------------------------------------------------- */
+
+            showAlert(
+
+                error?.response?.data?.message
+                ||
+                "Failed to save inventory.",
+
+                "error"
+
+            );
 
         } finally {
 
@@ -205,303 +778,843 @@ function InventoryModal({
 
     };
 
+
+    /* =========================================================================
+       Don't Render Main Modal When Closed
+    ========================================================================= */
+
     if (!isOpen) {
 
-        return null;
+        return (
+
+            <AlertModal
+
+                isOpen={alertData.isOpen}
+
+                message={alertData.message}
+
+                type={alertData.type}
+
+                onClose={closeAlert}
+
+            />
+
+        );
 
     }
 
+
     return (
 
-        <div className="modal-overlay">
+        <>
 
-            <div className="inventory-modal">
+            {/* =================================================================
+                Inventory Modal
+            ================================================================= */}
 
-                <div className="modal-header">
+            <div className="modal-overlay">
 
-                    <h2>
+                <div className="inventory-modal">
 
-                        {
 
-                            selectedItem
+                    {/* =========================================================
+                        Modal Header
+                    ========================================================= */}
 
-                                ? "Edit Inventory"
+                    <div className="modal-header">
 
-                                : "Add Inventory"
+                        <h2>
 
-                        }
+                            {
+                                selectedItem
+                                    ? "Edit Inventory"
+                                    : "Add Inventory"
+                            }
 
-                    </h2>
+                        </h2>
 
-                    <button
 
-                        className="close-btn"
+                        <button
 
-                        onClick={onClose}
+                            type="button"
+
+                            className="close-btn"
+
+                            onClick={onClose}
+
+                            aria-label="Close"
+
+                        >
+
+                            ×
+
+                        </button>
+
+                    </div>
+
+
+                    {/* =========================================================
+                        Inventory Form
+                    ========================================================= */}
+
+                    <form
+
+                        onSubmit={handleSubmit}
+
+                        className="inventory-form"
 
                     >
 
-                        ×
+                        <div className="form-grid">
 
-                    </button>
 
-                </div>
+                            {/* =================================================
+                                Item Type
+                            ================================================= */}
 
-                <form
+                            <MasterSelect
 
-                    onSubmit={handleSubmit}
-
-                    className="inventory-form"
-
-                >
-
-                    <div className="form-grid">
-                        <div className="form-group">
-
-                            <label>Item Type</label>
-
-                            <select
-
-                                name="item_type"
+                                label="Item Type"
 
                                 value={formData.item_type}
 
-                                onChange={handleChange}
+                                options={itemTypes}
+
+                                onChange={
+                                    handleItemTypeChange
+                                }
+
+                                placeholder="Select Item Type"
+
+                                title="Add New Item Type"
+
+                                modalPlaceholder="Enter Item Type"
+
+                            />
+
+
+                            {/* =================================================
+                                Item Name
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.item_name
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
 
                             >
 
-                                <option value="inverter">
+                                <label>
 
-                                    Inverter
+                                    Item Name
 
-                                </option>
+                                    <span className="required-mark">
 
-                                <option value="solar_panel">
+                                        *
 
-                                    Solar Panel
+                                    </span>
 
-                                </option>
+                                </label>
 
-                                <option value="battery">
 
-                                    Battery
+                                <input
 
-                                </option>
+                                    type="text"
 
-                            </select>
+                                    name="item_name"
 
-                        </div>
+                                    value={
+                                        formData.item_name
+                                    }
 
-                        <div className="form-group">
+                                    onChange={
+                                        handleChange
+                                    }
 
-                            <label>Item Name</label>
+                                    className={
+                                        errors.item_name
+                                            ? "input-error"
+                                            : ""
+                                    }
 
-                            <input
+                                />
 
-                                type="text"
 
-                                name="item_name"
+                                {
+                                    errors.item_name && (
 
-                                value={formData.item_name}
+                                        <span className="validation-error">
 
-                                onChange={handleChange}
+                                            {
+                                                errors.item_name
+                                            }
 
-                            />
+                                        </span>
 
-                        </div>
+                                    )
+                                }
 
-                        <div className="form-group">
+                            </div>
 
-                            <label>Serial Number</label>
 
-                            <input
+                            {/* =================================================
+                                Serial Number
+                            ================================================= */}
 
-                                type="text"
+                            <div
 
-                                name="serial_number"
-
-                                value={formData.serial_number}
-
-                                onChange={handleChange}
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Manufacturer</label>
-
-                            <input
-
-                                type="text"
-
-                                name="manufacturer"
-
-                                value={formData.manufacturer}
-
-                                onChange={handleChange}
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Capacity</label>
-
-                            <input
-
-                                type="number"
-
-                                step="0.01"
-
-                                name="capacity"
-
-                                value={formData.capacity}
-
-                                onChange={handleChange}
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Battery Health (%)</label>
-
-                            <input
-                                type="number"
-                                name="battery_health"
-                                min="0"
-                                max="100"
-                                step="0.01"
-                                value={formData.battery_health}
-                                onChange={handleChange}
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Quantity</label>
-
-                            <input
-
-                                type="number"
-
-                                min="1"
-
-                                name="quantity"
-
-                                value={formData.quantity}
-
-                                onChange={handleChange}
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Minimum Stock</label>
-
-                            <input
-
-                                type="number"
-
-                                min="0"
-
-                                name="minimum_stock"
-
-                                value={formData.minimum_stock}
-
-                                onChange={handleChange}
-
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Condition</label>
-
-                            <select
-
-                                name="condition"
-
-                                value={formData.condition}
-
-                                onChange={handleChange}
+                                className={
+                                    `form-group ${
+                                        errors.serial_number
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
 
                             >
 
-                                <option value="New">
+                                <label>
 
-                                    New
+                                    Serial Number
 
-                                </option>
+                                    <span className="required-mark">
 
-                                <option value="Used">
+                                        *
 
-                                    Used
+                                    </span>
 
-                                </option>
+                                </label>
 
-                            </select>
+
+                                <input
+
+                                    type="text"
+
+                                    name="serial_number"
+
+                                    value={
+                                        formData.serial_number
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.serial_number
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.serial_number && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.serial_number
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Manufacturer
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.manufacturer
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Manufacturer
+
+                                    <span className="required-mark">
+
+                                        *
+
+                                    </span>
+
+                                </label>
+
+
+                                <input
+
+                                    type="text"
+
+                                    name="manufacturer"
+
+                                    value={
+                                        formData.manufacturer
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.manufacturer
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.manufacturer && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.manufacturer
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Capacity
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.capacity
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Capacity
+
+                                    <span className="required-mark">
+
+                                        *
+
+                                    </span>
+
+                                </label>
+
+
+                                <input
+
+                                    type="number"
+
+                                    step="0.01"
+
+                                    name="capacity"
+
+                                    value={
+                                        formData.capacity
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.capacity
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.capacity && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.capacity
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Quantity
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.quantity
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Quantity
+
+                                    <span className="required-mark">
+
+                                        *
+
+                                    </span>
+
+                                </label>
+
+
+                                <input
+
+                                    type="number"
+
+                                    min="1"
+
+                                    name="quantity"
+
+                                    value={
+                                        formData.quantity
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.quantity
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.quantity && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.quantity
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Damaged Quantity
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.damaged_quantity
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Damaged Quantity
+
+                                </label>
+
+
+                                <input
+
+                                    type="number"
+
+                                    min="0"
+
+                                    name="damaged_quantity"
+
+                                    value={
+                                        formData.damaged_quantity
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.damaged_quantity
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.damaged_quantity && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.damaged_quantity
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Minimum Stock
+                            ================================================= */}
+
+                            <div className="form-group">
+
+                                <label>
+
+                                    Minimum Stock
+
+                                </label>
+
+
+                                <input
+
+                                    type="number"
+
+                                    min="0"
+
+                                    name="minimum_stock"
+
+                                    value={
+                                        formData.minimum_stock
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                />
+
+                            </div>
+
+
+                            {/* =================================================
+                                Condition
+                            ================================================= */}
+
+                            <div className="form-group">
+
+                                <label>
+
+                                    Condition
+
+                                </label>
+
+
+                                <select
+
+                                    name="condition"
+
+                                    value={
+                                        formData.condition
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                >
+
+                                    <option value="New">
+
+                                        New
+
+                                    </option>
+
+
+                                    <option value="Used">
+
+                                        Used
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            {/* =================================================
+                                Status
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.status
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Status
+
+                                    <span className="required-mark">
+
+                                        *
+
+                                    </span>
+
+                                </label>
+
+
+                                <select
+
+                                    name="status"
+
+                                    value={
+                                        formData.status
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    className={
+                                        errors.status
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                >
+
+                                    <option value="Available">
+
+                                        Available
+
+                                    </option>
+
+
+                                    <option value="Installed">
+
+                                        Installed
+
+                                    </option>
+
+                                </select>
+
+
+                                {
+                                    errors.status && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.status
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =================================================
+                                Damage Reason
+                            ================================================= */}
+
+                            <div
+
+                                className={
+                                    `form-group ${
+                                        errors.damage_reason
+                                            ? "has-error"
+                                            : ""
+                                    }`
+                                }
+
+                            >
+
+                                <label>
+
+                                    Damage Reason
+
+                                    {
+                                        Number(
+                                            formData.damaged_quantity || 0
+                                        ) > 0 && (
+
+                                            <span className="required-mark">
+
+                                                *
+
+                                            </span>
+
+                                        )
+                                    }
+
+                                </label>
+
+
+                                <input
+
+                                    type="text"
+
+                                    name="damage_reason"
+
+                                    value={
+                                        formData.damage_reason
+                                    }
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+                                    disabled={
+                                        Number(
+                                            formData.damaged_quantity || 0
+                                        ) === 0
+                                    }
+
+                                    placeholder={
+                                        Number(
+                                            formData.damaged_quantity || 0
+                                        ) > 0
+
+                                            ? "Enter damage reason"
+
+                                            : "No damaged items"
+                                    }
+
+                                    className={
+                                        errors.damage_reason
+                                            ? "input-error"
+                                            : ""
+                                    }
+
+                                />
+
+
+                                {
+                                    errors.damage_reason && (
+
+                                        <span className="validation-error">
+
+                                            {
+                                                errors.damage_reason
+                                            }
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </div>
 
                         </div>
 
-                    </div>
 
-                    <div className="form-group">
+                        {/* ====================================================
+                            Form Actions
+                        ===================================================== */}
 
-                        <label>Remarks</label>
+                        <FormActions
 
-                        <textarea
+                            saveText={
+                                loading
 
-                            rows="4"
+                                    ? "Saving..."
 
-                            name="remarks"
+                                    : selectedItem
 
-                            value={formData.remarks}
+                                        ? "Update Inventory"
 
-                            onChange={handleChange}
+                                        : "Save Inventory"
+                            }
+
+                            cancelText="Cancel"
+
+                            onCancel={onClose}
 
                         />
 
-                    </div>
+                    </form>
 
-                    <FormActions
-
-                        saveText={
-
-                            loading
-
-                                ? "Saving..."
-
-                                : selectedItem
-
-                                    ? "Update Inventory"
-
-                                    : "Save Inventory"
-
-                        }
-
-                        cancelText="Cancel"
-
-                        onCancel={onClose}
-
-                    />
-
-                </form>
+                </div>
 
             </div>
 
-        </div>
+
+            {/* ================================================================
+                Backend Error Alert
+            ================================================================= */}
+
+            <AlertModal
+
+                isOpen={alertData.isOpen}
+
+                message={alertData.message}
+
+                type={alertData.type}
+
+                onClose={closeAlert}
+
+            />
+
+        </>
 
     );
 
 }
+
 
 export default InventoryModal;

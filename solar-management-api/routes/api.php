@@ -29,17 +29,22 @@ Route::post('/login', [AuthController::class, 'login']);
 
 /*
 |--------------------------------------------------------------------------
-| OCR (Temporary Public Route)
+| OCR Temporary Public Routes
 |--------------------------------------------------------------------------
 |
-| During OCR development we are keeping this route public.
-| Later it will be moved inside auth:sanctum middleware.
+| During OCR development these routes are public.
+| Later they can be moved inside auth:sanctum middleware.
 |
 */
 
 Route::post(
     '/bills/process-ocr',
     [BillOCRController::class, 'process']
+);
+
+Route::post(
+    '/bills/process-solar-ocr',
+    [BillOCRController::class, 'processSolar']
 );
 
 /*
@@ -134,18 +139,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/inventory', [InventoryController::class, 'index']);
 
-    Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+    Route::get(
+        '/inventory/{inventory}',
+        [InventoryController::class, 'show']
+    );
 
     Route::post('/inventory', [InventoryController::class, 'store']);
 
-    Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
+    Route::put(
+        '/inventory/{inventory}',
+        [InventoryController::class, 'update']
+    );
 
     Route::put(
         '/inventory/{inventory}/return',
         [InventoryController::class, 'returnInventory']
     );
 
-    Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
+    Route::delete(
+        '/inventory/{inventory}',
+        [InventoryController::class, 'destroy']
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -190,9 +204,9 @@ Route::middleware('auth:sanctum')->group(function () {
     );
 
     Route::delete(
-    '/inventory-transactions/{inventoryTransaction}',
-    [InventoryTransactionController::class, 'destroy']
-);
+        '/inventory-transactions/{inventoryTransaction}',
+        [InventoryTransactionController::class, 'destroy']
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -202,13 +216,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/bills', [BillController::class, 'index']);
 
-    Route::get('/bills/{bill}', [BillController::class, 'show']);
+    Route::get(
+        '/bills/{bill}',
+        [BillController::class, 'show']
+    );
 
     Route::post('/bills', [BillController::class, 'store']);
 
-    Route::put('/bills/{bill}', [BillController::class, 'update']);
+    Route::put(
+        '/bills/{bill}',
+        [BillController::class, 'update']
+    );
 
-    Route::delete('/bills/{bill}', [BillController::class, 'destroy']);
+    Route::delete(
+        '/bills/{bill}',
+        [BillController::class, 'destroy']
+    );
 
     /*
     |--------------------------------------------------------------------------

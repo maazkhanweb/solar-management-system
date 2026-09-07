@@ -1,7 +1,15 @@
 /**
  * ============================================================================
  * File:
- * src/pages/dashboard/billManagement/WapdaBillManagement.jsx
+ * src/pages/dashboard/wapda-bill/WapdaBillManagement.jsx
+ *
+ * Description:
+ * WAPDA Bill Management page.
+ * Includes:
+ * - Bill listing
+ * - Add/Edit/Delete bill
+ * - Bill analysis
+ * - Bill statistics
  * ============================================================================
  */
 
@@ -10,13 +18,14 @@ import { useEffect, useState } from "react";
 import WapdaBillTable from "../../../components/dashboard/wapda-bill/WapdaBillTable";
 import WapdaBillModal from "../../../components/dashboard/wapda-bill/WapdaBillModal";
 import DeleteBillModal from "../../../components/dashboard/wapda-bill/DeleteBillModal";
-import BillAnalysisModal from "../../../components/dashboard/wapda-bill/BillAnalysisModal";
+import BillAnalysisCard from "../../../components/dashboard/wapda-bill/BillAnalysisCard";
 
 import billService from "../../../services/billService";
 import billAnalysisService from "../../../services/billAnalysisService";
 import authService from "../../../services/authService";
 
 import "./WapdaBillManagement.css";
+
 
 function WapdaBillManagement() {
 
@@ -26,16 +35,10 @@ function WapdaBillManagement() {
 
     const [loading, setLoading] = useState(false);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const [isDeleteModalOpen, setIsDeleteModalOpen] =
+    const [isModalOpen, setIsModalOpen] =
         useState(false);
 
-    /* ==========================================
-       NEW
-    ========================================== */
-
-    const [isAnalysisModalOpen, setIsAnalysisModalOpen] =
+    const [isDeleteModalOpen, setIsDeleteModalOpen] =
         useState(false);
 
     const [selectedBill, setSelectedBill] =
@@ -44,19 +47,12 @@ function WapdaBillManagement() {
     const [billAnalysis, setBillAnalysis] =
         useState(null);
 
-    const [filters, setFilters] = useState({
 
-        search: "",
-
-        month: "",
-
-        year: "",
-
-        area_id: "",
-
-        status: "",
-
-    });
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD DATA
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
 
@@ -66,9 +62,12 @@ function WapdaBillManagement() {
 
     }, []);
 
-    /* ==========================================
-       LOAD BILLS
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD BILLS
+    |--------------------------------------------------------------------------
+    */
 
     const loadBills = async () => {
 
@@ -77,9 +76,11 @@ function WapdaBillManagement() {
             setLoading(true);
 
             const response =
-                await billService.getBills(filters);
+                await billService.getBills();
 
-            setBills(response.data.data);
+            setBills(
+                response.data.data
+            );
 
         } catch (error) {
 
@@ -96,9 +97,12 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       LOAD AREAS
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD AREAS
+    |--------------------------------------------------------------------------
+    */
 
     const loadAreas = async () => {
 
@@ -107,7 +111,9 @@ function WapdaBillManagement() {
             const response =
                 await authService.getAreaOptions();
 
-            setAreas(response.areas);
+            setAreas(
+                response.areas
+            );
 
         } catch (error) {
 
@@ -120,9 +126,12 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       SAVE BILL
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | SAVE BILL
+    |--------------------------------------------------------------------------
+    */
 
     const handleSaveBill = async (formData) => {
 
@@ -166,9 +175,12 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       EDIT BILL
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT BILL
+    |--------------------------------------------------------------------------
+    */
 
     const handleEditBill = (bill) => {
 
@@ -178,10 +190,27 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       ANALYSIS
-       (NOW OPENS MODAL)
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE ANALYSIS
+    |--------------------------------------------------------------------------
+    */
+
+    const handleCloseAnalysis = () => {
+
+        setBillAnalysis(null);
+
+        setSelectedBill(null);
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | VIEW ANALYSIS
+    |--------------------------------------------------------------------------
+    */
 
     const handleViewAnalysis = async (bill) => {
 
@@ -189,16 +218,27 @@ function WapdaBillManagement() {
 
             setLoading(true);
 
+            /*
+            |--------------------------------------------------------------------------
+            | IMPORTANT
+            |--------------------------------------------------------------------------
+            | Keep the original selected bill.
+            | The analysis API may not return consumer name,
+            | reference number, area, bill period or address.
+            | BillAnalysisCard will use this bill as fallback data.
+            |--------------------------------------------------------------------------
+            */
+
+            setSelectedBill(bill);
+
             const response =
                 await billAnalysisService.getAnalysis(
                     bill.id
                 );
 
-            setSelectedBill(bill);
-
-            setBillAnalysis(response.analysis);
-
-            setIsAnalysisModalOpen(true);
+            setBillAnalysis(
+                response.analysis
+            );
 
         } catch (error) {
 
@@ -215,9 +255,12 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       DELETE
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE CLICK
+    |--------------------------------------------------------------------------
+    */
 
     const handleDeleteClick = (bill) => {
 
@@ -226,6 +269,13 @@ function WapdaBillManagement() {
         setIsDeleteModalOpen(true);
 
     };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE BILL
+    |--------------------------------------------------------------------------
+    */
 
     const handleDeleteBill = async () => {
 
@@ -258,9 +308,12 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       ADD BILL
-    ========================================== */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADD BILL
+    |--------------------------------------------------------------------------
+    */
 
     const handleAddBill = () => {
 
@@ -270,214 +323,301 @@ function WapdaBillManagement() {
 
     };
 
-    /* ==========================================
-       FILTERS
-    ========================================== */
 
-    const handleFilterChange = (e) => {
-
-        const { name, value } = e.target;
-
-        setFilters((prev) => ({
-
-            ...prev,
-
-            [name]: value,
-
-        }));
-
-    };
-
-    const handleSearch = async () => {
-
-        await loadBills();
-
-    };
-
-    const handleResetFilters = async () => {
-
-        const resetFilters = {
-
-            search: "",
-
-            month: "",
-
-            year: "",
-
-            area_id: "",
-
-            status: "",
-
-        };
-
-        setFilters(resetFilters);
-
-        try {
-
-            setLoading(true);
-
-            const response =
-                await billService.getBills(
-                    resetFilters
-                );
-
-            setBills(response.data.data);
-
-        } catch (error) {
-
-            console.error(
-                "Failed to reset filters:",
-                error
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER
+    |--------------------------------------------------------------------------
+    */
 
     return (
-        <section className="bill-management-page">
 
-            {/* ==========================================
-                Header
-            ========================================== */}
+        <div className="bill-management">
 
-            <div className="bill-management-header">
+
+            {/* ================================================================
+                PAGE HEADER
+            ================================================================= */}
+
+            <div className="bill-header">
 
                 <div>
 
                     <h1>
-
                         WAPDA Bill Management
-
                     </h1>
 
                     <p>
-
-                        Manage electricity bills, OCR extraction,
-                        AI analysis and solar comparison.
-
+                        Manage electricity bills, monitor payments,
+                        perform OCR extraction and AI-powered analysis.
                     </p>
 
                 </div>
 
-                <button
-                    className="primary-btn"
-                    onClick={handleAddBill}
-                >
 
-                    + Add New Bill
+                <div className="bill-header-actions">
 
-                </button>
+                    <button
+                        type="button"
+                        className="add-bill-btn"
+                        onClick={handleAddBill}
+                    >
+
+                        + Add New Bill
+
+                    </button>
+
+                </div>
 
             </div>
 
-            {/* ==========================================
-                Bills Table
-            ========================================== */}
 
-            <WapdaBillTable
+            {/* ================================================================
+                STATISTICS
+            ================================================================= */}
 
-                bills={bills}
+            <div className="bill-stats">
 
-                loading={loading}
 
-                filters={filters}
+                <div className="bill-stat-card">
 
-                areas={areas}
+                    <div className="bill-stat-title">
+                        Total Bills
+                    </div>
 
-                onFilterChange={handleFilterChange}
+                    <div className="bill-stat-value">
 
-                onSearch={handleSearch}
+                        {bills.length}
 
-                onReset={handleResetFilters}
+                    </div>
 
-                onEdit={handleEditBill}
+                    <div className="bill-stat-subtitle">
+                        Available Records
+                    </div>
 
-                onDelete={handleDeleteClick}
+                </div>
 
-                onAnalysis={handleViewAnalysis}
 
-            />
+                <div className="bill-stat-card">
 
-            {/* ==========================================
-                Add / Edit Modal
-            ========================================== */}
+                    <div className="bill-stat-title">
+                        Paid Bills
+                    </div>
+
+                    <div className="bill-stat-value">
+
+                        {
+                            bills.filter(
+                                bill =>
+                                    bill.status === "Paid"
+                            ).length
+                        }
+
+                    </div>
+
+                    <div className="bill-stat-subtitle">
+                        Successfully Paid
+                    </div>
+
+                </div>
+
+
+                <div className="bill-stat-card">
+
+                    <div className="bill-stat-title">
+                        Unpaid Bills
+                    </div>
+
+                    <div className="bill-stat-value">
+
+                        {
+                            bills.filter(
+                                bill =>
+                                    bill.status === "Unpaid"
+                            ).length
+                        }
+
+                    </div>
+
+                    <div className="bill-stat-subtitle">
+                        Pending Bills
+                    </div>
+
+                </div>
+
+
+                <div className="bill-stat-card">
+
+                    <div className="bill-stat-title">
+                        Total Amount
+                    </div>
+
+                    <div className="bill-stat-value">
+
+                        Rs.
+
+                        {
+                            bills
+                                .reduce(
+                                    (
+                                        total,
+                                        bill
+                                    ) =>
+                                        total +
+                                        Number(
+                                            bill.bill_amount || 0
+                                        ),
+                                    0
+                                )
+                                .toLocaleString()
+                        }
+
+                    </div>
+
+                    <div className="bill-stat-subtitle">
+                        Overall Collection
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            {/* ================================================================
+                TABLE
+            ================================================================= */}
+
+            <div className="bill-table-wrapper">
+
+                <div className="bill-table-header">
+
+                    <div>
+
+                        <h2 className="bill-table-title">
+                            Electricity Bills
+                        </h2>
+
+                        <p className="bill-table-subtitle">
+                            Manage, edit, delete and analyze all WAPDA bills.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {
+                    loading ? (
+
+                        <div
+                            style={{
+                                padding: "60px",
+                                textAlign: "center",
+                            }}
+                        >
+
+                            Loading Bills...
+
+                        </div>
+
+                    ) : (
+
+                        <WapdaBillTable
+
+                            bills={bills}
+
+                            onEdit={handleEditBill}
+
+                            onDelete={handleDeleteClick}
+
+                            onViewAnalysis={
+                                handleViewAnalysis
+                            }
+
+                        />
+
+                    )
+                }
+
+
+            </div>
+
+
+            {/* ================================================================
+                BILL MODAL
+            ================================================================= */}
 
             <WapdaBillModal
 
-    isOpen={isModalOpen}
-
-    onClose={() => {
-
-        setIsModalOpen(false);
-
-        setSelectedBill(null);
-
-    }}
-
-    selectedBill={selectedBill}
-
-    areas={areas}
-
-    onSave={handleSaveBill}
-
-/>
-
-            {/* ==========================================
-                Delete Modal
-            ========================================== */}
-
-            <DeleteBillModal
-
-    isOpen={isDeleteModalOpen}
-
-    selectedBill={selectedBill}
-
-    onClose={() => {
-
-        setIsDeleteModalOpen(false);
-
-        setSelectedBill(null);
-
-    }}
-
-    onConfirm={handleDeleteBill}
-
-/>
-
-            {/* ==========================================
-                NEW
-                Analysis Modal
-            ========================================== */}
-
-            <BillAnalysisModal
-
-                isOpen={isAnalysisModalOpen}
-
-                bill={selectedBill}
-
-                analysis={billAnalysis}
+                isOpen={isModalOpen}
 
                 onClose={() => {
 
-                    setIsAnalysisModalOpen(false);
+                    setIsModalOpen(false);
 
                     setSelectedBill(null);
 
-                    setBillAnalysis(null);
-
                 }}
+
+                onSave={handleSaveBill}
+
+                selectedBill={selectedBill}
+
+                areas={areas}
 
             />
 
-        </section>
+
+            {/* ================================================================
+                DELETE MODAL
+            ================================================================= */}
+
+            <DeleteBillModal
+
+                isOpen={isDeleteModalOpen}
+
+                selectedBill={selectedBill}
+
+                onClose={() => {
+
+                    setIsDeleteModalOpen(false);
+
+                    setSelectedBill(null);
+
+                }}
+
+                onConfirm={handleDeleteBill}
+
+            />
+
+
+            {/* ================================================================
+                BILL ANALYSIS
+            ================================================================= */}
+
+            {
+                billAnalysis && (
+
+                    <BillAnalysisCard
+
+                        analysis={billAnalysis}
+
+                        bill={selectedBill}
+
+                        onClose={handleCloseAnalysis}
+
+                    />
+
+                )
+            }
+
+
+        </div>
 
     );
 
 }
+
 
 export default WapdaBillManagement;

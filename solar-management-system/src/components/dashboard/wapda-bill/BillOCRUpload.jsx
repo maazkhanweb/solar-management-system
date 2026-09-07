@@ -1,15 +1,23 @@
 /**
  * ============================================================================
- * File: src/components/dashboard/wapda-bill/BillOCRUpload.jsx
+ * File:
+ * src/components/dashboard/wapda-bill/BillOCRUpload.jsx
+ *
  * Description:
- * OCR Bill Image Upload Component
+ * Reusable OCR upload component for WAPDA bills and Solar reports.
  * ============================================================================
  */
 
 import { useRef, useState } from "react";
+
 import "./BillOCRUpload.css";
 
+
 const BillOCRUpload = ({
+    title = "Bill Image OCR",
+    buttonText = "Upload Bill Image",
+    loadingText = "Scanning...",
+    successText = "Document scanned successfully.",
     onFileSelect,
     loading = false,
 }) => {
@@ -22,13 +30,22 @@ const BillOCRUpload = ({
 
     const [success, setSuccess] = useState(false);
 
+
     const handleSelect = async (event) => {
 
-        const file = event.target.files[0];
+        const file = event.target.files?.[0];
 
-        if (!file) return;
+        if (!file) {
 
-        setPreview(URL.createObjectURL(file));
+            return;
+
+        }
+
+        setPreview(
+
+            URL.createObjectURL(file)
+
+        );
 
         setFileName(file.name);
 
@@ -50,15 +67,24 @@ const BillOCRUpload = ({
 
     };
 
+
     const openFilePicker = () => {
 
-        fileInputRef.current.click();
+        fileInputRef.current?.click();
 
     };
+
 
     return (
 
         <div className="ocr-upload-container">
+
+            <div className="ocr-upload-title">
+
+                {title}
+
+            </div>
+
 
             <input
                 ref={fileInputRef}
@@ -67,6 +93,7 @@ const BillOCRUpload = ({
                 style={{ display: "none" }}
                 onChange={handleSelect}
             />
+
 
             <button
                 type="button"
@@ -79,13 +106,14 @@ const BillOCRUpload = ({
 
                     loading
 
-                        ? "Scanning Bill..."
+                        ? loadingText
 
-                        : "Upload Bill Image"
+                        : buttonText
 
                 }
 
             </button>
+
 
             {
 
@@ -95,7 +123,7 @@ const BillOCRUpload = ({
 
                         <img
                             src={preview}
-                            alt="Bill Preview"
+                            alt="OCR Preview"
                         />
 
                     </div>
@@ -103,6 +131,7 @@ const BillOCRUpload = ({
                 )
 
             }
+
 
             {
 
@@ -118,13 +147,14 @@ const BillOCRUpload = ({
 
             }
 
+
             {
 
                 success && (
 
                     <div className="ocr-success">
 
-                        ✅ Bill scanned successfully.
+                        ✓ {successText}
 
                     </div>
 
@@ -137,5 +167,6 @@ const BillOCRUpload = ({
     );
 
 };
+
 
 export default BillOCRUpload;

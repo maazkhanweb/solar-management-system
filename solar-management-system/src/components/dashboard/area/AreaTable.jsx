@@ -1,3 +1,14 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/area/AreaTable.jsx
+ *
+ * Description:
+ * Area table with automatic serial numbering.
+ * Database ID and Phone column are not displayed in the table.
+ * ============================================================================
+ */
+
 import "./AreaTable.css";
 
 import {
@@ -6,6 +17,7 @@ import {
     FaWarehouse,
     FaEye,
 } from "react-icons/fa";
+
 
 const AreaTable = ({
 
@@ -31,15 +43,13 @@ const AreaTable = ({
 
                     <tr>
 
-                        <th>ID</th>
+                        <th>#</th>
 
                         <th>Area Name</th>
 
                         <th>Location</th>
 
                         <th>Manager</th>
-
-                        <th>Phone</th>
 
                         <th>Status</th>
 
@@ -49,21 +59,25 @@ const AreaTable = ({
 
                 </thead>
 
+
                 <tbody>
 
                     {
 
                         areas.length > 0 ? (
 
-                            areas.map((area) => (
+                            areas.map((area, index) => (
 
                                 <tr key={area.id}>
 
+                                    {/* Automatic Serial Number */}
+
                                     <td>
 
-                                        {area.id}
+                                        {index + 1}
 
                                     </td>
+
 
                                     <td>
 
@@ -71,11 +85,13 @@ const AreaTable = ({
 
                                     </td>
 
+
                                     <td>
 
                                         {area.location}
 
                                     </td>
+
 
                                     <td>
 
@@ -83,11 +99,6 @@ const AreaTable = ({
 
                                     </td>
 
-                                    <td>
-
-                                        {area.phone}
-
-                                    </td>
 
                                     <td>
 
@@ -95,9 +106,12 @@ const AreaTable = ({
 
                                     </td>
 
+
                                     <td>
 
                                         <div className="area-actions">
+
+                                            {/* EDIT AREA */}
 
                                             <button
 
@@ -115,6 +129,9 @@ const AreaTable = ({
 
                                             </button>
 
+
+                                            {/* MOVE INVENTORY */}
+
                                             <button
 
                                                 className="action-btn move"
@@ -131,6 +148,9 @@ const AreaTable = ({
 
                                             </button>
 
+
+                                            {/* VIEW INSTALLED ASSETS */}
+
                                             <button
 
                                                 className="action-btn view"
@@ -146,7 +166,11 @@ const AreaTable = ({
                                                 <FaEye />
 
                                             </button>
-                                                                                        <button
+
+
+                                            {/* DELETE AREA */}
+
+                                            <button
 
                                                 className="action-btn delete"
 
@@ -176,7 +200,7 @@ const AreaTable = ({
 
                                 <td
 
-                                    colSpan="7"
+                                    colSpan="6"
 
                                     style={{
 
@@ -207,5 +231,6 @@ const AreaTable = ({
     );
 
 };
+
 
 export default AreaTable;

@@ -1,20 +1,29 @@
+/**
+ * ============================================================================
+ * File:
+ * src/services/billAnalysisService.js
+ *
+ * Description:
+ * Handles Bill Analysis API requests.
+ * ============================================================================
+ */
+
 import api from "./api";
+
 
 const billAnalysisService = {
 
-    /**
-     * Get Bill Analysis
-     */
     async getAnalysis(billId) {
 
-        const response = await api.get(
+        const { data } = await api.get(
             `/bills/${billId}/analysis`
         );
 
-        return response.data;
+        return data;
 
     },
 
 };
+
 
 export default billAnalysisService;

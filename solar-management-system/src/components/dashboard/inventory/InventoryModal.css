@@ -1,5 +1,25 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/inventory/InventoryModal.css
+ *
+ * Description:
+ * Add/Edit Inventory modal styling.
+ *
+ * Features:
+ * - Add/Edit inventory modal
+ * - Damaged Quantity field styling
+ * - Damage Reason field styling
+ * - Inline validation error styling
+ * - Disabled field styling
+ * - Dark mode support
+ * - Responsive layout
+ * ============================================================================
+ */
+
+
 /* ==========================================================
-   Modal Overlay
+   MODAL OVERLAY
 ========================================================== */
 
 .modal-overlay {
@@ -24,8 +44,9 @@
 
 }
 
+
 /* ==========================================================
-   Inventory Modal
+   INVENTORY MODAL
 ========================================================== */
 
 .inventory-modal {
@@ -48,17 +69,14 @@
 
     border-radius: var(--radius-lg);
 
-    box-shadow: 0 25px 60px rgba(0,0,0,.45);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .45);
 
-    animation: modalFade .25s ease;
+    animation: inventoryModalFade .25s ease;
 
 }
 
-/* ==========================================================
-   Animation
-========================================================== */
 
-@keyframes modalFade {
+@keyframes inventoryModalFade {
 
     from {
 
@@ -78,11 +96,12 @@
 
 }
 
+
 /* ==========================================================
-   Header
+   HEADER
 ========================================================== */
 
-.modal-header {
+.inventory-modal .modal-header {
 
     display: flex;
 
@@ -90,15 +109,18 @@
 
     align-items: center;
 
-    padding: 22px 28px;
+    padding: 22px 25px;
 
     background: var(--surface-color);
 
     border-bottom: 1px solid var(--border-color);
 
+    flex-shrink: 0;
+
 }
 
-.modal-header h2 {
+
+.inventory-modal .modal-header h2 {
 
     margin: 0;
 
@@ -110,11 +132,12 @@
 
 }
 
+
 /* ==========================================================
-   Close Button
+   CLOSE BUTTON
 ========================================================== */
 
-.close-btn {
+.inventory-modal .close-btn {
 
     width: 42px;
 
@@ -128,8 +151,6 @@
 
     color: var(--text-secondary);
 
-    cursor: pointer;
-
     display: flex;
 
     justify-content: center;
@@ -138,11 +159,14 @@
 
     font-size: 22px;
 
+    cursor: pointer;
+
     transition: .25s;
 
 }
 
-.close-btn:hover {
+
+.inventory-modal .close-btn:hover {
 
     background: var(--table-hover);
 
@@ -150,8 +174,9 @@
 
 }
 
+
 /* ==========================================================
-   Form
+   INVENTORY FORM
 ========================================================== */
 
 .inventory-form {
@@ -164,8 +189,9 @@
 
 }
 
+
 /* ==========================================================
-   Scrollbar
+   SCROLLBAR
 ========================================================== */
 
 .inventory-form::-webkit-scrollbar {
@@ -173,6 +199,7 @@
     width: 8px;
 
 }
+
 
 .inventory-form::-webkit-scrollbar-thumb {
 
@@ -182,31 +209,34 @@
 
 }
 
+
 .inventory-form::-webkit-scrollbar-track {
 
     background: transparent;
 
 }
 
+
 /* ==========================================================
-   Grid
+   FORM GRID
 ========================================================== */
 
-.form-grid {
+.inventory-form .form-grid {
 
     display: grid;
 
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
 
     gap: 22px;
 
 }
 
+
 /* ==========================================================
-   Form Group
+   FORM GROUP
 ========================================================== */
 
-.form-group {
+.inventory-form .form-group {
 
     display: flex;
 
@@ -214,11 +244,12 @@
 
 }
 
+
 /* ==========================================================
-   Label
+   LABEL
 ========================================================== */
 
-.form-group label {
+.inventory-form .form-group label {
 
     margin-bottom: 8px;
 
@@ -230,15 +261,29 @@
 
 }
 
+
 /* ==========================================================
-   Inputs
+   REQUIRED MARK
 ========================================================== */
 
-.form-group input,
+.inventory-form .required-mark {
 
-.form-group select,
+    margin-left: 4px;
 
-.form-group textarea {
+    color: #ef4444;
+
+    font-weight: 700;
+
+}
+
+
+/* ==========================================================
+   INPUTS
+========================================================== */
+
+.inventory-form .form-group input,
+.inventory-form .form-group select,
+.inventory-form .form-group textarea {
 
     width: 100%;
 
@@ -260,13 +305,13 @@
 
 }
 
+
 /* ==========================================================
-   Input
+   INPUT / SELECT
 ========================================================== */
 
-.form-group input,
-
-.form-group select {
+.inventory-form .form-group input,
+.inventory-form .form-group select {
 
     height: 48px;
 
@@ -274,11 +319,12 @@
 
 }
 
+
 /* ==========================================================
-   Textarea
+   TEXTAREA
 ========================================================== */
 
-.form-group textarea {
+.inventory-form .form-group textarea {
 
     min-height: 120px;
 
@@ -288,52 +334,182 @@
 
 }
 
+
 /* ==========================================================
-   Placeholder
+   PLACEHOLDER
 ========================================================== */
 
-.form-group input::placeholder,
-
-.form-group textarea::placeholder {
+.inventory-form .form-group input::placeholder,
+.inventory-form .form-group textarea::placeholder {
 
     color: var(--text-secondary);
 
 }
 
+
 /* ==========================================================
-   Focus
+   FOCUS
 ========================================================== */
 
-.form-group input:focus,
-
-.form-group select:focus,
-
-.form-group textarea:focus {
+.inventory-form .form-group input:focus,
+.inventory-form .form-group select:focus,
+.inventory-form .form-group textarea:focus {
 
     border-color: var(--primary-color);
 
-    box-shadow:
-
-        0 0 0 3px rgba(15,118,110,.20);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, .20);
 
 }
 
+
 /* ==========================================================
-   Full Width Field
+   VALIDATION ERROR FIELD
 ========================================================== */
 
-.form-group.full-width {
+.inventory-form .form-group.has-error input,
+.inventory-form .form-group.has-error select,
+.inventory-form .form-group.has-error textarea {
+
+    border-color: #ef4444;
+
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, .10);
+
+}
+
+
+.inventory-form .form-group.has-error input:focus,
+.inventory-form .form-group.has-error select:focus,
+.inventory-form .form-group.has-error textarea:focus {
+
+    border-color: #ef4444;
+
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, .15);
+
+}
+
+
+/* ==========================================================
+   VALIDATION ERROR MESSAGE
+========================================================== */
+
+.inventory-form .validation-error {
+
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    color: #ef4444;
+
+    font-weight: 500;
+
+}
+
+
+/* ==========================================================
+   INPUT ERROR CLASS
+========================================================== */
+
+.inventory-form .input-error {
+
+    border-color: #ef4444 !important;
+
+}
+
+
+/* ==========================================================
+   DAMAGE QUANTITY
+========================================================== */
+
+.inventory-form input[name="damaged_quantity"] {
+
+    border-color: #fca5a5;
+
+}
+
+
+.inventory-form input[name="damaged_quantity"]:focus {
+
+    border-color: #ef4444;
+
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, .12);
+
+}
+
+
+/* ==========================================================
+   DAMAGE REASON
+========================================================== */
+
+.inventory-form input[name="damage_reason"] {
+
+    transition:
+
+        background .25s ease,
+
+        border-color .25s ease,
+
+        box-shadow .25s ease,
+
+        color .25s ease;
+
+}
+
+
+.inventory-form input[name="damage_reason"]:not(:disabled) {
+
+    background: #fff;
+
+}
+
+
+.inventory-form input[name="damage_reason"]:not(:disabled):focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, .20);
+
+}
+
+
+/* ==========================================================
+   DAMAGE REASON DISABLED
+========================================================== */
+
+.inventory-form input[name="damage_reason"]:disabled {
+
+    background: var(--table-header);
+
+    color: var(--text-secondary);
+
+    opacity: .75;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   FULL WIDTH FIELD
+========================================================== */
+
+.inventory-form .form-group.full-width {
 
     grid-column: 1 / -1;
 
 }
+
+
 /* ==========================================================
-   Disabled Fields
+   DISABLED
 ========================================================== */
 
-.form-group input:disabled,
-.form-group select:disabled,
-.form-group textarea:disabled {
+.inventory-form .form-group input:disabled,
+.inventory-form .form-group select:disabled,
+.inventory-form .form-group textarea:disabled {
 
     opacity: .7;
 
@@ -341,12 +517,13 @@
 
 }
 
+
 /* ==========================================================
-   Readonly Fields
+   READONLY
 ========================================================== */
 
-.form-group input[readonly],
-.form-group textarea[readonly] {
+.inventory-form .form-group input[readonly],
+.inventory-form .form-group textarea[readonly] {
 
     background: var(--table-header);
 
@@ -354,11 +531,12 @@
 
 }
 
+
 /* ==========================================================
-   File Upload
+   FILE INPUT
 ========================================================== */
 
-.form-group input[type="file"] {
+.inventory-form .form-group input[type="file"] {
 
     height: auto;
 
@@ -368,7 +546,8 @@
 
 }
 
-.form-group input[type="file"]::file-selector-button {
+
+.inventory-form .form-group input[type="file"]::file-selector-button {
 
     border: none;
 
@@ -388,14 +567,16 @@
 
 }
 
-.form-group input[type="file"]::file-selector-button:hover {
+
+.inventory-form .form-group input[type="file"]::file-selector-button:hover {
 
     opacity: .9;
 
 }
 
+
 /* ==========================================================
-   Form Actions
+   FORM ACTIONS
 ========================================================== */
 
 .inventory-form .form-actions {
@@ -410,11 +591,12 @@
 
 }
 
+
 /* ==========================================================
-   Footer
+   FOOTER
 ========================================================== */
 
-.modal-footer {
+.inventory-modal .modal-footer {
 
     display: flex;
 
@@ -432,8 +614,9 @@
 
 }
 
+
 /* ==========================================================
-   Loading State
+   LOADING
 ========================================================== */
 
 .inventory-modal.loading {
@@ -442,14 +625,16 @@
 
 }
 
+
 .inventory-modal.loading .inventory-form {
 
     opacity: .65;
 
 }
 
+
 /* ==========================================================
-   Dark Mode Improvements
+   DARK MODE
 ========================================================== */
 
 [data-theme="dark"] .inventory-modal {
@@ -460,7 +645,8 @@
 
 }
 
-[data-theme="dark"] .modal-header {
+
+[data-theme="dark"] .inventory-modal .modal-header {
 
     background: #111C2D;
 
@@ -468,7 +654,8 @@
 
 }
 
-[data-theme="dark"] .modal-footer {
+
+[data-theme="dark"] .inventory-modal .modal-footer {
 
     background: #111C2D;
 
@@ -476,11 +663,10 @@
 
 }
 
-[data-theme="dark"] .form-group input,
 
-[data-theme="dark"] .form-group select,
-
-[data-theme="dark"] .form-group textarea {
+[data-theme="dark"] .inventory-form .form-group input,
+[data-theme="dark"] .inventory-form .form-group select,
+[data-theme="dark"] .inventory-form .form-group textarea {
 
     background: #162338;
 
@@ -490,23 +676,51 @@
 
 }
 
-[data-theme="dark"] .form-group input::placeholder,
 
-[data-theme="dark"] .form-group textarea::placeholder {
+[data-theme="dark"] .inventory-form .form-group input::placeholder,
+[data-theme="dark"] .inventory-form .form-group textarea::placeholder {
 
     color: #94A3B8;
 
 }
 
-[data-theme="dark"] .form-group input[readonly],
 
-[data-theme="dark"] .form-group textarea[readonly] {
+[data-theme="dark"] .inventory-form .form-group input[readonly],
+[data-theme="dark"] .inventory-form .form-group textarea[readonly] {
 
     background: #1B2C45;
 
 }
 
-[data-theme="dark"] .close-btn {
+
+[data-theme="dark"] .inventory-form input[name="damage_reason"]:disabled {
+
+    background: #1B2C45;
+
+    color: #64748B;
+
+}
+
+
+[data-theme="dark"] .inventory-form .form-group.has-error input,
+[data-theme="dark"] .inventory-form .form-group.has-error select,
+[data-theme="dark"] .inventory-form .form-group.has-error textarea {
+
+    border-color: #F87171;
+
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, .12);
+
+}
+
+
+[data-theme="dark"] .inventory-form .validation-error {
+
+    color: #F87171;
+
+}
+
+
+[data-theme="dark"] .inventory-modal .close-btn {
 
     background: #162338;
 
@@ -514,7 +728,8 @@
 
 }
 
-[data-theme="dark"] .close-btn:hover {
+
+[data-theme="dark"] .inventory-modal .close-btn:hover {
 
     background: #22344C;
 
@@ -522,96 +737,95 @@
 
 }
 
-/* ==========================================================
-   Responsive
-========================================================== */
-
-@media (max-width:992px){
-
-    .inventory-modal{
-
-        width:95%;
-
-    }
-
-    .form-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .form-group.full-width{
-
-        grid-column:span 1;
-
-    }
-
-}
-
-@media (max-width:768px){
-
-    .inventory-form{
-
-        padding:20px;
-
-    }
-
-    .modal-header{
-
-        padding:18px 20px;
-
-    }
-
-    .modal-header h2{
-
-        font-size:22px;
-
-    }
-
-    .modal-footer{
-
-        padding:18px 20px;
-
-        flex-wrap:wrap;
-
-    }
-
-    .inventory-form .form-actions{
-
-        grid-column:span 1;
-
-    }
-
-}
-
-@media (max-width:480px){
-
-    .inventory-modal{
-
-        max-height:96vh;
-
-    }
-
-    .inventory-form{
-
-        padding:16px;
-
-    }
-
-    .modal-header{
-
-        padding:16px;
-
-    }
-
-    .modal-footer{
-
-        padding:16px;
-
-    }
-
-}
 
 /* ==========================================================
-   End Of File
+   RESPONSIVE
 ========================================================== */
+
+@media (max-width: 992px) {
+
+    .inventory-modal {
+
+        width: 95%;
+
+    }
+
+    .inventory-form .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .inventory-form .form-group.full-width {
+
+        grid-column: span 1;
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .inventory-form {
+
+        padding: 20px;
+
+    }
+
+    .inventory-modal .modal-header {
+
+        padding: 18px 20px;
+
+    }
+
+    .inventory-modal .modal-header h2 {
+
+        font-size: 22px;
+
+    }
+
+    .inventory-modal .modal-footer {
+
+        padding: 18px 20px;
+
+        flex-wrap: wrap;
+
+    }
+
+    .inventory-form .form-actions {
+
+        grid-column: span 1;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .inventory-modal {
+
+        max-height: 96vh;
+
+    }
+
+    .inventory-form {
+
+        padding: 16px;
+
+    }
+
+    .inventory-modal .modal-header {
+
+        padding: 16px;
+
+    }
+
+    .inventory-modal .modal-footer {
+
+        padding: 16px;
+
+    }
+
+}

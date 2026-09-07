@@ -21,9 +21,17 @@ return new class extends Migration
 
             $table->string('manager');
 
-            $table->string('phone', 20);
+            /*
+            |--------------------------------------------------------------------------
+            | OPTIONAL FIELDS
+            |--------------------------------------------------------------------------
+            */
 
-            $table->decimal('capacity', 10, 2);
+            // Phone number is optional.
+            $table->string('phone', 20)->nullable();
+
+            // Capacity is optional.
+            $table->decimal('capacity', 10, 2)->nullable();
 
             $table->enum('status', [
                 'Active',

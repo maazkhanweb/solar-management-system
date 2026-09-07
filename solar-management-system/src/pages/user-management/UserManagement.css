@@ -397,3 +397,185 @@
     }
 
 }
+
+/* ==========================================================
+   User Notification
+========================================================== */
+
+.user-notification-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.55);
+
+    backdrop-filter: blur(4px);
+
+    z-index: 10000;
+
+}
+
+.user-notification {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 26px;
+
+    border-radius: 16px;
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-color);
+
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .25);
+
+    text-align: center;
+
+    animation: userNotificationFade .2s ease;
+
+}
+
+@keyframes userNotificationFade {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-10px) scale(.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+.user-notification-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+.user-notification-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+}
+
+.user-notification.success .user-notification-icon {
+
+    background: rgba(34, 197, 94, .14);
+
+    color: #16A34A;
+
+}
+
+.user-notification.error .user-notification-icon {
+
+    background: rgba(239, 68, 68, .14);
+
+    color: #DC2626;
+
+}
+
+.user-notification-content p {
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 16px;
+
+    line-height: 1.5;
+
+}
+
+.user-notification-btn {
+
+    min-width: 90px;
+
+    height: 42px;
+
+    margin-top: 22px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #2563EB,
+        #1D4ED8
+    );
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.user-notification-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 18px rgba(37, 99, 235, .25);
+
+}
+
+[data-theme="dark"] .user-notification {
+
+    background: #12202D;
+
+    border-color: #234056;
+
+}
+
+[data-theme="dark"] .user-notification-content p {
+
+    color: #F8FAFC;
+
+}

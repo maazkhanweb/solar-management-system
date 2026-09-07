@@ -1,115 +1,962 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/wapda-bill/WapdaBillModal.css
+ *
+ * Description:
+ * Add/Edit WAPDA Bill modal styling.
+ *
+ * Updated:
+ * - Removed blue Bill modal header.
+ * - Header now matches User / Area / Inventory modals.
+ * - Close button now matches other modals.
+ * - Header and close button styles are scoped to .bill-modal.
+ * - Removed duplicate CSS blocks.
+ * - Existing OCR and bill form styling preserved.
+ * ============================================================================
+ */
+
+
+/* ==========================================================
+   OVERLAY
+========================================================== */
+
 .modal-overlay {
+
     position: fixed;
+
     inset: 0;
-    background: rgba(15, 23, 42, 0.5);
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
-    z-index: 1000;
+
+    padding: 30px;
+
+    background: rgba(15, 23, 42, 0.60);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 9999;
+
+    animation: overlayFade 0.25s ease;
+
 }
 
-.delete-modal {
-    width: 430px;
-    max-width: 95%;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    animation: modalFade 0.3s ease;
-}
 
-.delete-modal h2 {
-    margin: 0 0 15px;
-    font-size: 24px;
-    color: #0f172a;
-}
-
-.delete-modal p {
-    color: #475569;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.bill-details {
-    margin: 20px 0;
-    padding: 15px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-}
-
-.bill-details p {
-    margin: 8px 0;
-}
-
-.bill-details strong {
-    color: #0f172a;
-}
-
-.delete-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.cancel-btn,
-.delete-btn {
-    border: none;
-    border-radius: 8px;
-    padding: 10px 18px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.cancel-btn {
-    background: #64748b;
-    color: #ffffff;
-}
-
-.cancel-btn:hover {
-    background: #475569;
-}
-
-.delete-btn {
-    background: #dc2626;
-    color: #ffffff;
-}
-
-.delete-btn:hover {
-    background: #b91c1c;
-}
-
-@keyframes modalFade {
+@keyframes overlayFade {
 
     from {
+
         opacity: 0;
-        transform: translateY(-20px) scale(0.98);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateY(0) scale(1);
+
     }
 
 }
 
-@media (max-width: 576px) {
 
-    .delete-modal {
-        width: 95%;
+/* ==========================================================
+   BILL MODAL
+========================================================== */
+
+.bill-modal {
+
+    width: 100%;
+
+    max-width: 1180px;
+
+    max-height: 92vh;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-radius: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow:
+
+        0 35px 70px rgba(15, 23, 42, 0.18);
+
+    animation: modalOpen 0.35s ease;
+
+}
+
+
+@keyframes modalOpen {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-25px) scale(0.98);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================
+   HEADER
+   Same style as User / Area / Inventory Modal
+========================================================== */
+
+.bill-modal .modal-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px 25px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    color: #1e3a5f;
+
+    flex-shrink: 0;
+
+}
+
+
+/* ==========================================================
+   HEADER TITLE
+========================================================== */
+
+.bill-modal .modal-header h2 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    color: #1e3a5f;
+
+    letter-spacing: 0;
+
+}
+
+
+/* ==========================================================
+   HEADER DESCRIPTION
+========================================================== */
+
+.bill-modal .modal-header p {
+
+    margin-top: 6px;
+
+    font-size: 14px;
+
+    color: #64748b;
+
+}
+
+
+/* ==========================================================
+   CLOSE BUTTON
+   Same style as User / Area Modal
+========================================================== */
+
+.bill-modal .close-btn {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 22px;
+
+    font-weight: 400;
+
+    color: #64748b;
+
+    background: #f1f5f9;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: all 0.25s ease;
+
+}
+
+
+/* ==========================================================
+   CLOSE BUTTON HOVER
+========================================================== */
+
+.bill-modal .close-btn:hover {
+
+    background: #e2e8f0;
+
+    color: #ef4444;
+
+    transform: none;
+
+}
+
+
+/* ==========================================================
+   BODY / BILL FORM
+========================================================== */
+
+.bill-form {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 28px;
+
+    background: #ffffff;
+
+}
+
+
+/* ==========================================================
+   BILL FORM SCROLLBAR
+========================================================== */
+
+.bill-form::-webkit-scrollbar {
+
+    width: 8px;
+
+}
+
+
+.bill-form::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+
+.bill-form::-webkit-scrollbar-thumb {
+
+    background: #cbd5e1;
+
+    border-radius: 20px;
+
+}
+
+
+.bill-form::-webkit-scrollbar-thumb:hover {
+
+    background: #94a3b8;
+
+}
+
+
+/* ==========================================================
+   SECTION CARD
+========================================================== */
+
+.form-section {
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    padding: 24px;
+
+    box-shadow:
+
+        0 10px 25px rgba(15, 23, 42, 0.05);
+
+}
+
+
+/* ==========================================================
+   SECTION TITLE
+========================================================== */
+
+.form-section-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+
+}
+
+
+.form-section-title i {
+
+    color: #2563eb;
+
+    font-size: 22px;
+
+}
+
+
+/* ==========================================================
+   FORM GRID
+========================================================== */
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+}
+
+
+/* ==========================================================
+   FULL WIDTH
+========================================================== */
+
+.full-width {
+
+    grid-column: 1 / -1;
+
+}
+
+
+/* ==========================================================
+   SECTION DIVIDER
+========================================================== */
+
+.section-divider {
+
+    height: 1px;
+
+    margin: 25px 0;
+
+    background: #e2e8f0;
+
+}
+
+
+/* ==========================================================
+   FORM GROUP
+========================================================== */
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+/* ==========================================================
+   LABEL
+========================================================== */
+
+.form-group label {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+.form-group label span {
+
+    color: #ef4444;
+
+    margin-left: 4px;
+
+}
+
+
+/* ==========================================================
+   INPUTS / SELECT / TEXTAREA
+========================================================== */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    border: 1px solid #dbe4ef;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #1e3a5f;
+
+    font-size: 14px;
+
+    transition: 0.30s;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ==========================================================
+   INPUT / SELECT
+========================================================== */
+
+.form-group input,
+.form-group select {
+
+    height: 50px;
+
+    padding: 0 16px;
+
+}
+
+
+/* ==========================================================
+   TEXTAREA
+========================================================== */
+
+.form-group textarea {
+
+    min-height: 120px;
+
+    padding: 14px 16px;
+
+    resize: vertical;
+
+}
+
+
+/* ==========================================================
+   PLACEHOLDER
+========================================================== */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #94a3b8;
+
+}
+
+
+/* ==========================================================
+   FOCUS
+========================================================== */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #2563eb;
+
+    box-shadow:
+
+        0 0 0 4px rgba(37, 99, 235, 0.10);
+
+}
+
+
+/* ==========================================================
+   DISABLED
+========================================================== */
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled {
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    cursor: not-allowed;
+
+}
+
+
+/* ==========================================================
+   FILE INPUT
+========================================================== */
+
+.form-group input[type="file"] {
+
+    height: auto;
+
+    padding: 14px;
+
+    border: 2px dashed #cbd5e1;
+
+    background: #f8fafc;
+
+    cursor: pointer;
+
+}
+
+
+.form-group input[type="file"]:hover {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+}
+
+
+.form-group input[type="file"]::file-selector-button {
+
+    margin-right: 16px;
+
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: 0.30s;
+
+    font-weight: 600;
+
+}
+
+
+.form-group input[type="file"]::file-selector-button:hover {
+
+    background: #1d4ed8;
+
+}
+
+
+/* ==========================================================
+   OCR CARD
+========================================================== */
+
+.ocr-card {
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    margin-top: 20px;
+
+    box-shadow:
+
+        0 8px 24px rgba(15, 23, 42, 0.05);
+
+}
+
+
+/* ==========================================================
+   OCR CARD TITLE
+========================================================== */
+
+.ocr-card-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+
+    margin-bottom: 18px;
+
+}
+
+
+.ocr-card-title i {
+
+    color: #2563eb;
+
+    font-size: 22px;
+
+}
+
+
+/* ==========================================================
+   OCR UPLOAD BOX
+========================================================== */
+
+.ocr-upload {
+
+    border: 2px dashed #cbd5e1;
+
+    border-radius: 16px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    background: #f8fafc;
+
+    transition: 0.30s;
+
+}
+
+
+.ocr-upload:hover {
+
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+}
+
+
+/* ==========================================================
+   OCR UPLOAD ICON
+========================================================== */
+
+.ocr-upload-icon {
+
+    font-size: 50px;
+
+    color: #2563eb;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* ==========================================================
+   OCR UPLOAD TITLE
+========================================================== */
+
+.ocr-upload h4 {
+
+    margin-bottom: 10px;
+
+    color: #0f172a;
+
+    font-size: 18px;
+
+}
+
+
+/* ==========================================================
+   OCR UPLOAD TEXT
+========================================================== */
+
+.ocr-upload p {
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================================
+   BILL IMAGE PREVIEW
+========================================================== */
+
+.bill-preview {
+
+    margin-top: 22px;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e8f0;
+
+}
+
+
+.bill-preview img {
+
+    width: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+
+/* ==========================================================
+   AI SUCCESS
+========================================================== */
+
+.ai-success {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+    font-weight: 600;
+
+}
+
+
+.ai-success i {
+
+    font-size: 20px;
+
+}
+
+
+/* ==========================================================
+   ERROR MESSAGE
+========================================================== */
+
+.form-error {
+
+    margin-top: 6px;
+
+    font-size: 13px;
+
+    color: #dc2626;
+
+}
+
+
+/* ==========================================================
+   INPUT ERROR
+========================================================== */
+
+.input-error {
+
+    border-color: #dc2626 !important;
+
+}
+
+
+/* ==========================================================
+   INPUT SUCCESS
+========================================================== */
+
+.input-success {
+
+    border-color: #22c55e !important;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 992px) {
+
+    .bill-modal {
+
+        max-width: 95%;
+
+    }
+
+    .bill-form {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .full-width {
+
+        grid-column: 1;
+
+    }
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .modal-overlay {
+
+        padding: 15px;
+
+    }
+
+    .bill-modal {
+
+        max-height: 95vh;
+
+        border-radius: 18px;
+
+    }
+
+    .bill-modal .modal-header {
+
+        padding: 18px 20px;
+
+    }
+
+    .bill-modal .modal-header h2 {
+
+        font-size: 23px;
+
+    }
+
+    .bill-modal .close-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+        font-size: 20px;
+
+    }
+
+    .bill-form {
+
         padding: 20px;
+
+        gap: 20px;
+
     }
 
-    .delete-actions {
-        flex-direction: column;
+    .form-section {
+
+        padding: 20px;
+
     }
 
-    .cancel-btn,
-    .delete-btn {
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .modal-overlay {
+
+        padding: 10px;
+
+    }
+
+    .bill-modal {
+
         width: 100%;
+
+        max-height: 96vh;
+
+        border-radius: 16px;
+
+    }
+
+    .bill-modal .modal-header {
+
+        padding: 16px;
+
+    }
+
+    .bill-modal .modal-header h2 {
+
+        font-size: 21px;
+
+    }
+
+    .bill-modal .close-btn {
+
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 19px;
+
+    }
+
+    .bill-form {
+
+        padding: 16px;
+
+        gap: 16px;
+
+    }
+
+    .form-section {
+
+        padding: 16px;
+
+        border-radius: 14px;
+
     }
 
 }

@@ -1,439 +1,682 @@
 /* ===========================================================
-   BILL ANALYSIS CARD
-   PART 1
+   FILE:
+   src/components/dashboard/wapda-bill/BillAnalysisCard.css
+
+   DESCRIPTION:
+   Centered WAPDA Bill Analysis Modal
+   No Internal Scrolling
+   Solid White Design
+   Large Section Headings
+   Responsive Layout
 =========================================================== */
+
 
 /* ===========================================================
-   Container
+   OVERLAY
 =========================================================== */
 
-.bill-analysis-card {
+.bill-analysis-overlay {
 
-    margin-top: 25px;
+    position: fixed !important;
 
-    padding: 28px;
+    inset: 0 !important;
 
-    border-radius: 18px;
+    width: 100vw !important;
+    height: 100vh !important;
 
-    background: var(--card-bg);
+    display: flex !important;
 
-    border: 1px solid var(--border-color);
+    align-items: center !important;
+    justify-content: center !important;
 
-    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    padding: 18px !important;
+
+    background: rgba(15, 23, 42, 0.65) !important;
+
+    z-index: 9999 !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
 
 }
 
+
 /* ===========================================================
-   Header
+   MAIN MODAL
 =========================================================== */
 
-.analysis-header {
+.bill-analysis-overlay .bill-analysis-card {
 
-    display: flex;
+    position: relative !important;
 
-    justify-content: space-between;
+    width: min(1500px, 100%) !important;
 
-    align-items: center;
+    max-width: 1500px !important;
 
-    margin-bottom: 25px;
+    height: calc(100vh - 36px) !important;
 
-    padding-bottom: 18px;
+    max-height: calc(100vh - 36px) !important;
 
-    border-bottom: 1px solid var(--border-color);
+    margin: 0 !important;
+
+    padding: 22px 28px !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #d7dee8 !important;
+
+    border-radius: 16px !important;
+
+    box-shadow:
+        0 20px 60px rgba(15, 23, 42, 0.25) !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
 
 }
+
+
+/* ===========================================================
+   HEADER
+=========================================================== */
+
+.bill-analysis-card .analysis-header {
+
+    position: relative !important;
+
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    align-items: flex-start !important;
+
+    justify-content: space-between !important;
+
+    margin-bottom: 14px !important;
+
+    padding-bottom: 12px !important;
+
+    padding-right: 50px !important;
+
+    background: #ffffff !important;
+
+    border-bottom: 2px solid #2f5fb3 !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* ===========================================================
+   MAIN TITLE
+=========================================================== */
 
 .analysis-header h3 {
 
-    margin: 0;
+    margin: 0 !important;
 
-    font-size: 28px;
+    color: #1f3761 !important;
 
-    font-weight: 700;
+    font-size: 27px !important;
 
-    color: var(--text-primary);
+    font-weight: 800 !important;
+
+    line-height: 1.2 !important;
 
 }
+
+
+/* ===========================================================
+   MAIN SUBTITLE
+=========================================================== */
 
 .analysis-header p {
 
-    margin-top: 6px;
+    margin: 4px 0 0 !important;
 
-    color: var(--text-secondary);
+    color: #687991 !important;
 
-    font-size: 14px;
+    font-size: 13px !important;
+
+    line-height: 1.4 !important;
 
 }
 
+
 /* ===========================================================
-   Grid
+   CLOSE X
+=========================================================== */
+
+.analysis-close-button {
+
+    position: absolute !important;
+
+    top: 0 !important;
+
+    right: 0 !important;
+
+    width: 38px !important;
+
+    height: 38px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    border: none !important;
+
+    border-radius: 9px !important;
+
+    background: #f1f5f9 !important;
+
+    color: #52647d !important;
+
+    font-size: 24px !important;
+
+    font-weight: 600 !important;
+
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+
+}
+
+
+.analysis-close-button:hover {
+
+    background: #fee2e2 !important;
+
+    color: #dc3f4c !important;
+
+}
+
+
+/* ===========================================================
+   CONTENT
+=========================================================== */
+
+.analysis-content {
+
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+
+    min-height: 0 !important;
+
+    background: #ffffff !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+/* ===========================================================
+   SECTION
+=========================================================== */
+
+.analysis-section {
+
+    width: 100% !important;
+
+    margin-bottom: 14px !important;
+
+    background: #ffffff !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+.analysis-section:last-child {
+
+    margin-bottom: 0 !important;
+
+}
+
+
+/* ===========================================================
+   SECTION HEADING
+=========================================================== */
+
+.analysis-section-heading {
+
+    margin-bottom: 8px !important;
+
+    padding: 0 !important;
+
+    background: #ffffff !important;
+
+}
+
+
+/* ===========================================================
+   LARGE SECTION TITLES
+=========================================================== */
+
+.analysis-section-heading h4 {
+
+    margin: 0 !important;
+
+    color: #1f3761 !important;
+
+    font-size: 22px !important;
+
+    font-weight: 800 !important;
+
+    line-height: 1.2 !important;
+
+    letter-spacing: 0.1px !important;
+
+}
+
+
+/* ===========================================================
+   SECTION DESCRIPTION
+=========================================================== */
+
+.analysis-section-heading p {
+
+    margin: 2px 0 0 !important;
+
+    color: #687991 !important;
+
+    font-size: 12px !important;
+
+    line-height: 1.3 !important;
+
+}
+
+
+/* ===========================================================
+   GRID
 =========================================================== */
 
 .analysis-grid {
 
-    display: grid;
+    display: grid !important;
 
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr)) !important;
 
-    gap: 20px;
+    gap: 10px !important;
+
+    width: 100% !important;
+
+    background: #ffffff !important;
+
+    box-sizing: border-box !important;
 
 }
 
+
 /* ===========================================================
-   Card
+   ITEM CARD
 =========================================================== */
 
 .analysis-item {
 
-    background: var(--input-bg);
+    min-height: 76px !important;
 
-    border: 1px solid var(--border-color);
+    display: flex !important;
 
-    border-radius: 14px;
+    flex-direction: column !important;
 
-    padding: 18px;
+    justify-content: center !important;
 
-    transition: .3s;
+    padding: 13px 16px !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #d7dee8 !important;
+
+    border-radius: 11px !important;
+
+    box-shadow:
+        0 3px 10px rgba(15, 23, 42, 0.035) !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
 
 }
 
-.analysis-item:hover {
 
-    transform: translateY(-4px);
-
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-
-}
+/* ===========================================================
+   LABEL
+=========================================================== */
 
 .analysis-item span {
 
-    display: block;
+    display: block !important;
 
-    margin-bottom: 10px;
+    margin-bottom: 5px !important;
 
-    color: var(--text-secondary);
+    color: #687991 !important;
 
-    font-size: 14px;
+    font-size: 11px !important;
 
-    font-weight: 500;
+    font-weight: 600 !important;
+
+    line-height: 1.25 !important;
 
 }
+
+
+/* ===========================================================
+   VALUE
+=========================================================== */
 
 .analysis-item strong {
 
-    display: block;
+    display: block !important;
 
-    font-size: 30px;
+    color: #243b5a !important;
 
-    font-weight: 700;
+    font-size: 18px !important;
 
-    color: var(--text-primary);
+    font-weight: 700 !important;
+
+    line-height: 1.25 !important;
+
+    word-break: break-word !important;
+
+    overflow-wrap: anywhere !important;
 
 }
 
+
 /* ===========================================================
-   Saving
+   COLORS
 =========================================================== */
 
-.saving {
+.analysis-item strong.difference-positive,
+.analysis-item strong.reason-success,
+.analysis-item strong.saving {
 
-    color: #22c55e;
+    color: #21865f !important;
 
 }
 
+
+.analysis-item strong.difference-negative,
+.analysis-item strong.reason-danger {
+
+    color: #dc3f4c !important;
+
+}
+
+
+.analysis-item strong.efficiency {
+
+    color: #243b5a !important;
+
+}
+
+
 /* ===========================================================
-   Efficiency
+   FOOTER
 =========================================================== */
 
-.efficiency {
+.analysis-footer {
 
-    color: #2563eb;
+    flex: 0 0 auto !important;
 
-}
+    display: flex !important;
 
-.efficiency.excellent {
+    align-items: center !important;
 
-    color: #22c55e;
+    justify-content: flex-end !important;
 
-}
+    margin-top: 10px !important;
 
-.efficiency.very-good {
+    padding-top: 10px !important;
 
-    color: #3b82f6;
+    border-top: 1px solid #e2e8f0 !important;
 
-}
-
-.efficiency.good {
-
-    color: #f59e0b;
+    background: #ffffff !important;
 
 }
 
-.efficiency.average {
 
-    color: #f97316;
-
-}
-
-.efficiency.poor {
-
-    color: #ef4444;
-
-}
 /* ===========================================================
-   Empty State
+   CLOSE BUTTON
+=========================================================== */
+
+.analysis-footer-close-button {
+
+    min-width: 90px !important;
+
+    padding: 9px 20px !important;
+
+    border: none !important;
+
+    border-radius: 8px !important;
+
+    background: #2f5fb3 !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
+
+    cursor: pointer !important;
+
+}
+
+
+.analysis-footer-close-button:hover {
+
+    background: #244d94 !important;
+
+}
+
+
+/* ===========================================================
+   EMPTY STATE
 =========================================================== */
 
 .empty-analysis {
 
-    display: flex;
+    flex: 1 !important;
 
-    flex-direction: column;
+    display: flex !important;
 
-    justify-content: center;
+    align-items: center !important;
 
-    align-items: center;
+    justify-content: center !important;
 
-    min-height: 260px;
+    background: #ffffff !important;
 
 }
+
 
 .analysis-empty {
 
-    text-align: center;
+    padding: 30px !important;
 
-    max-width: 450px;
+    text-align: center !important;
 
-}
-
-.analysis-empty h4 {
-
-    margin-bottom: 12px;
-
-    font-size: 22px;
-
-    font-weight: 700;
-
-    color: var(--text-primary);
+    color: #687991 !important;
 
 }
 
-.analysis-empty p {
-
-    line-height: 1.8;
-
-    font-size: 15px;
-
-    color: var(--text-secondary);
-
-}
-
-.analysis-empty strong {
-
-    color: #2563eb;
-
-}
 
 /* ===========================================================
-   Light Theme
+   DARK MODE FORCE WHITE
 =========================================================== */
 
-[data-theme="light"] .bill-analysis-card {
+[data-theme="dark"] .bill-analysis-overlay .bill-analysis-card,
+[data-theme="dark"] .bill-analysis-card .analysis-header,
+[data-theme="dark"] .analysis-content,
+[data-theme="dark"] .analysis-section,
+[data-theme="dark"] .analysis-section-heading,
+[data-theme="dark"] .analysis-grid,
+[data-theme="dark"] .analysis-item,
+[data-theme="dark"] .analysis-footer,
+[data-theme="dark"] .analysis-empty {
 
-    background: #ffffff;
+    background: #ffffff !important;
 
-    border-color: #e5e7eb;
-
-}
-
-[data-theme="light"] .analysis-item {
-
-    background: #f8fafc;
-
-    border-color: #e5e7eb;
-
-}
-
-[data-theme="light"] .analysis-item:hover {
-
-    background: #ffffff;
+    background-color: #ffffff !important;
 
 }
+
 
 /* ===========================================================
-   Dark Theme
+   DARK MODE TEXT
 =========================================================== */
 
-[data-theme="dark"] .bill-analysis-card {
-
-    background: #18273c;
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .analysis-header {
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .analysis-header h3 {
-
-    color: #ffffff;
-
-}
-
-[data-theme="dark"] .analysis-header p {
-
-    color: #cbd5e1;
-
-}
-
-[data-theme="dark"] .analysis-item {
-
-    background: #223550;
-
-    border-color: #334155;
-
-}
-
-[data-theme="dark"] .analysis-item:hover {
-
-    background: #2b405d;
-
-}
-
-[data-theme="dark"] .analysis-item span {
-
-    color: #94a3b8;
-
-}
-
+[data-theme="dark"] .analysis-header h3,
+[data-theme="dark"] .analysis-section-heading h4,
 [data-theme="dark"] .analysis-item strong {
 
-    color: #ffffff;
+    color: #243b5a !important;
 
 }
 
-[data-theme="dark"] .analysis-empty h4 {
 
-    color: #ffffff;
+[data-theme="dark"] .analysis-header p,
+[data-theme="dark"] .analysis-section-heading p,
+[data-theme="dark"] .analysis-item span {
 
-}
-
-[data-theme="dark"] .analysis-empty p {
-
-    color: #cbd5e1;
+    color: #687991 !important;
 
 }
+
 
 /* ===========================================================
-   Responsive
+   RESPONSIVE
 =========================================================== */
 
-@media (max-width: 992px) {
+@media (max-width: 1100px) {
 
     .analysis-grid {
 
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr)) !important;
 
     }
 
 }
 
-@media (max-width: 768px) {
 
-    .bill-analysis-card {
+@media (max-width: 900px) {
 
-        padding: 20px;
+    .bill-analysis-overlay {
 
-    }
-
-    .analysis-header {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 8px;
+        padding: 12px !important;
 
     }
 
-    .analysis-header h3 {
 
-        font-size: 24px;
+    .bill-analysis-overlay .bill-analysis-card {
+
+        height: calc(100vh - 24px) !important;
+
+        max-height: calc(100vh - 24px) !important;
+
+        padding: 18px !important;
 
     }
+
 
     .analysis-grid {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
 
     }
 
-    .analysis-item strong {
 
-        font-size: 24px;
+    .analysis-section-heading h4 {
+
+        font-size: 20px !important;
 
     }
 
 }
 
-@media (max-width: 480px) {
 
-    .bill-analysis-card {
+@media (max-width: 600px) {
 
-        padding: 16px;
+    .bill-analysis-overlay {
+
+        padding: 8px !important;
+
+    }
+
+
+    .bill-analysis-overlay .bill-analysis-card {
+
+        height: calc(100vh - 16px) !important;
+
+        max-height: calc(100vh - 16px) !important;
+
+        padding: 15px !important;
+
+        border-radius: 12px !important;
 
     }
 
-    .analysis-header h3 {
 
-        font-size: 22px;
+    .analysis-grid {
+
+        grid-template-columns: 1fr !important;
+
+        gap: 8px !important;
 
     }
+
+
+    .analysis-section {
+
+        margin-bottom: 12px !important;
+
+    }
+
+
+    .analysis-section-heading h4 {
+
+        font-size: 18px !important;
+
+    }
+
 
     .analysis-item {
 
-        padding: 16px;
+        min-height: 68px !important;
+
+        padding: 11px 13px !important;
 
     }
+
 
     .analysis-item strong {
 
-        font-size: 20px;
+        font-size: 16px !important;
 
     }
 
-}
-.excellent{
 
-    color:#22c55e;
+    .analysis-footer-close-button {
 
-}
+        width: 100% !important;
 
-.reason{
-
-    color:#f59e0b;
-
-}
-/* ==========================================
-   Reason Colors
-========================================== */
-
-.reason-success{
-
-    color:#22c55e !important;
-
-    font-weight:700;
-
-}
-
-.reason-danger{
-
-    color:#ef4444 !important;
-
-    font-weight:700;
+    }
 
 }

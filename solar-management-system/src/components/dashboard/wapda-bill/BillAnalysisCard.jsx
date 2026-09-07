@@ -1,14 +1,35 @@
 /**
- * ===========================================================
+ * ============================================================================
  * File:
  * src/components/dashboard/wapda-bill/BillAnalysisCard.jsx
  *
  * Description:
- * WAPDA Bill Analysis Card
- * ===========================================================
+ * Displays complete WAPDA Bill and Solar Performance Analysis.
+ *
+ * Features:
+ * - Centered analysis modal
+ * - No internal scrolling
+ * - Background overlay
+ * - WAPDA bill details
+ * - Solar generation details
+ * - WAPDA vs Solar comparison
+ * - Consumer information
+ * - Area information
+ * - Bill period
+ * - Billing information
+ * - Solar performance calculations
+ * - Close button
+ * - Uses original bill data as fallback when analysis API does not return
+ *   complete bill information
+ * ============================================================================
  */
 
 import "./BillAnalysisCard.css";
+
+
+/* ==========================================================================
+   FORMAT VALUE
+========================================================================== */
 
 const formatValue = (
     value,
@@ -20,55 +41,165 @@ const formatValue = (
         value === undefined ||
         value === ""
     ) {
-
         return "-";
+    }
+
+    const numericValue =
+        Number(value);
+
+    if (
+        Number.isNaN(
+            numericValue
+        )
+    ) {
+        return `${value}${suffix}`;
+    }
+
+    return `${numericValue.toFixed(2)}${suffix}`;
+};
+
+
+/* ==========================================================================
+   FORMAT MONTH
+========================================================================== */
+
+const formatMonth = (
+    month
+) => {
+
+    const months = [
+
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+
+    ];
+
+    if (
+        month === null ||
+        month === undefined ||
+        month === ""
+    ) {
+        return "-";
+    }
+
+    const monthNumber =
+        Number(month);
+
+    if (
+        !Number.isNaN(
+            monthNumber
+        ) &&
+        monthNumber >= 1 &&
+        monthNumber <= 12
+    ) {
+
+        return months[
+            monthNumber - 1
+        ];
 
     }
 
-    return `${Number(value).toFixed(2)}${suffix}`;
-
+    return String(month);
 };
 
-function BillAnalysisCard({
 
+/* ==========================================================================
+   GET FIRST AVAILABLE VALUE
+========================================================================== */
+
+const firstValue = (
+    ...values
+) => {
+
+    for (const value of values) {
+
+        if (
+            value !== null &&
+            value !== undefined &&
+            value !== ""
+        ) {
+            return value;
+        }
+
+    }
+
+    return "-";
+};
+
+
+/* ==========================================================================
+   COMPONENT
+========================================================================== */
+
+const BillAnalysisCard = ({
     analysis,
+    bill,
+    onClose,
+}) => {
 
-}) {
 
-    console.log(analysis);
+    /* ======================================================================
+       EMPTY STATE
+    ====================================================================== */
 
     if (!analysis) {
 
         return (
 
-            <div className="bill-analysis-card empty-analysis">
+            <div className="bill-analysis-overlay">
 
-                <div className="analysis-header">
+                <div
+                    className="bill-analysis-card"
+                    onClick={(event) =>
+                        event.stopPropagation()
+                    }
+                >
 
-                    <h3>
+                    <div className="analysis-header">
 
-                        Bill Analysis
+                        <div>
 
-                    </h3>
+                            <h3 className="analysis-title">
+                                Bill Analysis
+                            </h3>
 
-                </div>
+                            <p className="analysis-subtitle">
+                                AI Generated Solar Performance Report
+                            </p>
 
-                <div className="analysis-empty">
+                        </div>
 
-                    <h4>
+                        {onClose && (
 
-                        No Analysis Available
+                            <button
+                                type="button"
+                                className="analysis-close-button"
+                                onClick={onClose}
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
 
-                    </h4>
+                        )}
 
-                    <p>
+                    </div>
 
-                        Click the
-                        <strong> Analysis </strong>
-                        button from the bill table to view
-                        AI powered bill analysis.
+                    <div className="analysis-empty">
 
-                    </p>
+                        Select a bill and click Analysis
+                        to view the complete report.
+
+                    </div>
 
                 </div>
 
@@ -78,201 +209,795 @@ function BillAnalysisCard({
 
     }
 
-    return (
 
-        <div className="bill-analysis-card">
+    /* ======================================================================
+       BILL DATA
+       ----------------------------------------------------------------------
+       Analysis API may return bill data in different locations.
+       Original selected bill is also used as fallback.
+    ====================================================================== */
 
-            {/* ==========================================
-                Header
-            ========================================== */}
+    const billData =
 
-            <div className="analysis-header">
+        analysis.bill ||
 
-                <div>
+        analysis.bill_data ||
 
-                    <h3>
+        analysis.bill_details ||
 
-                        Bill Analysis
+        bill ||
 
-                    </h3>
+        {};
 
-                    <p>
 
-                        AI Generated Solar Performance Report
+    /* ======================================================================
+       BASIC BILL INFORMATION
+    ====================================================================== */
 
-                    </p>
+    const consumerName = firstValue(
 
-                </div>
+        analysis.consumer_name,
 
-            </div>
+        analysis.consumerName,
 
-            {/* ==========================================
-                Body
-            ========================================== */}
+        billData.consumer_name,
 
-            <div className="analysis-grid">
+        billData.consumerName,
 
-                <div className="analysis-item">
+        billData.consumer?.name,
 
-                    <span>
+        billData.customer_name,
 
-                        Units Consumed
+        billData.customerName
 
-                    </span>
+    );
 
-                    <strong>
 
-                        {formatValue(
-                            analysis.units_consumed
-                        )} Units
+    const referenceNumber = firstValue(
 
-                    </strong>
+        analysis.reference_number,
 
-                </div>
+        analysis.referenceNumber,
 
-                <div className="analysis-item">
+        analysis.reference_no,
 
-                    <span>
+        billData.reference_number,
 
-                        Generated Units
+        billData.referenceNumber,
 
-                    </span>
+        billData.reference_no
 
-                    <strong>
+    );
 
-                        {formatValue(
-                            analysis.generated_units
-                        )} Units
 
-                    </strong>
+    const areaName = firstValue(
 
-                </div>
+        analysis.area_name,
 
-                <div className="analysis-item">
+        analysis.areaName,
 
-                    <span>
+        analysis.area?.area_name,
 
-                        Difference
+        analysis.area?.name,
 
-                    </span>
+        billData.area_name,
 
-                    <strong>
+        billData.areaName,
 
-                        {formatValue(
-                            analysis.difference_units
-                        )} Units
+        billData.area?.area_name,
 
-                    </strong>
+        billData.area?.name
 
-                </div>
+    );
 
-                <div className="analysis-item">
 
-                    <span>
+    const billMonth = firstValue(
 
-                        Solar Coverage
+        analysis.bill_month,
 
-                    </span>
+        analysis.billMonth,
 
-                    <strong>
+        billData.bill_month,
 
-                        {formatValue(
-                            analysis.solar_coverage,
-                            "%"
-                        )}
+        billData.billMonth
 
-                    </strong>
+    );
 
-                </div>
-                                <div className="analysis-item">
 
-                    <span>
+    const billYear = firstValue(
 
-                        WAPDA Dependency
+        analysis.bill_year,
 
-                    </span>
+        analysis.billYear,
 
-                    <strong>
+        billData.bill_year,
 
-                        {formatValue(
-                            analysis.wapda_dependency,
-                            "%"
-                        )}
+        billData.billYear
 
-                    </strong>
+    );
 
-                </div>
 
-                <div className="analysis-item">
+    const billAddress = firstValue(
 
-                    <span>
+        analysis.bill_address,
 
-                        Unit Rate
+        analysis.billAddress,
 
-                    </span>
+        billData.bill_address,
 
-                    <strong>
+        billData.billAddress
 
-                        Rs. {formatValue(
-                            analysis.unit_rate
-                        )}
+    );
 
-                    </strong>
 
-                </div>
+    /* ======================================================================
+       ELECTRICITY VALUES
+    ====================================================================== */
 
-                <div className="analysis-item saving-card">
+    const consumedUnits =
+        Number(
+            analysis.units_consumed ??
+            billData.units_consumed ??
+            0
+        ) || 0;
 
-                    <span>
 
-                        Estimated Saving
+    const generatedUnits =
+        Number(
+            analysis.generated_units ??
+            analysis.solar_units ??
+            billData.solar_units ??
+            billData.solar_generated_units ??
+            0
+        ) || 0;
 
-                    </span>
 
-                    <strong className="saving">
+    const billAmount =
+        Number(
+            analysis.bill_amount ??
+            billData.bill_amount ??
+            0
+        ) || 0;
 
-                        Rs. {formatValue(
-                            analysis.estimated_saving
-                        )}
 
-                    </strong>
+    /* ======================================================================
+       DIFFERENCE
+    ====================================================================== */
 
-                </div>
+    const calculatedDifference =
+        generatedUnits -
+        consumedUnits;
 
-                <div className="analysis-item">
 
-    <span>
+    const differenceUnits =
 
-        Reason
+        analysis.difference_units !== null &&
 
-    </span>
+        analysis.difference_units !== undefined &&
 
-    <strong
-    className={
-        Number(analysis.generated_units) >=
-        Number(analysis.units_consumed)
-            ? "reason-success"
-            : "reason-danger"
-    }
->
+        analysis.difference_units !== ""
 
-    {
-
-        Number(analysis.generated_units) >=
-        Number(analysis.units_consumed)
-
-            ? "Excellent"
-
-            : (
-                analysis.generation_loss_reason ||
-                "No Reason"
+            ? Number(
+                analysis.difference_units
             )
 
-    }
+            : calculatedDifference;
 
-</strong>
 
-</div>
+    const differenceClass =
+
+        differenceUnits < 0
+
+            ? "difference-negative"
+
+            : differenceUnits > 0
+
+                ? "difference-positive"
+
+                : "";
+
+
+    /* ======================================================================
+       SOLAR COVERAGE
+    ====================================================================== */
+
+    const solarCoverage =
+
+        analysis.solar_coverage !== null &&
+
+        analysis.solar_coverage !== undefined
+
+            ? analysis.solar_coverage
+
+            : consumedUnits > 0
+
+                ? (
+                    generatedUnits /
+                    consumedUnits
+                ) * 100
+
+                : 0;
+
+
+    /* ======================================================================
+       WAPDA DEPENDENCY
+    ====================================================================== */
+
+    const wapdaDependency =
+
+        analysis.wapda_dependency !== null &&
+
+        analysis.wapda_dependency !== undefined
+
+            ? analysis.wapda_dependency
+
+            : consumedUnits > 0
+
+                ? Math.max(
+
+                    0,
+
+                    (
+                        (
+                            consumedUnits -
+                            generatedUnits
+                        ) /
+                        consumedUnits
+                    ) * 100
+
+                )
+
+                : 0;
+
+
+    /* ======================================================================
+       UNIT RATE
+    ====================================================================== */
+
+    const unitRate =
+
+        analysis.unit_rate !== null &&
+
+        analysis.unit_rate !== undefined
+
+            ? analysis.unit_rate
+
+            : consumedUnits > 0
+
+                ? billAmount /
+                  consumedUnits
+
+                : 0;
+
+
+    /* ======================================================================
+       ESTIMATED SAVING
+    ====================================================================== */
+
+    const estimatedSaving =
+
+        analysis.estimated_saving !== null &&
+
+        analysis.estimated_saving !== undefined
+
+            ? analysis.estimated_saving
+
+            : generatedUnits *
+              unitRate;
+
+
+    /* ======================================================================
+       PERFORMANCE REASON
+    ====================================================================== */
+
+    const performanceReason =
+
+        analysis.generation_loss_reason &&
+
+        analysis.generation_loss_reason !== "-"
+
+            ? analysis.generation_loss_reason
+
+            : generatedUnits >= consumedUnits
+
+                ? "Excellent"
+
+                : "Solar generation is lower than electricity consumption.";
+
+
+    const reasonClass =
+
+        generatedUnits >= consumedUnits
+
+            ? "reason-success"
+
+            : "reason-danger";
+
+
+    /* ======================================================================
+       BILL PERIOD
+    ====================================================================== */
+
+    const formattedMonth =
+        billMonth !== "-"
+            ? formatMonth(billMonth)
+            : "-";
+
+
+    const formattedBillPeriod =
+
+        formattedMonth === "-" &&
+        billYear === "-"
+
+            ? "-"
+
+            : `${formattedMonth} ${billYear}`;
+
+
+    /* ======================================================================
+       RENDER
+    ====================================================================== */
+
+    return (
+
+        <div
+            className="bill-analysis-overlay"
+            onClick={onClose}
+        >
+
+            <div
+                className="bill-analysis-card"
+                onClick={(event) =>
+                    event.stopPropagation()
+                }
+            >
+
+
+                {/* ==========================================================
+                   HEADER
+                ========================================================== */}
+
+                <div className="analysis-header">
+
+                    <div>
+
+                        <h3 className="analysis-title">
+                            Bill Analysis
+                        </h3>
+
+                        <p className="analysis-subtitle">
+                            WAPDA Bill and Solar Performance Comparison
+                        </p>
+
+                    </div>
+
+
+                    {onClose && (
+
+                        <button
+                            type="button"
+                            className="analysis-close-button"
+                            onClick={onClose}
+                            aria-label="Close analysis"
+                        >
+
+                            ×
+
+                        </button>
+
+                    )}
+
+                </div>
+
+
+                {/* ==========================================================
+                   CONTENT
+                ========================================================== */}
+
+                <div className="analysis-content">
+
+
+                    {/* ======================================================
+                       WAPDA BILL DETAILS
+                    ====================================================== */}
+
+                    <div className="analysis-section">
+
+                        <div className="analysis-section-heading">
+
+                            <h4>
+                                WAPDA Bill Details
+                            </h4>
+
+                            <p>
+                                Electricity consumption and billing information.
+                            </p>
+
+                        </div>
+
+
+                        <div className="analysis-grid">
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Consumer Name
+                                </span>
+
+                                <strong>
+                                    {consumerName}
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Reference Number
+                                </span>
+
+                                <strong>
+                                    {referenceNumber}
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Area
+                                </span>
+
+                                <strong>
+                                    {areaName}
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Bill Period
+                                </span>
+
+                                <strong>
+                                    {formattedBillPeriod}
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Bill Address
+                                </span>
+
+                                <strong>
+                                    {billAddress}
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Units Consumed
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        consumedUnits
+                                    )}
+
+                                    {" Units"}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Bill Amount
+                                </span>
+
+                                <strong>
+
+                                    Rs.{" "}
+
+                                    {formatValue(
+                                        billAmount
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ======================================================
+                       SOLAR GENERATION DETAILS
+                    ====================================================== */}
+
+                    <div className="analysis-section">
+
+                        <div className="analysis-section-heading">
+
+                            <h4>
+                                Solar Generation Details
+                            </h4>
+
+                            <p>
+                                Solar system generation and performance information.
+                            </p>
+
+                        </div>
+
+
+                        <div className="analysis-grid">
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Generated Units
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        generatedUnits
+                                    )}
+
+                                    {" Units"}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Solar Coverage
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        solarCoverage,
+                                        "%"
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Estimated Saving
+                                </span>
+
+                                <strong className="saving">
+
+                                    Rs.{" "}
+
+                                    {formatValue(
+                                        estimatedSaving
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Efficiency
+                                </span>
+
+                                <strong className="efficiency">
+
+                                    {
+                                        analysis.efficiency ||
+                                        "-"
+                                    }
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ======================================================
+                       WAPDA VS SOLAR COMPARISON
+                    ====================================================== */}
+
+                    <div className="analysis-section">
+
+                        <div className="analysis-section-heading">
+
+                            <h4>
+                                WAPDA vs Solar Comparison
+                            </h4>
+
+                            <p>
+                                Comparison between electricity consumption
+                                and solar generation.
+                            </p>
+
+                        </div>
+
+
+                        <div className="analysis-grid">
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    WAPDA Units
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        consumedUnits
+                                    )}
+
+                                    {" Units"}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Solar Generated Units
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        generatedUnits
+                                    )}
+
+                                    {" Units"}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Difference Units
+                                </span>
+
+                                <strong
+                                    className={
+                                        differenceClass
+                                    }
+                                >
+
+                                    {differenceUnits > 0
+                                        ? "+"
+                                        : ""}
+
+                                    {formatValue(
+                                        differenceUnits
+                                    )}
+
+                                    {" Units"}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    WAPDA Dependency
+                                </span>
+
+                                <strong>
+
+                                    {formatValue(
+                                        wapdaDependency,
+                                        "%"
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Unit Rate
+                                </span>
+
+                                <strong>
+
+                                    Rs.{" "}
+
+                                    {formatValue(
+                                        unitRate
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div className="analysis-item">
+
+                                <span>
+                                    Performance Result
+                                </span>
+
+                                <strong
+                                    className={
+                                        reasonClass
+                                    }
+                                >
+
+                                    {performanceReason}
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                {/* ==========================================================
+                   FOOTER
+                ========================================================== */}
+
+                <div className="analysis-footer">
+
+                    <button
+                        type="button"
+                        className="analysis-footer-close-button"
+                        onClick={onClose}
+                    >
+
+                        Close
+
+                    </button>
+
+                </div>
+
 
             </div>
 
@@ -280,6 +1005,7 @@ function BillAnalysisCard({
 
     );
 
-}
+};
+
 
 export default BillAnalysisCard;

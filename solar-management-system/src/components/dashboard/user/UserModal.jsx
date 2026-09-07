@@ -1,10 +1,23 @@
-import { useState, useEffect } from "react";
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/user/UserModal.jsx
+ *
+ * Description:
+ * Add and Edit User Modal.
+ * Area selection has been removed.
+ * ============================================================================
+ */
+
+import {
+    useState,
+    useEffect,
+} from "react";
 
 import FormActions from "../../common/FormActions";
 
-import AddMasterModal from "../../common/MasterSelect/AddMasterModal";
-
 import "./UserModal.css";
+
 
 function UserModal({
 
@@ -14,11 +27,7 @@ function UserModal({
 
     onSave,
 
-    onAddArea,
-
     selectedUser,
-
-    areas = [],
 
 }) {
 
@@ -30,8 +39,6 @@ function UserModal({
 
         phone: "",
 
-        area_id: "",
-
         password: "",
 
         role: "Administrator",
@@ -40,26 +47,32 @@ function UserModal({
 
     });
 
-    const [showAddAreaModal, setShowAddAreaModal] = useState(false);
+
+    /* =========================================================
+       SET FORM DATA
+    ========================================================= */
 
     useEffect(() => {
 
-        if (!isOpen) return;
+        if (!isOpen) {
+
+            return;
+
+        }
+
 
         if (selectedUser) {
 
             setFormData({
 
-                name: selectedUser.name || "",
+                name:
+                    selectedUser.name || "",
 
-                email: selectedUser.email || "",
+                email:
+                    selectedUser.email || "",
 
-                phone: selectedUser.phone || "",
-
-                area_id:
-                    selectedUser.area_id ||
-                    selectedUser.area?.id ||
-                    "",
+                phone:
+                    selectedUser.phone || "",
 
                 password: "",
 
@@ -83,8 +96,6 @@ function UserModal({
 
                 phone: "",
 
-                area_id: "",
-
                 password: "",
 
                 role: "Administrator",
@@ -95,9 +106,17 @@ function UserModal({
 
         }
 
-    }, [selectedUser, isOpen]);
+    }, [
 
-    if (!isOpen) return null;
+        selectedUser,
+        isOpen,
+
+    ]);
+
+
+    /* =========================================================
+       INPUT CHANGE
+    ========================================================= */
 
     const handleChange = (e) => {
 
@@ -111,39 +130,33 @@ function UserModal({
 
         } = e.target;
 
+
         setFormData((prev) => ({
 
             ...prev,
 
-            [name]: files
+            [name]:
 
-                ? files[0]
-
-                : value,
+                files
+                    ? files[0]
+                    : value,
 
         }));
 
     };
 
+
+    /* =========================================================
+       FORM SUBMIT
+    ========================================================= */
+
     const handleSubmit = (e) => {
 
         e.preventDefault();
 
-        if (
-
-            formData.role !== "Administrator" &&
-
-            !formData.area_id
-
-        ) {
-
-            alert("Please select an Area.");
-
-            return;
-
-        }
 
         const data = new FormData();
+
 
         Object.keys(formData).forEach((key) => {
 
@@ -167,31 +180,22 @@ function UserModal({
 
         });
 
+
         onSave(data);
 
     };
 
-    const handleSaveArea = async (areaName) => {
 
-        if (!areaName.trim()) {
+    /* =========================================================
+       CLOSE MODAL
+    ========================================================= */
 
-            return;
+    if (!isOpen) {
 
-        }
+        return null;
 
-        if (typeof onAddArea === "function") {
+    }
 
-            const success = await onAddArea(areaName);
-
-            if (success) {
-
-                setShowAddAreaModal(false);
-
-            }
-
-        }
-
-    };
 
     return (
 
@@ -199,17 +203,23 @@ function UserModal({
 
             <div className="user-modal">
 
+
+                {/* =====================================================
+                    MODAL HEADER
+                ====================================================== */}
+
                 <div className="modal-header">
 
                     <h2>
 
-                        {selectedUser
-
-                            ? "Edit User"
-
-                            : "Add User"}
+                        {
+                            selectedUser
+                                ? "Edit User"
+                                : "Add User"
+                        }
 
                     </h2>
+
 
                     <button
                         type="button"
@@ -223,214 +233,182 @@ function UserModal({
 
                 </div>
 
-                <form
-                    className="user-form"
-                    onSubmit={handleSubmit}
-                >
 
-                    <div className="form-group">
+                {/* =====================================================
+                    USER FORM
+                ====================================================== */}
 
-                        <label>
+                <form onSubmit={handleSubmit}>
 
-                            Full Name
 
-                        </label>
+                    <div className="form-grid">
 
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
 
-                    </div>
+                        {/* FULL NAME */}
 
-                    <div className="form-group">
+                        <div className="form-group">
 
-                        <label>
+                            <label>
 
-                            Email
+                                Full Name
 
-                        </label>
+                            </label>
 
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="Enter full name"
+                                required
+                            />
 
-                    </div>
+                        </div>
 
-                    <div className="form-group">
 
-                        <label>
+                        {/* EMAIL */}
 
-                            Phone
+                        <div className="form-group">
 
-                        </label>
+                            <label>
 
-                        <input
-                            type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                        />
+                                Email
 
-                    </div>
-                                        <div className="form-group">
+                            </label>
 
-                        <label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Enter email"
+                                required
+                            />
 
-                            Role
+                        </div>
 
-                        </label>
 
-                        <select
-                            name="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                        >
+                        {/* PHONE */}
 
-                            <option value="Administrator">
+                        <div className="form-group">
 
-                                Administrator
+                            <label>
 
-                            </option>
+                                Phone
 
-                            <option value="Manager">
+                            </label>
 
-                                Manager
+                            <input
+                                type="text"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                placeholder="Enter phone number"
+                            />
 
-                            </option>
+                        </div>
 
-                        </select>
 
-                    </div>
+                        {/* ROLE */}
 
-                    <div className="form-group">
+                        <div className="form-group">
 
-                        <label>
+                            <label>
 
-                            Area
+                                Role
 
-                        </label>
+                            </label>
 
-                        <select
-                            name="area_id"
-                            value={formData.area_id}
-                            onChange={handleChange}
-                            disabled={
-                                formData.role ===
-                                "Administrator"
-                            }
-                            required={
-                                formData.role !==
-                                "Administrator"
-                            }
-                        >
+                            <select
+                                name="role"
+                                value={formData.role}
+                                onChange={handleChange}
+                            >
 
-                            <option value="">
+                                <option value="Administrator">
 
-                                Select Area
+                                    Administrator
 
-                            </option>
+                                </option>
 
-                            {
+                                <option value="Manager">
 
-                                areas.map((area) => (
+                                    Manager
 
-                                    <option
-                                        key={area.id}
-                                        value={area.id}
-                                    >
+                                </option>
 
-                                        {area.area_name}
+                                
 
-                                    </option>
+                            </select>
 
-                                ))
+                        </div>
 
-                            }
 
-                        </select>
+                        {/* PASSWORD */}
 
-                        {
+                        <div className="form-group">
 
-                            formData.role !== "Administrator" && (
+                            <label>
 
-                                <button
-                                    type="button"
-                                    className="add-area-btn"
-                                    onClick={() =>
-                                        setShowAddAreaModal(true)
-                                    }
-                                >
+                                Password
 
-                                    + Add New Area
+                            </label>
 
-                                </button>
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder={
+                                    selectedUser
+                                        ? "Leave blank to keep current password"
+                                        : "Enter password"
+                                }
+                                required={!selectedUser}
+                            />
 
-                            )
+                        </div>
 
-                        }
 
-                    </div>
+                        {/* STATUS */}
 
-                    <div className="form-group">
+                        <div className="form-group">
 
-                        <label>
+                            <label>
 
-                            Password
+                                Status
 
-                        </label>
+                            </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder={
-                                selectedUser
-                                    ? "Leave blank to keep current password"
-                                    : "Enter password"
-                            }
-                            required={!selectedUser}
-                        />
+                            <select
+                                name="status"
+                                value={formData.status}
+                                onChange={handleChange}
+                            >
+
+                                <option value="Active">
+
+                                    Active
+
+                                </option>
+
+                                <option value="Inactive">
+
+                                    Inactive
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
 
                     </div>
 
-                    <div className="form-group">
 
-                        <label>
-
-                            Status
-
-                        </label>
-
-                        <select
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
-                        >
-
-                            <option value="Active">
-
-                                Active
-
-                            </option>
-
-                            <option value="Inactive">
-
-                                Inactive
-
-                            </option>
-
-                        </select>
-
-                    </div>
+                    {/* =====================================================
+                        FORM ACTIONS
+                    ====================================================== */}
 
                     <FormActions
                         saveText={
@@ -446,26 +424,11 @@ function UserModal({
 
             </div>
 
-            <AddMasterModal
-
-                isOpen={showAddAreaModal}
-
-                title="Add New Area"
-
-                placeholder="Enter Area Name"
-
-                onClose={() =>
-                    setShowAddAreaModal(false)
-                }
-
-                onSave={handleSaveArea}
-
-            />
-
         </div>
 
     );
 
 }
+
 
 export default UserModal;

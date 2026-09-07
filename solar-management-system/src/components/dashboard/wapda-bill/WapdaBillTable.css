@@ -1,12 +1,29 @@
-/* =========================================================
-   WAPDA Bill Table
-========================================================= */
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/wapda-bill/WapdaBillTable.css
+ *
+ * Description:
+ * Professional styling for WAPDA Bill Table.
+ * No horizontal or vertical scrolling.
+ * Table fits completely inside available page width.
+ * ============================================================================
+ */
+
+
+/* ============================================================================
+   TABLE CONTAINER
+============================================================================ */
 
 .bill-table-container {
 
     width: 100%;
 
-    overflow-x: auto;
+    /*
+     * IMPORTANT:
+     * No horizontal scrolling.
+     */
+    overflow: hidden !important;
 
     background: var(--card-bg);
 
@@ -14,87 +31,135 @@
 
     border-radius: 16px;
 
-    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    box-shadow:
+        0 8px 24px
+        rgba(15, 23, 42, 0.05);
 
+    box-sizing: border-box;
 }
+
+
+/* ============================================================================
+   TABLE
+============================================================================ */
 
 .bill-table {
 
     width: 100%;
 
-    min-width: 1200px;
+    /*
+     * Remove fixed minimum width.
+     * Table will fit inside container.
+     */
+    min-width: 0 !important;
+
+    max-width: 100%;
+
+    table-layout: fixed;
 
     border-collapse: collapse;
 
+    box-sizing: border-box;
 }
 
-/* =========================================================
-   Header
-========================================================= */
+
+/* ============================================================================
+   TABLE HEADER
+============================================================================ */
 
 .bill-table thead {
 
     background: var(--table-header-bg);
-
 }
+
 
 .bill-table th {
 
-    padding: 18px;
+    padding: 12px 8px;
 
     text-align: left;
 
-    font-size: 14px;
-
-    font-weight: 700;
-
     color: var(--text-primary);
 
-    border-bottom: 1px solid var(--border-color);
+    font-size: 11px;
 
-    white-space: nowrap;
+    font-weight: 750;
 
+    text-transform: uppercase;
+
+    letter-spacing: 0.2px;
+
+    border-bottom:
+        1px solid var(--border-color);
+
+    /*
+     * Allow long headings to wrap.
+     */
+    white-space: normal;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+
+    box-sizing: border-box;
 }
 
-/* =========================================================
-   Body
-========================================================= */
+
+/* ============================================================================
+   TABLE BODY
+============================================================================ */
 
 .bill-table td {
 
-    padding: 18px;
-
-    font-size: 14px;
+    padding: 12px 8px;
 
     color: var(--text-secondary);
 
-    border-bottom: 1px solid var(--border-color);
+    font-size: 12px;
+
+    font-weight: 500;
+
+    border-bottom:
+        1px solid var(--border-color);
 
     vertical-align: middle;
 
+    /*
+     * Prevent content from increasing table width.
+     */
+    white-space: normal;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+
+    box-sizing: border-box;
 }
+
 
 .bill-table tbody tr {
 
-    transition: .25s;
-
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .bill-table tbody tr:hover {
 
     background: var(--table-row-hover);
-
 }
+
 
 .bill-table tbody tr:last-child td {
 
     border-bottom: none;
-
 }
 
-/* =========================================================
-   Status
-========================================================= */
+
+/* ============================================================================
+   STATUS BADGE
+============================================================================ */
 
 .status {
 
@@ -104,140 +169,58 @@
 
     justify-content: center;
 
-    min-width: 90px;
+    min-width: 60px;
 
-    padding: 7px 15px;
+    max-width: 100%;
+
+    padding: 5px 8px;
 
     border-radius: 30px;
 
-    font-size: 12px;
+    font-size: 9px;
 
-    font-weight: 700;
+    font-weight: 750;
+
+    letter-spacing: 0.2px;
 
     text-transform: uppercase;
 
+    box-sizing: border-box;
+
+    white-space: nowrap;
 }
+
 
 .status.paid {
 
-    background: rgba(34,197,94,.15);
+    background:
+        rgba(34, 197, 94, 0.13);
 
-    color: #22c55e;
-
+    color: #16a34a;
 }
+
 
 .status.unpaid {
 
-    background: rgba(239,68,68,.15);
+    background:
+        rgba(239, 68, 68, 0.12);
 
-    color: #ef4444;
-
+    color: #dc2626;
 }
+
 
 .status.overdue {
 
-    background: rgba(245,158,11,.15);
+    background:
+        rgba(245, 158, 11, 0.14);
 
-    color: #f59e0b;
-
-}
-
-/* =========================================================
-   Actions
-========================================================= */
-
-.bill-actions {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    flex-wrap: wrap;
-
-}
-
-.bill-actions button {
-
-    height: 38px;
-
-    padding: 0 16px;
-
-    border: none;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    color: #ffffff;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    transition: all .25s ease;
-
-}
-
-.bill-actions button:hover {
-
-    transform: translateY(-2px);
-
-}
-
-/* =========================================================
-   Edit
-========================================================= */
-
-.edit-btn {
-
-    background: #2563eb;
-
-}
-
-.edit-btn:hover {
-
-    background: #1d4ed8;
-
-}
-
-/* =========================================================
-   Delete
-========================================================= */
-
-.delete-btn {
-
-    background: #dc2626;
-
-}
-
-.delete-btn:hover {
-
-    background: #b91c1c;
-
-}
-
-/* =========================================================
-   Analysis
-========================================================= */
-
-.analysis-btn {
-
-    background: #16a34a;
-
-}
-
-.analysis-btn:hover {
-
-    background: #15803d;
-
+    color: #d97706;
 }
 
 
-/* =========================================================
-   Difference Units Badge
-========================================================= */
+/* ============================================================================
+   DIFFERENCE BADGE
+============================================================================ */
 
 .difference-badge {
 
@@ -247,220 +230,497 @@
 
     justify-content: center;
 
-    min-width: 90px;
+    min-width: 60px;
 
-    padding: 6px 14px;
+    max-width: 100%;
+
+    padding: 5px 7px;
 
     border-radius: 20px;
 
-    font-size: 13px;
+    font-size: 10px;
 
-    font-weight: 700;
+    font-weight: 750;
 
+    box-sizing: border-box;
+
+    white-space: nowrap;
 }
 
-/* Bill Units > Generated Units */
 
 .difference-badge.negative {
 
-    background: rgba(239, 68, 68, .15);
+    background:
+        rgba(239, 68, 68, 0.12);
 
-    color: #ef4444;
-
+    color: #dc2626;
 }
 
-/* Generated Units > Bill Units */
 
 .difference-badge.positive {
 
-    background: rgba(34, 197, 94, .15);
+    background:
+        rgba(34, 197, 94, 0.12);
 
-    color: #22c55e;
-
+    color: #16a34a;
 }
-/* =========================================================
-   Empty State
-========================================================= */
+
+
+/* ============================================================================
+   ACTION BUTTONS CONTAINER
+============================================================================ */
+
+.bill-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    flex-wrap: nowrap;
+
+    width: 100%;
+}
+
+
+/* ============================================================================
+   COMMON ACTION BUTTON
+============================================================================ */
+
+.bill-actions button {
+
+    width: 32px;
+
+    height: 32px;
+
+    min-width: 32px;
+
+    max-width: 32px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 10px
+        rgba(15, 23, 42, 0.10);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+    flex-shrink: 0;
+}
+
+
+.bill-actions button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 15px
+        rgba(15, 23, 42, 0.16);
+}
+
+
+.bill-actions button:active {
+
+    transform: translateY(0);
+}
+
+
+/* ============================================================================
+   EDIT BUTTON
+============================================================================ */
+
+.edit-btn {
+
+    background: #2563eb;
+}
+
+
+.edit-btn:hover {
+
+    background: #1d4ed8;
+}
+
+
+/* ============================================================================
+   DELETE BUTTON
+============================================================================ */
+
+.delete-btn {
+
+    background: #ef4444;
+}
+
+
+.delete-btn:hover {
+
+    background: #dc2626;
+}
+
+
+/* ============================================================================
+   ANALYSIS BUTTON
+============================================================================ */
+
+.analysis-btn {
+
+    background: #16a34a;
+}
+
+
+.analysis-btn:hover {
+
+    background: #15803d;
+}
+
+
+/* ============================================================================
+   EMPTY STATE
+============================================================================ */
 
 .bill-empty {
 
-    text-align: center;
+    padding: 35px 20px;
 
-    padding: 40px;
+    text-align: center;
 
     color: var(--text-secondary);
 
-    font-size: 15px;
+    font-size: 14px;
 
     font-weight: 600;
-
 }
 
-/* =========================================================
-   Scrollbar
-========================================================= */
+
+/* ============================================================================
+   REMOVE TABLE SCROLLBAR
+============================================================================ */
 
 .bill-table-container::-webkit-scrollbar {
 
-    height: 8px;
+    display: none !important;
 
+    width: 0 !important;
+
+    height: 0 !important;
 }
 
-.bill-table-container::-webkit-scrollbar-track {
 
-    background: transparent;
+.bill-table-container {
 
+    scrollbar-width: none !important;
+
+    -ms-overflow-style: none !important;
 }
 
-.bill-table-container::-webkit-scrollbar-thumb {
 
-    background: #64748b;
-
-    border-radius: 20px;
-
-}
-
-.bill-table-container::-webkit-scrollbar-thumb:hover {
-
-    background: #475569;
-
-}
-
-/* =========================================================
-   Light Theme
-========================================================= */
+/* ============================================================================
+   LIGHT THEME
+============================================================================ */
 
 [data-theme="light"] .bill-table-container {
 
     background: #ffffff;
 
-    border-color: #e5e7eb;
-
+    border-color: #e2e8f0;
 }
+
 
 [data-theme="light"] .bill-table thead {
 
     background: #f8fafc;
-
 }
+
 
 [data-theme="light"] .bill-table th {
 
-    color: #0f172a;
+    color: #334155;
 
+    border-color: #e2e8f0;
 }
+
 
 [data-theme="light"] .bill-table td {
 
     color: #475569;
 
+    border-color: #edf1f5;
 }
+
 
 [data-theme="light"] .bill-table tbody tr:hover {
 
-    background: #f8fafc;
-
+    background: #f8fbff;
 }
 
-/* =========================================================
-   Dark Theme
-========================================================= */
+
+/* ============================================================================
+   DARK THEME
+============================================================================ */
 
 [data-theme="dark"] .bill-table-container {
 
     background: #18273c;
 
-    border-color: #2d415b;
-
+    border-color: #334155;
 }
+
 
 [data-theme="dark"] .bill-table thead {
 
     background: #203149;
-
 }
+
 
 [data-theme="dark"] .bill-table th {
 
-    color: #ffffff;
+    color: #f8fafc;
 
+    border-color: #334155;
 }
+
 
 [data-theme="dark"] .bill-table td {
 
-    color: #dbe4f0;
+    color: #cbd5e1;
 
+    border-color: #2d415b;
 }
+
 
 [data-theme="dark"] .bill-table tbody tr {
 
     background: #18273c;
-
 }
+
 
 [data-theme="dark"] .bill-table tbody tr:hover {
 
     background: #223550;
-
 }
+
 
 [data-theme="dark"] .bill-empty {
 
     color: #cbd5e1;
-
 }
 
-/* =========================================================
-   Responsive
-========================================================= */
+
+/* ============================================================================
+   TABLET
+============================================================================ */
 
 @media (max-width: 992px) {
 
-    .bill-table {
+    .bill-table th {
 
-        min-width: 1100px;
+        padding: 10px 6px;
 
+        font-size: 9px;
     }
 
-}
 
-@media (max-width: 768px) {
-
-    .bill-table th,
     .bill-table td {
 
-        padding: 14px;
+        padding: 10px 6px;
 
-        font-size: 13px;
-
+        font-size: 10px;
     }
+
+
+    .status {
+
+        min-width: 52px;
+
+        padding: 4px 6px;
+
+        font-size: 8px;
+    }
+
+
+    .difference-badge {
+
+        min-width: 52px;
+
+        padding: 4px 6px;
+
+        font-size: 8px;
+    }
+
 
     .bill-actions {
 
-        flex-direction: column;
-
-        align-items: stretch;
-
-        width: 100%;
-
+        gap: 4px;
     }
+
 
     .bill-actions button {
 
-        width: 100%;
+        width: 28px;
 
-        justify-content: center;
+        height: 28px;
 
+        min-width: 28px;
+
+        max-width: 28px;
+
+        border-radius: 7px;
     }
-
 }
 
-@media (max-width: 576px) {
+
+/* ============================================================================
+   MOBILE
+============================================================================ */
+
+@media (max-width: 768px) {
+
+    .bill-table-container {
+
+        width: 100%;
+
+        overflow: hidden !important;
+
+        border-radius: 12px;
+    }
+
 
     .bill-table {
 
-        min-width: 950px;
+        width: 100%;
 
+        min-width: 0 !important;
+
+        table-layout: fixed;
     }
 
+
+    .bill-table th {
+
+        padding: 8px 4px;
+
+        font-size: 8px;
+
+        letter-spacing: 0;
+
+        word-break: break-word;
+    }
+
+
+    .bill-table td {
+
+        padding: 8px 4px;
+
+        font-size: 9px;
+
+        word-break: break-word;
+    }
+
+
+    .bill-actions {
+
+        gap: 3px;
+    }
+
+
+    .bill-actions button {
+
+        width: 25px;
+
+        height: 25px;
+
+        min-width: 25px;
+
+        max-width: 25px;
+
+        border-radius: 6px;
+
+        font-size: 9px;
+    }
+
+
+    .status {
+
+        min-width: 45px;
+
+        padding: 3px 5px;
+
+        font-size: 7px;
+    }
+
+
+    .difference-badge {
+
+        min-width: 45px;
+
+        padding: 3px 5px;
+
+        font-size: 7px;
+    }
+}
+
+
+/* ============================================================================
+   SMALL MOBILE
+============================================================================ */
+
+@media (max-width: 576px) {
+
+    .bill-table-container {
+
+        border-radius: 10px;
+
+        overflow: hidden !important;
+    }
+
+
+    .bill-table th {
+
+        padding: 7px 3px;
+
+        font-size: 7px;
+    }
+
+
+    .bill-table td {
+
+        padding: 7px 3px;
+
+        font-size: 8px;
+    }
+
+
+    .bill-actions button {
+
+        width: 23px;
+
+        height: 23px;
+
+        min-width: 23px;
+
+        max-width: 23px;
+    }
 }

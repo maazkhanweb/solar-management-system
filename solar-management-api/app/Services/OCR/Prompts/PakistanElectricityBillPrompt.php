@@ -5,10 +5,15 @@ namespace App\Services\OCR\Prompts;
 class PakistanElectricityBillPrompt
 {
     /**
-     * Generate Gemini Vision Prompt
+     * File Location:
+     * app/Services/OCR/Prompts/PakistanElectricityBillPrompt.php
      *
-     * @return string
+     * Description:
+     * Gemini OCR prompt for Pakistan electricity bills.
+     * Extracts consumer information, bill details,
+     * complete bill address, and area name separately.
      */
+
     public static function generate(): string
     {
         return <<<PROMPT
@@ -71,6 +76,7 @@ Return exactly this JSON structure:
     "bill_year": null,
     "units_consumed": null,
     "bill_amount": null,
+    "bill_address": null,
     "area_name": null,
     "status": "Unpaid"
 }
@@ -151,14 +157,58 @@ Example:
 18456.75
 
 --------------------------------------------------
+BILL ADDRESS EXTRACTION
+--------------------------------------------------
+
+Extract the complete consumer or service address printed on the electricity bill.
+
+Look for headings such as:
+
+- Address
+- Consumer Address
+- Consumer's Address
+- Service Address
+- Premises Address
+- Installation Address
+
+Copy the visible address as accurately as possible.
+
+The address may contain:
+
+- House Number
+- Street Number
+- Mohalla
+- Village
+- Locality
+- Area
+- City
+
+Return the complete useful address in one string.
+
+Examples:
+
+"House No 25, Street 8, GulBahar, Peshawar"
+
+"Sector B, Hayatabad, Peshawar"
+
+"Village Chamkani, Peshawar"
+
+Do not invent missing parts.
+
+If the complete address cannot be identified:
+
+bill_address = null
+
+--------------------------------------------------
 AREA EXTRACTION
 --------------------------------------------------
 
-Extract the electricity service area from the bill.
+Extract the area or locality name separately from the electricity bill.
 
-Possible headings include:
+Possible sources include:
 
 - Area
+- Locality
 - Sub Division
 - Subdivision
 - Operation Division
@@ -168,22 +218,28 @@ Possible headings include:
 - Feeder
 - Office
 - Sub Office
+- Consumer Address
+- Service Address
 
-If these headings are not available, extract the area or locality from the service address.
+If an area or locality exists inside the consumer address, extract only the area/locality name.
 
 Examples:
 
-GulBahar
-Saddar
-Hayatabad
-University Town
-Mansehra
-Charsadda
-Pabbi
-Mardan
-Swabi
-Nowshera
-Peshawar Cantt
+Bill Address:
+
+"House No 25, Street 8, GulBahar, Peshawar"
+
+Correct area_name:
+
+"GulBahar"
+
+Bill Address:
+
+"Sector B, Hayatabad, Peshawar"
+
+Correct area_name:
+
+"Hayatabad"
 
 Return ONLY the Area Name.
 
@@ -194,7 +250,7 @@ Province
 Country
 Street Number
 House Number
-Consumer Address
+Complete Consumer Address
 
 Examples:
 
@@ -206,9 +262,17 @@ Correct:
 
 "Saddar"
 
+Correct:
+
+"Hayatabad"
+
 Wrong:
 
 "Street No 8 GulBahar"
+
+Wrong:
+
+"House No 25, GulBahar, Peshawar"
 
 Wrong:
 
@@ -222,7 +286,7 @@ area_name = null
 STATUS
 --------------------------------------------------
 
-Always return
+Always return:
 
 "Unpaid"
 
@@ -253,6 +317,10 @@ units_consumed = null
 If bill amount cannot be found:
 
 bill_amount = null
+
+If bill address cannot be found:
+
+bill_address = null
 
 If area cannot be identified:
 

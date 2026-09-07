@@ -7,21 +7,14 @@ use Illuminate\Validation\Rule;
 
 class StoreBillRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Validation Rules
-     */
     public function rules(): array
     {
         return [
-
             'consumer_name' => [
                 'required',
                 'string',
@@ -47,16 +40,16 @@ class StoreBillRequest extends FormRequest
                 'digits:4',
             ],
 
-            /*
-            |--------------------------------------------------------------------------
-            | Bill Address
-            |--------------------------------------------------------------------------
-            */
-
             'bill_address' => [
                 'nullable',
                 'string',
                 'max:500',
+            ],
+
+            'area_id' => [
+                'nullable',
+                'integer',
+                'exists:areas,id',
             ],
 
             'units_consumed' => [
@@ -84,7 +77,10 @@ class StoreBillRequest extends FormRequest
 
             'status' => [
                 'required',
-                Rule::in(['Paid', 'Unpaid']),
+                Rule::in([
+                    'Paid',
+                    'Unpaid',
+                ]),
             ],
 
             'generation_loss_reason' => [
@@ -105,23 +101,16 @@ class StoreBillRequest extends FormRequest
                 'max:5120',
             ],
 
-            /*
-|--------------------------------------------------------------------------
-| OCR
-|--------------------------------------------------------------------------
-*/
+            'ocr_status' => [
+                'nullable',
+                'boolean',
+            ],
 
-'ocr_status' => [
-    'nullable',
-    'boolean',
-],
-
-'ocr_confidence' => [
-    'nullable',
-    'numeric',
-    'between:0,100',
-],
-
+            'ocr_confidence' => [
+                'nullable',
+                'numeric',
+                'between:0,100',
+            ],
         ];
     }
 }

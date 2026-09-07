@@ -10,43 +10,59 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * ============================================================================
+ * File:
+ * app/Services/BillService.php
+ *
+ * Description:
+ * Handles WAPDA Bill management including:
+ * - Fetching bills
+ * - Creating bills
+ * - Updating bills
+ * - Deleting bills
+ * - Area relationship loading
+ * - Bill image storage
+ * - Role-based access control
+ * ============================================================================
+ */
+
 class BillService
 {
     /**
      * Get all bills with filters.
      */
-    public function getAllBills(array $filters = []): LengthAwarePaginator
-    {
+    public function getAllBills(
+        array $filters = []
+    ): LengthAwarePaginator {
+
         $query = Bill::with([
-
+            'area',
             'createdBy',
-
             'updatedBy',
-
         ]);
 
-       /*
-|--------------------------------------------------------------------------
-| Role Based Access
-|--------------------------------------------------------------------------
-*/
 
-$user = Auth::user();
+        /*
+        |--------------------------------------------------------------------------
+        | Role Based Access
+        |--------------------------------------------------------------------------
+        */
 
-if (
+        $user = Auth::user();
 
-    $user &&
+        if (
+            $user &&
+            $user->role === 'Manager'
+        ) {
 
-    $user->role === 'Manager'
+            $query->where(
+                'created_by',
+                $user->id
+            );
 
-) {
+        }
 
-    $query->where(
-        'created_by',
-        $user->id
-    );
-
-}
 
         /*
         |--------------------------------------------------------------------------
@@ -56,19 +72,35 @@ if (
 
         if (!empty($filters['search'])) {
 
-            $search = trim($filters['search']);
+            $search = trim(
+                $filters['search']
+            );
 
-            $query->where(function ($q) use ($search) {
+            $query->where(
+                function ($query) use ($search) {
 
-                $q->where('consumer_name', 'like', "%{$search}%")
+                    $query
+                        ->where(
+                            'consumer_name',
+                            'like',
+                            "%{$search}%"
+                        )
+                        ->orWhere(
+                            'reference_number',
+                            'like',
+                            "%{$search}%"
+                        )
+                        ->orWhere(
+                            'bill_address',
+                            'like',
+                            "%{$search}%"
+                        );
 
-                    ->orWhere('reference_number', 'like', "%{$search}%")
-
-                    ->orWhere('bill_address', 'like', "%{$search}%");
-
-            });
+                }
+            );
 
         }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -78,9 +110,13 @@ if (
 
         if (!empty($filters['month'])) {
 
-            $query->where('bill_month', $filters['month']);
+            $query->where(
+                'bill_month',
+                $filters['month']
+            );
 
         }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -90,9 +126,13 @@ if (
 
         if (!empty($filters['year'])) {
 
-            $query->where('bill_year', $filters['year']);
+            $query->where(
+                'bill_year',
+                $filters['year']
+            );
 
         }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -102,156 +142,253 @@ if (
 
         if (!empty($filters['status'])) {
 
-            $query->where('status', $filters['status']);
+            $query->where(
+                'status',
+                $filters['status']
+            );
 
         }
 
-        $perPage = $filters['per_page'] ?? 10;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pagination
+        |--------------------------------------------------------------------------
+        */
+
+        $perPage =
+            $filters['per_page'] ?? 10;
+
 
         return $query
             ->latest()
             ->paginate($perPage);
+
     }
+
 
     /**
      * Store new bill.
      */
-    public function storeBill(array $data): Bill
-    {
-        return DB::transaction(function () use ($data) {
+    public function storeBill(
+        array $data
+    ): Bill {
 
-            if (
+        return DB::transaction(
+            function () use ($data) {
 
-                isset($data['bill_image']) &&
+                /*
+                |--------------------------------------------------------------------------
+                | Store Bill Image
+                |--------------------------------------------------------------------------
+                */
 
-                $data['bill_image'] instanceof UploadedFile
+                if (
+                    isset($data['bill_image']) &&
+                    $data['bill_image'] instanceof UploadedFile
+                ) {
 
-            ) {
+                    $data['bill_image'] =
+                        $data['bill_image']
+                            ->store(
+                                'bills',
+                                'public'
+                            );
 
-                $data['bill_image'] = $data['bill_image']
-                    ->store('bills', 'public');
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Create Bill
+                |--------------------------------------------------------------------------
+                |
+                | area_id is optional.
+                | bill_address is optional.
+                |
+                | If area_id is selected, the Area relationship
+                | will be loaded with the saved bill.
+                |
+                */
+
+                return Bill::create(
+                    $data
+                )->load([
+                    'area',
+                    'createdBy',
+                    'updatedBy',
+                ]);
 
             }
+        );
 
-            return Bill::create($data);
-
-        });
     }
+
 
     /**
      * Update existing bill.
      */
-    public function updateBill(Bill $bill, array $data): Bill
-    {
-        $this->authorizeBill($bill);
+    public function updateBill(
+        Bill $bill,
+        array $data
+    ): Bill {
 
-        return DB::transaction(function () use ($bill, $data) {
+        $this->authorizeBill(
+            $bill
+        );
 
-            if (
 
-                isset($data['bill_image']) &&
+        return DB::transaction(
+            function () use ($bill, $data) {
 
-                $data['bill_image'] instanceof UploadedFile
-
-            ) {
+                /*
+                |--------------------------------------------------------------------------
+                | Update Bill Image
+                |--------------------------------------------------------------------------
+                */
 
                 if (
-
-                    !empty($bill->bill_image) &&
-
-                    Storage::disk('public')->exists($bill->bill_image)
-
+                    isset($data['bill_image']) &&
+                    $data['bill_image'] instanceof UploadedFile
                 ) {
 
-                    Storage::disk('public')->delete($bill->bill_image);
+                    if (
+                        !empty($bill->bill_image) &&
+                        Storage::disk('public')
+                            ->exists(
+                                $bill->bill_image
+                            )
+                    ) {
+
+                        Storage::disk('public')
+                            ->delete(
+                                $bill->bill_image
+                            );
+
+                    }
+
+
+                    $data['bill_image'] =
+                        $data['bill_image']
+                            ->store(
+                                'bills',
+                                'public'
+                            );
 
                 }
 
-                $data['bill_image'] = $data['bill_image']
-                    ->store('bills', 'public');
+
+                /*
+                |--------------------------------------------------------------------------
+                | Update Bill
+                |--------------------------------------------------------------------------
+                */
+
+                $bill->update(
+                    $data
+                );
+
+
+                return $bill->fresh([
+                    'area',
+                    'createdBy',
+                    'updatedBy',
+                ]);
 
             }
+        );
 
-            $bill->update($data);
-
-            return $bill->fresh([
-
-                'createdBy',
-
-                'updatedBy',
-
-            ]);
-
-        });
     }
+
 
     /**
      * Delete bill.
      */
-    public function deleteBill(Bill $bill): bool
-    {
-        $this->authorizeBill($bill);
+    public function deleteBill(
+        Bill $bill
+    ): bool {
 
-        return DB::transaction(function () use ($bill) {
+        $this->authorizeBill(
+            $bill
+        );
 
-            if (
 
-                !empty($bill->bill_image) &&
+        return DB::transaction(
+            function () use ($bill) {
 
-                Storage::disk('public')->exists($bill->bill_image)
+                /*
+                |--------------------------------------------------------------------------
+                | Delete Bill Image
+                |--------------------------------------------------------------------------
+                */
 
-            ) {
+                if (
+                    !empty($bill->bill_image) &&
+                    Storage::disk('public')
+                        ->exists(
+                            $bill->bill_image
+                        )
+                ) {
 
-                Storage::disk('public')->delete($bill->bill_image);
+                    Storage::disk('public')
+                        ->delete(
+                            $bill->bill_image
+                        );
+
+                }
+
+
+                return $bill->delete();
 
             }
+        );
 
-            return $bill->delete();
-
-        });
     }
+
 
     /**
      * Get single bill.
      */
-    public function getBill(Bill $bill): Bill
-    {
-        $this->authorizeBill($bill);
+    public function getBill(
+        Bill $bill
+    ): Bill {
+
+        $this->authorizeBill(
+            $bill
+        );
+
 
         return $bill->load([
-
+            'area',
             'createdBy',
-
             'updatedBy',
-
         ]);
+
     }
 
+
     /**
-     * Authorize Bill Access
+     * Authorize bill access.
      */
-    protected function authorizeBill(Bill $bill): void
-    {
+    protected function authorizeBill(
+        Bill $bill
+    ): void {
+
         $user = Auth::user();
 
+
         if (
-
             $user &&
-
             $user->role === 'Manager' &&
-
             $bill->created_by !== $user->id
-
         ) {
 
             throw new HttpException(
-
                 403,
-
                 'You are not authorized to access this bill.'
-
             );
 
         }
+
     }
 }

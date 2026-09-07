@@ -1,3 +1,10 @@
+/*
+==========================================================
+File: src/pages/user-management/UserManagement.jsx
+Description: User Management page with custom success and error notifications.
+==========================================================
+*/
+
 import { useEffect, useState } from "react";
 
 import authService from "../../services/authService";
@@ -12,8 +19,6 @@ function UserManagement() {
 
     const [users, setUsers] = useState([]);
 
-    const [areas, setAreas] = useState([]);
-
     const [loading, setLoading] = useState(true);
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -24,17 +29,18 @@ function UserManagement() {
 
     const [selectedUser, setSelectedUser] = useState(null);
 
+    const [notification, setNotification] = useState({
+        isOpen: false,
+        type: "success",
+        message: "",
+    });
+
     useEffect(() => {
 
         loadUsers();
 
-        loadAreas();
-
     }, []);
 
-    /**
-     * Load Users
-     */
     const loadUsers = async () => {
 
         try {
@@ -49,7 +55,10 @@ function UserManagement() {
 
             console.error(error);
 
-            alert("Failed to load users.");
+            showNotification(
+                "Failed to load users.",
+                "error"
+            );
 
         } finally {
 
@@ -59,40 +68,6 @@ function UserManagement() {
 
     };
 
-    /**
-     * Load Areas
-     */
-    const loadAreas = async () => {
-
-        try {
-
-            const response = await authService.getAreas();
-
-            console.log("AREA RESPONSE:", response);
-
-            setAreas(
-
-                response.areas?.data ||
-
-                response.data ||
-
-                response.areas ||
-
-                []
-
-            );
-
-        } catch (error) {
-
-            console.error("AREA ERROR:", error);
-
-        }
-
-    };
-
-    /**
-     * Open Add User Modal
-     */
     const openAddModal = () => {
 
         setSelectedUser(null);
@@ -101,20 +76,62 @@ function UserManagement() {
 
     };
 
-    /**
-     * Close User Modal
-     */
     const closeModal = () => {
-
-        setSelectedUser(null);
 
         setIsModalOpen(false);
 
+        setSelectedUser(null);
+
     };
 
-    /**
-     * Save User
-     */
+    const showNotification = (message, type = "success") => {
+
+        setNotification({
+            isOpen: true,
+            type,
+            message,
+        });
+
+    };
+
+    const closeNotification = () => {
+
+        setNotification({
+            isOpen: false,
+            type: "success",
+            message: "",
+        });
+
+    };
+
+    const getErrorMessage = (error, fallbackMessage) => {
+
+        const responseData = error?.response?.data;
+
+        if (responseData?.message) {
+
+            return responseData.message;
+
+        }
+
+        if (responseData?.errors) {
+
+            const firstError = Object.values(responseData.errors)
+                .flat()
+                .find(Boolean);
+
+            if (firstError) {
+
+                return firstError;
+
+            }
+
+        }
+
+        return fallbackMessage;
+
+    };
+
     const handleSaveUser = async (userData) => {
 
         try {
@@ -122,20 +139,21 @@ function UserManagement() {
             if (selectedUser) {
 
                 await authService.updateUser(
-
                     selectedUser.id,
-
                     userData
-
                 );
 
-                alert("User updated successfully.");
+                showNotification(
+                    "User updated successfully."
+                );
 
             } else {
 
                 await authService.createUser(userData);
 
-                alert("User created successfully.");
+                showNotification(
+                    "User created successfully."
+                );
 
             }
 
@@ -147,54 +165,18 @@ function UserManagement() {
 
             console.error(error);
 
-            alert("Failed to save user.");
+            showNotification(
+                getErrorMessage(
+                    error,
+                    "Failed to save user."
+                ),
+                "error"
+            );
 
         }
 
     };
 
-    /**
-     * Add New Area
-     */
-    const handleAddArea = async (areaName) => {
-
-        try {
-
-            const areaData = {
-
-                area_name: areaName,
-
-                location: "-",
-
-                manager: "-",
-
-                phone: "-",
-
-                status: "Active",
-
-            };
-
-            await authService.createArea(areaData);
-
-            await loadAreas();
-
-            return true;
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert("Failed to add area.");
-
-            return false;
-
-        }
-
-    };
-
-    /**
-     * Edit User
-     */
     const handleEdit = (user) => {
 
         setSelectedUser(user);
@@ -203,9 +185,6 @@ function UserManagement() {
 
     };
 
-    /**
-     * Delete User
-     */
     const handleDelete = (user) => {
 
         setSelectedUser(user);
@@ -214,16 +193,17 @@ function UserManagement() {
 
     };
 
-    /**
-     * Confirm Delete
-     */
     const confirmDelete = async () => {
 
         try {
 
-            await authService.deleteUser(selectedUser.id);
+            await authService.deleteUser(
+                selectedUser.id
+            );
 
-            alert("User deleted successfully.");
+            showNotification(
+                "User deleted successfully."
+            );
 
             await loadUsers();
 
@@ -233,15 +213,15 @@ function UserManagement() {
 
             console.error(error);
 
-            alert("Failed to delete user.");
+            showNotification(
+                "Failed to delete user.",
+                "error"
+            );
 
         }
 
     };
 
-    /**
-     * Close Delete Modal
-     */
     const closeDeleteModal = () => {
 
         setSelectedUser(null);
@@ -249,9 +229,7 @@ function UserManagement() {
         setIsDeleteModalOpen(false);
 
     };
-        /**
-     * Search Filter
-     */
+
     const filteredUsers = users.filter((user) => {
 
         const search = searchTerm.toLowerCase();
@@ -276,11 +254,7 @@ function UserManagement() {
 
             <section className="users">
 
-                <h2>
-
-                    Loading users...
-
-                </h2>
+                <h2>Loading users...</h2>
 
             </section>
 
@@ -296,16 +270,10 @@ function UserManagement() {
 
                 <div>
 
-                    <h1>
-
-                        User Management
-
-                    </h1>
+                    <h1>User Management</h1>
 
                     <p>
-
                         Manage all system users from one place.
-
                     </p>
 
                 </div>
@@ -314,9 +282,7 @@ function UserManagement() {
                     className="add-user-btn"
                     onClick={openAddModal}
                 >
-
                     + Add User
-
                 </button>
 
             </div>
@@ -344,9 +310,7 @@ function UserManagement() {
                 isOpen={isModalOpen}
                 onClose={closeModal}
                 onSave={handleSaveUser}
-                onAddArea={handleAddArea}
                 selectedUser={selectedUser}
-                areas={areas}
             />
 
             <DeleteUserModal
@@ -355,6 +319,49 @@ function UserManagement() {
                 onClose={closeDeleteModal}
                 onConfirm={confirmDelete}
             />
+
+            {notification.isOpen && (
+
+                <div className="user-notification-overlay">
+
+                    <div
+                        className={`user-notification ${
+                            notification.type === "error"
+                                ? "error"
+                                : "success"
+                        }`}
+                    >
+
+                        <div className="user-notification-content">
+
+                            <div className="user-notification-icon">
+
+                                {notification.type === "error"
+                                    ? "!"
+                                    : "✓"
+                                }
+
+                            </div>
+
+                            <p>
+                                {notification.message}
+                            </p>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            className="user-notification-btn"
+                            onClick={closeNotification}
+                        >
+                            OK
+                        </button>
+
+                    </div>
+
+                </div>
+
+            )}
 
         </section>
 

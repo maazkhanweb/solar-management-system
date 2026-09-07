@@ -1,11 +1,55 @@
-import { useEffect, useState } from "react";
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/wapda-bill/WapdaBillModal.jsx
+ *
+ * Description:
+ * Add and Edit WAPDA Bill Modal.
+ * Handles bill details, area/location selection,
+ * month conversion and OCR uploads.
+ * ============================================================================
+ */
+
+import {
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 
 import FormActions from "../../common/FormActions";
 import BillOCRUpload from "./BillOCRUpload";
 
+import authService from "../../../services/authService";
 import ocrService from "../../../services/ocrService";
 
 import "./WapdaBillModal.css";
+
+
+/* ============================================================================
+   MONTHS
+============================================================================ */
+
+const months = [
+
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+
+];
+
+
+/* ============================================================================
+   DEFAULT FORM
+============================================================================ */
 
 const defaultForm = {
 
@@ -15,9 +59,14 @@ const defaultForm = {
 
     bill_month: "",
 
-    bill_year: new Date().getFullYear(),
+    bill_year:
+        new Date().getFullYear(),
 
     bill_address: "",
+
+    area_id: "",
+
+    location: "",
 
     units_consumed: "",
 
@@ -25,27 +74,156 @@ const defaultForm = {
 
     generated_units: "",
 
+    solar_report_month: "",
+
+    solar_report_year:
+        new Date().getFullYear(),
+
     difference_units: "",
 
     status: "Unpaid",
 
     generation_loss_reason: "",
 
-    remarks: "",
-
     bill_image: null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | NEW
-    |--------------------------------------------------------------------------
-    */
+    solar_image: null,
 
     ocr_status: false,
 
-    ocr_confidence: 0,
+    ocr_confidence: "",
 
 };
+
+
+/* ============================================================================
+   NORMALIZE MONTH
+============================================================================ */
+
+const normalizeMonth = (month) => {
+
+    if (
+        month === null ||
+        month === undefined ||
+        month === ""
+    ) {
+
+        return "";
+
+    }
+
+
+    const monthNumber =
+        Number(month);
+
+
+    if (
+        !Number.isNaN(monthNumber) &&
+        monthNumber >= 1 &&
+        monthNumber <= 12
+    ) {
+
+        return months[
+            monthNumber - 1
+        ];
+
+    }
+
+
+    return months.find(
+
+        (item) =>
+
+            item.toLowerCase() ===
+            String(month)
+                .trim()
+                .toLowerCase()
+
+    ) || "";
+
+};
+
+
+/* ============================================================================
+   GET MONTH NUMBER
+============================================================================ */
+
+const getMonthNumber = (month) => {
+
+    if (!month) {
+
+        return "";
+
+    }
+
+
+    const monthNumber =
+        Number(month);
+
+
+    if (
+        !Number.isNaN(monthNumber) &&
+        monthNumber >= 1 &&
+        monthNumber <= 12
+    ) {
+
+        return monthNumber;
+
+    }
+
+
+    const index =
+        months.findIndex(
+
+            (item) =>
+
+                item.toLowerCase() ===
+                String(month)
+                    .trim()
+                    .toLowerCase()
+
+        );
+
+
+    return index >= 0
+        ? index + 1
+        : "";
+
+};
+
+
+/* ============================================================================
+   CALCULATE DIFFERENCE
+============================================================================ */
+
+const calculateDifference = (
+
+    unitsConsumed,
+
+    generatedUnits
+
+) => {
+
+    const consumed =
+        Number(unitsConsumed) || 0;
+
+
+    const generated =
+        Number(generatedUnits) || 0;
+
+
+    return (
+
+        generated - consumed
+
+    ).toFixed(2);
+
+};
+
+
+/* ============================================================================
+   COMPONENT
+============================================================================ */
 
 function WapdaBillModal({
 
@@ -57,17 +235,107 @@ function WapdaBillModal({
 
     selectedBill,
 
-    areas = [],
-
 }) {
 
-    const [formData, setFormData] = useState(defaultForm);
+    const [
 
-    const [ocrLoading, setOcrLoading] = useState(false);
+        formData,
+
+        setFormData
+
+    ] = useState(defaultForm);
+
+
+    const [
+
+        areas,
+
+        setAreas
+
+    ] = useState([]);
+
+
+    const [
+
+        ocrLoading,
+
+        setOcrLoading
+
+    ] = useState(false);
+
+
+    const [
+
+        solarOcrLoading,
+
+        setSolarOcrLoading
+
+    ] = useState(false);
+
+
+    /* ========================================================================
+       LOAD AREAS
+    ======================================================================== */
 
     useEffect(() => {
 
-        if (!isOpen) return;
+        const loadAreas =
+            async () => {
+
+                try {
+
+                    const response =
+                        await authService.getAreas();
+
+
+                    setAreas(
+
+                        response?.areas?.data ||
+
+                        response?.areas ||
+
+                        response?.data ||
+
+                        []
+
+                    );
+
+                } catch (error) {
+
+                    console.error(
+
+                        "Failed to load areas:",
+
+                        error
+
+                    );
+
+                }
+
+            };
+
+
+        if (isOpen) {
+
+            loadAreas();
+
+        }
+
+    }, [isOpen]);
+
+
+    /* ========================================================================
+       LOAD SELECTED BILL
+    ======================================================================== */
+
+    useEffect(() => {
+
+        if (!isOpen) {
+
+            return;
+
+        }
+
 
         if (selectedBill) {
 
@@ -77,230 +345,747 @@ function WapdaBillModal({
 
                 ...selectedBill,
 
+
+                bill_month:
+
+                    normalizeMonth(
+
+                        selectedBill.bill_month
+
+                    ),
+
+
+                area_id:
+
+                    selectedBill.area_id ||
+
+                    selectedBill.area?.id ||
+
+                    "",
+
+
+                location:
+
+                    selectedBill.location ||
+
+                    selectedBill.area?.location ||
+
+                    "",
+
+
+                bill_address:
+
+                    selectedBill.bill_address ||
+
+                    selectedBill.address ||
+
+                    "",
+
+
+                solar_report_month:
+
+                    normalizeMonth(
+
+                        selectedBill.solar_report_month ||
+
+                        selectedBill.report_month
+
+                    ),
+
+
+                solar_report_year:
+
+                    selectedBill.solar_report_year ||
+
+                    selectedBill.report_year ||
+
+                    new Date().getFullYear(),
+
+
+                ocr_status:
+
+                    selectedBill.ocr_status === true ||
+
+                    selectedBill.ocr_status === 1 ||
+
+                    selectedBill.ocr_status === "1",
+
+
+                ocr_confidence:
+
+                    selectedBill.ocr_confidence || "",
+
+
                 bill_image: null,
+
+                solar_image: null,
 
             });
 
         } else {
 
-            setFormData(defaultForm);
+            setFormData({
+
+                ...defaultForm,
+
+                bill_year:
+                    new Date().getFullYear(),
+
+                solar_report_year:
+                    new Date().getFullYear(),
+
+            });
 
         }
 
-    }, [selectedBill, isOpen]);
+    }, [
 
-    if (!isOpen) return null;
+        selectedBill,
 
-    const handleChange = (e) => {
+        isOpen,
 
-        const { name, value, files } = e.target;
+    ]);
 
-        let updatedData = {
 
-            ...formData,
+    /* ========================================================================
+       LOCATIONS
+    ======================================================================== */
 
-            [name]: files ? files[0] : value,
+    const locations = useMemo(() => {
+
+        return [
+
+            ...new Set(
+
+                areas
+
+                    .map(
+
+                        (area) =>
+
+                            area.location?.trim()
+
+                    )
+
+                    .filter(Boolean)
+
+            ),
+
+        ];
+
+    }, [areas]);
+
+
+    /* ========================================================================
+       HANDLE CHANGE
+    ======================================================================== */
+
+    const handleChange = (event) => {
+
+        const {
+
+            name,
+
+            value,
+
+            files,
+
+        } = event.target;
+
+
+        setFormData((previous) => {
+
+            const updatedData = {
+
+                ...previous,
+
+                [name]:
+
+                    files
+
+                        ? files[0]
+
+                        : value,
+
+            };
+
+
+            if (
+
+                name === "units_consumed" ||
+
+                name === "generated_units"
+
+            ) {
+
+                const unitsConsumed =
+
+                    name === "units_consumed"
+
+                        ? value
+
+                        : previous.units_consumed;
+
+
+                const generatedUnits =
+
+                    name === "generated_units"
+
+                        ? value
+
+                        : previous.generated_units;
+
+
+                updatedData.difference_units =
+
+                    calculateDifference(
+
+                        unitsConsumed,
+
+                        generatedUnits
+
+                    );
+
+            }
+
+
+            return updatedData;
+
+        });
+
+    };
+
+
+    /* ========================================================================
+       HANDLE AREA CHANGE
+    ======================================================================== */
+
+    const handleAreaChange = (event) => {
+
+        const areaId =
+            event.target.value;
+
+
+        const selectedArea =
+            areas.find(
+
+                (area) =>
+
+                    String(area.id) ===
+                    String(areaId)
+
+            );
+
+
+        setFormData((previous) => ({
+
+            ...previous,
+
+            area_id: areaId,
+
+            location:
+
+                selectedArea?.location ||
+
+                previous.location ||
+
+                "",
+
+        }));
+
+    };
+
+
+    /* ========================================================================
+       WAPDA BILL OCR
+    ======================================================================== */
+
+    const handleBillOCR =
+        async (file) => {
+
+            try {
+
+                setOcrLoading(true);
+
+
+                const response =
+                    await ocrService.processBill(
+                        file
+                    );
+
+
+                const bill =
+
+                    response?.data?.data ||
+
+                    response?.data ||
+
+                    {};
+
+
+                if (
+                    Object.keys(bill).length === 0
+                ) {
+
+                    alert(
+
+                        "No OCR data returned from backend."
+
+                    );
+
+                    return;
+
+                }
+
+
+                const ocrAreaName =
+
+                    bill.area_name ||
+
+                    bill.area ||
+
+                    "";
+
+
+                const matchedArea =
+                    areas.find(
+
+                        (area) =>
+
+                            area.area_name
+                                ?.trim()
+                                .toLowerCase() ===
+
+                            ocrAreaName
+                                ?.trim()
+                                .toLowerCase()
+
+                    );
+
+
+                setFormData((previous) => {
+
+                    const unitsConsumed =
+
+                        bill.units_consumed ??
+
+                        previous.units_consumed;
+
+
+                    return {
+
+                        ...previous,
+
+
+                        consumer_name:
+
+                            bill.consumer_name ||
+
+                            previous.consumer_name,
+
+
+                        reference_number:
+
+                            bill.reference_number ||
+
+                            previous.reference_number,
+
+
+                        bill_month:
+
+                            normalizeMonth(
+
+                                bill.bill_month ??
+
+                                previous.bill_month
+
+                            ),
+
+
+                        bill_year:
+
+                            bill.bill_year ??
+
+                            previous.bill_year,
+
+
+                        bill_address:
+
+                            bill.bill_address ||
+
+                            bill.address ||
+
+                            previous.bill_address,
+
+
+                        area_id:
+
+                            previous.area_id ||
+
+                            matchedArea?.id ||
+
+                            "",
+
+
+                        location:
+
+                            previous.location ||
+
+                            matchedArea?.location ||
+
+                            "",
+
+
+                        units_consumed:
+
+                            unitsConsumed,
+
+
+                        bill_amount:
+
+                            bill.bill_amount ??
+
+                            previous.bill_amount,
+
+
+                        status:
+
+                            bill.status ||
+
+                            previous.status,
+
+
+                        ocr_status: true,
+
+
+                        ocr_confidence:
+
+                            bill.ocr_confidence ??
+
+                            previous.ocr_confidence,
+
+
+                        difference_units:
+
+                            calculateDifference(
+
+                                unitsConsumed,
+
+                                previous.generated_units
+
+                            ),
+
+
+                        bill_image: file,
+
+                    };
+
+                });
+
+            } catch (error) {
+
+                console.error(
+
+                    "WAPDA OCR Error:",
+
+                    error
+
+                );
+
+
+                alert(
+
+                    error?.response?.data?.message ||
+
+                    error?.message ||
+
+                    "OCR Processing Failed."
+
+                );
+
+            } finally {
+
+                setOcrLoading(false);
+
+            }
 
         };
 
-        if (
 
-            name === "generated_units" ||
+    /* ========================================================================
+       SOLAR OCR
+    ======================================================================== */
 
-            name === "units_consumed"
+    const handleSolarOCR =
+        async (file) => {
 
-        ) {
+            try {
 
-            const billUnits =
+                setSolarOcrLoading(true);
 
-                Number(updatedData.units_consumed || 0);
 
-            const generatedUnits =
+                const response =
+                    await ocrService.processSolar(
+                        file
+                    );
 
-                Number(updatedData.generated_units || 0);
 
-            const difference = Math.abs(
+                const solar =
 
-                generatedUnits -
+                    response?.data?.data ||
 
-                billUnits
+                    response?.data ||
+
+                    {};
+
+
+                if (
+                    Object.keys(solar).length === 0
+                ) {
+
+                    alert(
+
+                        "No solar report data returned."
+
+                    );
+
+                    return;
+
+                }
+
+
+                setFormData((previous) => {
+
+                    const generatedUnits =
+
+                        solar.generated_units ??
+
+                        solar.units_generated ??
+
+                        previous.generated_units;
+
+
+                    return {
+
+                        ...previous,
+
+
+                        generated_units:
+
+                            generatedUnits,
+
+
+                        solar_report_month:
+
+                            normalizeMonth(
+
+                                solar.report_month ||
+
+                                solar.solar_report_month ||
+
+                                previous.solar_report_month
+
+                            ),
+
+
+                        solar_report_year:
+
+                            solar.report_year ||
+
+                            solar.solar_report_year ||
+
+                            previous.solar_report_year,
+
+
+                        difference_units:
+
+                            calculateDifference(
+
+                                previous.units_consumed,
+
+                                generatedUnits
+
+                            ),
+
+
+                        solar_image: file,
+
+                    };
+
+                });
+
+            } catch (error) {
+
+                console.error(
+
+                    "Solar OCR Error:",
+
+                    error
+
+                );
+
+
+                alert(
+
+                    error?.response?.data?.message ||
+
+                    error?.message ||
+
+                    "Solar OCR Processing Failed."
+
+                );
+
+            } finally {
+
+                setSolarOcrLoading(false);
+
+            }
+
+        };
+
+
+    /* ========================================================================
+       SUBMIT
+    ======================================================================== */
+
+    const handleSubmit =
+        (event) => {
+
+            event.preventDefault();
+
+
+            const data =
+                new FormData();
+
+
+            Object.entries(formData).forEach(
+
+                ([key, value]) => {
+
+                    if (
+
+                        value === null ||
+
+                        value === undefined ||
+
+                        value === ""
+
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    if (
+
+                        key === "bill_image" ||
+
+                        key === "solar_image"
+
+                    ) {
+
+                        if (
+                            value instanceof File
+                        ) {
+
+                            data.append(
+
+                                key,
+
+                                value
+
+                            );
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    if (key === "bill_month") {
+
+                        data.append(
+
+                            key,
+
+                            getMonthNumber(value)
+
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        key ===
+                        "solar_report_month"
+                    ) {
+
+                        data.append(
+
+                            key,
+
+                            getMonthNumber(value)
+
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (key === "ocr_status") {
+
+                        data.append(
+
+                            key,
+
+                            value
+                                ? "1"
+                                : "0"
+
+                        );
+
+                        return;
+
+                    }
+
+
+                    data.append(
+
+                        key,
+
+                        value
+
+                    );
+
+                }
 
             );
 
-            updatedData.difference_units =
 
-                difference.toFixed(2);
+            onSave(data);
 
-        }
+        };
 
-        setFormData(updatedData);
 
-    };
+    /* ========================================================================
+       CLOSED STATE
+    ======================================================================== */
 
-    /*
-    |--------------------------------------------------------------------------
-    | OCR
-    |--------------------------------------------------------------------------
-    */
+    if (!isOpen) {
 
-    const handleOCR = async (file) => {
+        return null;
 
-        try {
+    }
 
-            setOcrLoading(true);
 
-            const response =
-                await ocrService.processBill(file);
-
-            console.log("========== OCR RESPONSE ==========");
-
-            console.log(response.data);
-
-            console.log("=================================");
-
-            if (!response.data.data) {
-
-                alert("No OCR data returned from backend.");
-
-                return;
-
-            }
-
-            const bill = response.data.data;
-                        setFormData((prev) => ({
-
-                ...prev,
-
-                consumer_name:
-                    bill.consumer_name || "",
-
-                reference_number:
-                    bill.reference_number || "",
-
-                units_consumed:
-                    bill.units_consumed || "",
-
-                bill_amount:
-                    bill.bill_amount || "",
-
-                generated_units:
-                    bill.generated_units || "",
-
-                difference_units:
-                    Math.abs(
-
-                        Number(bill.units_consumed || 0)
-
-                        -
-
-                        Number(bill.generated_units || 0)
-
-                    ).toFixed(2),
-
-                bill_month:
-                    bill.bill_month || "",
-
-                bill_year:
-                    bill.bill_year ||
-                    new Date().getFullYear(),
-
-                bill_address:
-                    bill.bill_address ||
-                    bill.area_name ||
-                    "",
-
-                bill_image:
-                    file,
-
-                /*
-                |--------------------------------------------------------------------------
-                | OCR Information
-                |--------------------------------------------------------------------------
-                */
-
-                ocr_status:
-                    bill.ocr_status ?? true,
-
-                ocr_confidence:
-                    bill.ocr_confidence ?? 100,
-
-            }));
-
-        } catch (error) {
-
-            alert(
-
-                error.response?.data?.message ||
-
-                "OCR Processing Failed."
-
-            );
-
-        } finally {
-
-            setOcrLoading(false);
-
-        }
-
-    };
-
-    /*
-    |--------------------------------------------------------------------------
-    | Submit
-    |--------------------------------------------------------------------------
-    */
-
-    const handleSubmit = (e) => {
-
-    e.preventDefault();
-
-    const data = new FormData();
-
-    Object.keys(formData).forEach((key) => {
-
-        if (
-
-            formData[key] !== null &&
-
-            formData[key] !== ""
-
-        ) {
-
-            let value = formData[key];
-
-            /*
-            |--------------------------------------------------------------------------
-            | Boolean Values
-            |--------------------------------------------------------------------------
-            */
-
-            if (key === "ocr_status") {
-
-                value = value ? 1 : 0;
-
-            }
-
-            /*
-            |--------------------------------------------------------------------------
-            | OCR Confidence
-            |--------------------------------------------------------------------------
-            */
-
-            if (key === "ocr_confidence") {
-
-                value = Number(value);
-
-            }
-
-            data.append(key, value);
-
-        }
-
-    });
-
-    onSave(data);
-
-};
+    /* ========================================================================
+       RENDER
+    ======================================================================== */
 
     return (
 
@@ -308,21 +1093,22 @@ function WapdaBillModal({
 
             <div className="bill-modal">
 
+                {/* ============================================================
+                    HEADER
+                ============================================================ */}
+
                 <div className="modal-header">
 
                     <h2>
 
-                        {
+                        {selectedBill
 
-                            selectedBill
+                            ? "Edit Bill"
 
-                                ? "Edit Bill"
-
-                                : "Add Bill"
-
-                        }
+                            : "Add Bill"}
 
                     </h2>
+
 
                     <button
 
@@ -340,6 +1126,7 @@ function WapdaBillModal({
 
                 </div>
 
+
                 <form
 
                     className="bill-form"
@@ -347,184 +1134,632 @@ function WapdaBillModal({
                     onSubmit={handleSubmit}
 
                 >
-                                        {/* Consumer Name */}
 
-                    <div className="form-group">
+                    {/* ========================================================
+                        OCR UPLOADS
+                    ========================================================= */}
 
-                        <label>Consumer Name *</label>
+                    <div className="bill-ocr-row">
 
-                        <input
-                            type="text"
-                            name="consumer_name"
-                            value={formData.consumer_name}
-                            onChange={handleChange}
-                            required
-                        />
+                        <div className="bill-ocr-item">
+
+                            <label>
+                                WAPDA Bill
+                            </label>
+
+
+                            <BillOCRUpload
+
+                                title=""
+
+                                buttonText={
+                                    "Upload WAPDA Bill"
+                                }
+
+                                loadingText={
+                                    "Scanning WAPDA Bill..."
+                                }
+
+                                successText={
+                                    "WAPDA Bill scanned successfully."
+                                }
+
+                                loading={
+                                    ocrLoading
+                                }
+
+                                onFileSelect={
+                                    handleBillOCR
+                                }
+
+                            />
+
+                        </div>
+
+
+                        <div className="bill-ocr-item">
+
+                            <label>
+                                Solar Bill
+                            </label>
+
+
+                            <BillOCRUpload
+
+                                title=""
+
+                                buttonText={
+                                    "Upload Solar Bill"
+                                }
+
+                                loadingText={
+                                    "Scanning Solar Report..."
+                                }
+
+                                successText={
+                                    "Solar report scanned successfully."
+                                }
+
+                                loading={
+                                    solarOcrLoading
+                                }
+
+                                onFileSelect={
+                                    handleSolarOCR
+                                }
+
+                            />
+
+                        </div>
 
                     </div>
 
-                    {/* Reference Number */}
+
+                    {/* ========================================================
+                        AREA
+                    ========================================================= */}
 
                     <div className="form-group">
 
-                        <label>Reference Number *</label>
+                        <label>
+                            Select Area
+                        </label>
 
-                        <input
-                            type="text"
-                            name="reference_number"
-                            value={formData.reference_number}
-                            onChange={handleChange}
-                            required
-                        />
-
-                    </div>
-
-                    {/* Bill Month */}
-
-                    <div className="form-group">
-
-                        <label>Bill Month *</label>
 
                         <select
-                            name="bill_month"
-                            value={formData.bill_month}
-                            onChange={handleChange}
-                            required
+
+                            name="area_id"
+
+                            value={
+                                formData.area_id
+                            }
+
+                            onChange={
+                                handleAreaChange
+                            }
+
                         >
 
-                            <option value="">Select Month</option>
+                            <option value="">
+                                Select Area
+                            </option>
 
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
+
+                            {areas.map(
+                                (area) => (
+
+                                    <option
+
+                                        key={
+                                            area.id
+                                        }
+
+                                        value={
+                                            area.id
+                                        }
+
+                                    >
+
+                                        {
+                                            area.area_name
+                                        }
+
+                                    </option>
+
+                                )
+                            )}
 
                         </select>
 
                     </div>
 
-                    {/* Bill Year */}
+
+                    {/* ========================================================
+                        LOCATION
+                    ========================================================= */}
 
                     <div className="form-group">
 
-                        <label>Bill Year *</label>
+                        <label>
+                            Location
+                        </label>
 
-                        <input
-                            type="number"
-                            name="bill_year"
-                            value={formData.bill_year}
-                            onChange={handleChange}
-                            required
-                        />
-
-                    </div>
-
-                    {/* Bill Address */}
-
-                    <div className="form-group">
-
-                        <label>Bill Address</label>
-
-                        <input
-                            type="text"
-                            name="bill_address"
-                            value={formData.bill_address}
-                            onChange={handleChange}
-                            placeholder="OCR will automatically detect the address"
-                        />
-
-                    </div>
-
-                    {/* Units Consumed */}
-
-                    <div className="form-group">
-
-                        <label>Units Consumed *</label>
-
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="units_consumed"
-                            value={formData.units_consumed}
-                            onChange={handleChange}
-                            required
-                        />
-
-                    </div>
-
-                    {/* Bill Amount */}
-
-                    <div className="form-group">
-
-                        <label>Bill Amount *</label>
-
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="bill_amount"
-                            value={formData.bill_amount}
-                            onChange={handleChange}
-                            required
-                        />
-
-                    </div>
-
-                    {/* Generated Units */}
-
-                    <div className="form-group">
-
-                        <label>Inverter Generated Units</label>
-
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="generated_units"
-                            value={formData.generated_units}
-                            onChange={handleChange}
-                        />
-
-                    </div>
-
-                    {/* Difference Units */}
-
-                    <div className="form-group">
-
-                        <label>Difference Units</label>
-
-                        <input
-                            type="number"
-                            step="0.01"
-                            name="difference_units"
-                            value={formData.difference_units}
-                            onChange={handleChange}
-                        />
-
-                    </div>
-
-                    {/* Status */}
-
-                    <div className="form-group">
-
-                        <label>Status *</label>
 
                         <select
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
+
+                            name="location"
+
+                            value={
+                                formData.location
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                        >
+
+                            <option value="">
+                                Select Location
+                            </option>
+
+
+                            {locations.map(
+                                (location) => (
+
+                                    <option
+
+                                        key={
+                                            location
+                                        }
+
+                                        value={
+                                            location
+                                        }
+
+                                    >
+
+                                        {location}
+
+                                    </option>
+
+                                )
+                            )}
+
+                        </select>
+
+                    </div>
+
+
+                    {/* ========================================================
+                        CONSUMER NAME
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Consumer Name *
+                        </label>
+
+
+                        <input
+
+                            type="text"
+
+                            name="consumer_name"
+
+                            value={
+                                formData.consumer_name
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
                             required
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        REFERENCE NUMBER
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Reference Number *
+                        </label>
+
+
+                        <input
+
+                            type="text"
+
+                            name="reference_number"
+
+                            value={
+                                formData.reference_number
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                            required
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        BILL MONTH
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Bill Month *
+                        </label>
+
+
+                        <select
+
+                            name="bill_month"
+
+                            value={
+                                formData.bill_month
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                            required
+
+                        >
+
+                            <option value="">
+                                Select Month
+                            </option>
+
+
+                            {months.map(
+                                (month) => (
+
+                                    <option
+
+                                        key={
+                                            month
+                                        }
+
+                                        value={
+                                            month
+                                        }
+
+                                    >
+
+                                        {month}
+
+                                    </option>
+
+                                )
+                            )}
+
+                        </select>
+
+                    </div>
+
+
+                    {/* ========================================================
+                        BILL YEAR
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Bill Year *
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            name="bill_year"
+
+                            value={
+                                formData.bill_year
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                            required
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        BILL ADDRESS
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Bill Address
+                        </label>
+
+
+                        <input
+
+                            type="text"
+
+                            name="bill_address"
+
+                            value={
+                                formData.bill_address
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        UNITS CONSUMED
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Units Consumed *
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            step="0.01"
+
+                            name="units_consumed"
+
+                            value={
+                                formData.units_consumed
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                            required
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        BILL AMOUNT
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Bill Amount *
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            step="0.01"
+
+                            name="bill_amount"
+
+                            value={
+                                formData.bill_amount
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                            required
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        GENERATED UNITS
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Solar Generated Units
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            step="0.01"
+
+                            name="generated_units"
+
+                            value={
+                                formData.generated_units
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        SOLAR REPORT MONTH
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Solar Report Month
+                        </label>
+
+
+                        <select
+
+                            name="solar_report_month"
+
+                            value={
+                                formData.solar_report_month
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                        >
+
+                            <option value="">
+                                Select Month
+                            </option>
+
+
+                            {months.map(
+                                (month) => (
+
+                                    <option
+
+                                        key={
+                                            month
+                                        }
+
+                                        value={
+                                            month
+                                        }
+
+                                    >
+
+                                        {month}
+
+                                    </option>
+
+                                )
+                            )}
+
+                        </select>
+
+                    </div>
+
+
+                    {/* ========================================================
+                        SOLAR REPORT YEAR
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Solar Report Year
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            name="solar_report_year"
+
+                            value={
+                                formData.solar_report_year
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        DIFFERENCE UNITS
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Difference Units
+                        </label>
+
+
+                        <input
+
+                            type="number"
+
+                            name="difference_units"
+
+                            value={
+                                formData.difference_units
+                            }
+
+                            readOnly
+
+                        />
+
+                    </div>
+
+
+                    {/* ========================================================
+                        STATUS
+                    ========================================================= */}
+
+                    <div className="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+
+                        <select
+
+                            name="status"
+
+                            value={
+                                formData.status
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
                         >
 
                             <option value="Paid">
                                 Paid
                             </option>
+
 
                             <option value="Unpaid">
                                 Unpaid
@@ -534,44 +1769,53 @@ function WapdaBillModal({
 
                     </div>
 
-                    {/* Generation Loss Reason */}
+
+                    {/* ========================================================
+                        GENERATION LOSS REASON
+                    ========================================================= */}
 
                     <div className="form-group">
 
-                        <label>Generation Loss Reason</label>
+                        <label>
+                            Generation Loss Reason
+                        </label>
+
 
                         <input
+
                             type="text"
+
                             name="generation_loss_reason"
-                            value={formData.generation_loss_reason}
-                            onChange={handleChange}
+
+                            value={
+                                formData.generation_loss_reason
+                            }
+
+                            onChange={
+                                handleChange
+                            }
+
                             placeholder="Optional"
-                        />
-
-                    </div>
-
-                    {/* OCR Upload */}
-
-                    <div className="form-group full-width">
-
-                        <label>Bill Image OCR</label>
-
-                        <BillOCRUpload
-
-                            loading={ocrLoading}
-
-                            onFileSelect={handleOCR}
 
                         />
 
                     </div>
+
+
+                    {/* ========================================================
+                        FORM ACTIONS
+                    ========================================================= */}
 
                     <FormActions
 
                         saveText={
+
                             selectedBill
+
                                 ? "Update Bill"
+
                                 : "Save Bill"
+
                         }
 
                         cancelText="Cancel"
@@ -590,5 +1834,5 @@ function WapdaBillModal({
 
 }
 
+
 export default WapdaBillModal;
-                

@@ -6,6 +6,16 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * ============================================================================
+ * File:
+ * database/seeders/AdminUserSeeder.php
+ *
+ * Description:
+ * Creates or updates the default system administrator.
+ * ============================================================================
+ */
+
 class AdminUserSeeder extends Seeder
 {
     /**
@@ -22,10 +32,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Super Admin',
 
-                'phone' => '03001234567',
-
-                // Laravel automatically hash karega
-               'password' => Hash::make('admin123'),
+                'password' => Hash::make('admin123'),
 
                 'role' => 'Administrator',
 
