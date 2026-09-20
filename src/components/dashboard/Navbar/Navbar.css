@@ -14,9 +14,9 @@
 
     padding:0 32px;
 
-    background:var(--navbar-bg);
+  background:#062A3A;
 
-    border-bottom:1px solid var(--border-color);
+border-bottom:1px solid #0A3A4D;
 
     position:sticky;
 
@@ -26,7 +26,7 @@
 
     transition:.30s;
 
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    box-shadow:0 5px 18px rgba(0,0,0,.15);
 
 }
 
@@ -148,9 +148,9 @@
 
 [data-theme="dark"] .navbar{
 
-    background:#081521;
+    background:#062A3A;
 
-    border-bottom:1px solid #17344C;
+    border-bottom:1px solid #0A3A4D;
 
     box-shadow:0 12px 30px rgba(0,0,0,.35);
 

@@ -43,8 +43,6 @@ const Navbar = () => {
 
             <div className="navbar__right">
 
-                {/* Theme */}
-
                 <button
                     className="theme-btn"
                     onClick={toggleTheme}
@@ -54,8 +52,6 @@ const Navbar = () => {
                     {theme === "light" ? "🌙" : "☀️"}
 
                 </button>
-
-                {/* Logout */}
 
                 <button
                     className="navbar__logout-btn"
