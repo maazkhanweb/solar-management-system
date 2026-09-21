@@ -26,7 +26,6 @@ import {
 import DashboardCard from "../../components/dashboard/DashboardCard/DashboardCard";
 import dashboardService from "../../services/dashboardService";
 
-import backgroundImage from "../../assets/background.png";
 
 import "./Dashboard.css";
 
@@ -222,7 +221,7 @@ const Dashboard = () => {
         <section
             className="dashboard"
             style={{
-                backgroundImage: `url(${backgroundImage})`,
+            
             }}
         >
 

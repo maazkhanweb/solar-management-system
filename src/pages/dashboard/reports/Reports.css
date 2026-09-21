@@ -14,12 +14,15 @@
 
     gap:25px;
 
+    padding:30px 28px 40px;
+
+    box-sizing:border-box;
+
     background:var(--background-color);
 
     transition:background .3s ease;
 
 }
-
 /* ==========================================================================
    Header
 ========================================================================== */

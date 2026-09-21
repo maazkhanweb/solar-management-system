@@ -10,6 +10,10 @@
 
     gap: 30px;
 
+    padding: 30px 28px 40px;
+
+    box-sizing: border-box;
+
     color: var(--text-primary);
 
 }
@@ -206,6 +210,12 @@ width:100%;
 
 @media(max-width:576px){
 
+.area-management {
+
+    padding: 24px 16px 30px;
+
+}
+
 .area-header h1{
 
 font-size:30px;
@@ -213,3 +223,4 @@ font-size:30px;
 }
 
 }
+
