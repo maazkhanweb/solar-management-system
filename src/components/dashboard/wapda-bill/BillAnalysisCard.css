@@ -356,6 +356,43 @@
 
 
 /* ===========================================================
+   SECTION CARD COLORS
+=========================================================== */
+
+/* WAPDA BILL DETAILS — LIGHT BLUE */
+
+.wapda-section .analysis-item {
+
+    background: #eff6ff !important;
+
+    border-color: #c7dcf8 !important;
+
+}
+
+
+/* SOLAR GENERATION DETAILS — LIGHT YELLOW */
+
+.solar-section .analysis-item {
+
+    background: #fffbea !important;
+
+    border-color: #f3df9a !important;
+
+}
+
+
+/* WAPDA VS SOLAR COMPARISON — LIGHT GREEN */
+
+.comparison-section .analysis-item {
+
+    background: #f0fdf4 !important;
+
+    border-color: #c8e8d1 !important;
+
+}
+
+
+/* ===========================================================
    LABEL
 =========================================================== */
 
@@ -517,7 +554,7 @@
 
 
 /* ===========================================================
-   DARK MODE FORCE WHITE
+   DARK MODE
 =========================================================== */
 
 [data-theme="dark"] .bill-analysis-overlay .bill-analysis-card,
@@ -526,13 +563,41 @@
 [data-theme="dark"] .analysis-section,
 [data-theme="dark"] .analysis-section-heading,
 [data-theme="dark"] .analysis-grid,
-[data-theme="dark"] .analysis-item,
 [data-theme="dark"] .analysis-footer,
 [data-theme="dark"] .analysis-empty {
 
     background: #ffffff !important;
 
     background-color: #ffffff !important;
+
+}
+
+
+/* Keep section card colors in dark mode */
+
+[data-theme="dark"] .wapda-section .analysis-item {
+
+    background: #eff6ff !important;
+
+    border-color: #c7dcf8 !important;
+
+}
+
+
+[data-theme="dark"] .solar-section .analysis-item {
+
+    background: #fffbea !important;
+
+    border-color: #f3df9a !important;
+
+}
+
+
+[data-theme="dark"] .comparison-section .analysis-item {
+
+    background: #f0fdf4 !important;
+
+    border-color: #c8e8d1 !important;
 
 }
 

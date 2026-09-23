@@ -224,10 +224,6 @@ function InventoryManagement() {
                 error
             );
 
-            alert(
-                "Failed to load inventory."
-            );
-
         } finally {
 
             setLoading(false);
@@ -277,21 +273,17 @@ function InventoryManagement() {
         try {
 
             const response =
-                await authService.getAreas();
+    await authService.getAreaOptions();
 
-            setAreas(
-                response?.areas?.data || []
-            );
+setAreas(
+    response?.areas || []
+);
 
         } catch (error) {
 
             console.error(
                 "Failed to load areas:",
                 error
-            );
-
-            alert(
-                "Failed to load areas."
             );
 
         }

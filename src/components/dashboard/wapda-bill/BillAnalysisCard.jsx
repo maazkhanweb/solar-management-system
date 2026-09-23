@@ -450,41 +450,6 @@ const BillAnalysisCard = ({
                 : 0;
 
 
-    /* ======================================================================
-       UNIT RATE
-    ====================================================================== */
-
-    const unitRate =
-
-        analysis.unit_rate !== null &&
-
-        analysis.unit_rate !== undefined
-
-            ? analysis.unit_rate
-
-            : consumedUnits > 0
-
-                ? billAmount /
-                  consumedUnits
-
-                : 0;
-
-
-    /* ======================================================================
-       ESTIMATED SAVING
-    ====================================================================== */
-
-    const estimatedSaving =
-
-        analysis.estimated_saving !== null &&
-
-        analysis.estimated_saving !== undefined
-
-            ? analysis.estimated_saving
-
-            : generatedUnits *
-              unitRate;
-
 
     /* ======================================================================
        PERFORMANCE REASON
@@ -601,7 +566,7 @@ const BillAnalysisCard = ({
                        WAPDA BILL DETAILS
                     ====================================================== */}
 
-                    <div className="analysis-section">
+                    <div className="analysis-section wapda-section">
 
                         <div className="analysis-section-heading">
 
@@ -731,7 +696,7 @@ const BillAnalysisCard = ({
                        SOLAR GENERATION DETAILS
                     ====================================================== */}
 
-                    <div className="analysis-section">
+                    <div className="analysis-section solar-section">
 
                         <div className="analysis-section-heading">
 
@@ -784,28 +749,7 @@ const BillAnalysisCard = ({
                                 </strong>
 
                             </div>
-
-
-                            <div className="analysis-item">
-
-                                <span>
-                                    Estimated Saving
-                                </span>
-
-                                <strong className="saving">
-
-                                    Rs.{" "}
-
-                                    {formatValue(
-                                        estimatedSaving
-                                    )}
-
-                                </strong>
-
-                            </div>
-
-
-                            <div className="analysis-item">
+<div className="analysis-item">
 
                                 <span>
                                     Efficiency
@@ -832,7 +776,7 @@ const BillAnalysisCard = ({
                        WAPDA VS SOLAR COMPARISON
                     ====================================================== */}
 
-                    <div className="analysis-section">
+                    <div className="analysis-section comparison-section">
 
                         <div className="analysis-section-heading">
 
@@ -932,28 +876,7 @@ const BillAnalysisCard = ({
                                 </strong>
 
                             </div>
-
-
-                            <div className="analysis-item">
-
-                                <span>
-                                    Unit Rate
-                                </span>
-
-                                <strong>
-
-                                    Rs.{" "}
-
-                                    {formatValue(
-                                        unitRate
-                                    )}
-
-                                </strong>
-
-                            </div>
-
-
-                            <div className="analysis-item">
+<div className="analysis-item">
 
                                 <span>
                                     Performance Result

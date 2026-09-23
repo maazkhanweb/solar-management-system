@@ -35,41 +35,20 @@ export const AuthProvider = ({ children }) => {
     // Login
     // ==========================================
 
-    const login = (userData, token, rememberMe) => {
+const login = (userData, token, rememberMe) => {
 
-        if (rememberMe) {
+    localStorage.setItem("token", token);
 
-            // Save permanently
-            localStorage.setItem("token", token);
+    localStorage.setItem(
+        "user",
+        JSON.stringify(userData)
+    );
 
-            localStorage.setItem(
-                "user",
-                JSON.stringify(userData)
-            );
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
 
-            // Clear session
-            sessionStorage.removeItem("token");
-            sessionStorage.removeItem("user");
-
-        } else {
-
-            // Save only for current browser session
-            sessionStorage.setItem("token", token);
-
-            sessionStorage.setItem(
-                "user",
-                JSON.stringify(userData)
-            );
-
-            // Clear local
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-
-        }
-
-        setUser(userData);
-
-    };
+    setUser(userData);
+};
 
     // ==========================================
     // Logout
