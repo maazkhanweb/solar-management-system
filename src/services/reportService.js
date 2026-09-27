@@ -31,14 +31,16 @@ const reportService = {
      */
     exportCSV(module) {
 
-        return api.post(
+        return api.get(
 
             `${REPORT_ENDPOINT}/export/csv/${module}`,
 
-            {},
-
             {
                 responseType: "blob",
+
+                headers: {
+                    Accept: "text/csv",
+                },
             }
 
         );
@@ -50,14 +52,16 @@ const reportService = {
      */
     exportPDF(module) {
 
-        return api.post(
+        return api.get(
 
             `${REPORT_ENDPOINT}/export/pdf/${module}`,
 
-            {},
-
             {
                 responseType: "blob",
+
+                headers: {
+                    Accept: "application/pdf",
+                },
             }
 
         );

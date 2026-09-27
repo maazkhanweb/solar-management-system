@@ -8,19 +8,12 @@
  * ============================================================================
  */
 
-import {
-    FaDownload,
-    FaTrash,
-} from "react-icons/fa";
-
 import reportService from "../../../services/reportService";
 
 import "./ReportsTable.css";
 
 function ReportsTable({
-
-    reports,
-
+    reports = [],
 }) {
 
     /**
@@ -38,10 +31,17 @@ function ReportsTable({
                     module.toLowerCase()
                 );
 
+            const blob = new Blob(
+                [response.data],
+                {
+                    type:
+                        response.headers?.["content-type"] ||
+                        "text/csv",
+                }
+            );
+
             const url =
-                window.URL.createObjectURL(
-                    new Blob([response.data])
-                );
+                window.URL.createObjectURL(blob);
 
             const link =
                 document.createElement("a");
@@ -61,7 +61,10 @@ function ReportsTable({
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "CSV DOWNLOAD ERROR:",
+                error
+            );
 
             alert(
                 "Unable to download CSV."
@@ -70,6 +73,7 @@ function ReportsTable({
         }
 
     };
+
 
     /**
      * ==========================================================
@@ -86,18 +90,17 @@ function ReportsTable({
                     module.toLowerCase()
                 );
 
-            const blob =
-                new Blob(
-                    [response.data],
-                    {
-                        type: "application/pdf",
-                    }
-                );
+            const blob = new Blob(
+                [response.data],
+                {
+                    type:
+                        response.headers?.["content-type"] ||
+                        "application/pdf",
+                }
+            );
 
             const url =
-                window.URL.createObjectURL(
-                    blob
-                );
+                window.URL.createObjectURL(blob);
 
             const link =
                 document.createElement("a");
@@ -117,18 +120,38 @@ function ReportsTable({
 
         } catch (error) {
 
+            console.error(
+                "PDF DOWNLOAD ERROR:",
+                error
+            );
+
+            /*
+             * If Laravel returns an error as Blob,
+             * try to read the actual backend message.
+             */
+
             if (
                 error.response?.data instanceof Blob
             ) {
 
-                const text =
-                    await error.response.data.text();
+                try {
 
-                console.log(text);
+                    const text =
+                        await error.response.data.text();
 
-            } else {
+                    console.error(
+                        "BACKEND ERROR:",
+                        text
+                    );
 
-                console.error(error);
+                } catch (blobError) {
+
+                    console.error(
+                        "Unable to read backend error:",
+                        blobError
+                    );
+
+                }
 
             }
 
@@ -140,46 +163,6 @@ function ReportsTable({
 
     };
 
-    /**
-     * ==========================================================
-     * Delete Report
-     * ==========================================================
-     */
-
-    const handleDelete = async (report) => {
-
-        const confirmDelete =
-            window.confirm(
-
-                `Are you sure you want to delete "${report.reportName}" ?`
-
-            );
-
-        if (!confirmDelete) {
-
-            return;
-
-        }
-
-        try {
-
-            await reportService.deleteReport(
-                report.id
-            );
-
-            window.location.reload();
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert(
-                "Unable to delete report."
-            );
-
-        }
-
-    };
 
     return (
 
@@ -213,125 +196,101 @@ function ReportsTable({
 
                 <tbody>
 
-                    {
+                    {reports.length > 0 ? (
 
-                        reports.length > 0 ? (
+                        reports.map((report) => (
 
-                            reports.map((report) => (
+                            <tr key={report.id}>
 
-                                <tr key={report.id}>
+                                <td>
+                                    {report.id}
+                                </td>
 
-                                    <td>
+                                <td>
+                                    {report.reportName}
+                                </td>
 
-                                        {report.id}
+                                <td>
+                                    {report.module}
+                                </td>
 
-                                    </td>
+                                <td>
+                                    {report.generatedDate}
+                                </td>
 
-                                    <td>
+                                <td>
+                                    {report.reportType}
+                                </td>
 
-                                        {report.reportName}
+                                <td>
 
-                                    </td>
+                                    <span
+                                        className={`status ${report.status.toLowerCase()}`}
+                                    >
+                                        {report.status}
+                                    </span>
 
-                                    <td>
+                                </td>
 
-                                        {report.module}
+                                <td>
+                                    {report.totalRecords}
+                                </td>
 
-                                    </td>
+                                <td>
 
-                                    <td>
+                                    <div className="table-actions">
 
-                                        {report.generatedDate}
-
-                                    </td>
-
-                                    <td>
-
-                                        {report.reportType}
-
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            className={`status ${report.status.toLowerCase()}`}
+                                        <button
+                                            className="download-btn"
+                                            onClick={() =>
+                                                handleCSVDownload(
+                                                    report.module
+                                                )
+                                            }
+                                            title="Export CSV"
                                         >
+                                            Export CSV
+                                        </button>
 
-                                            {report.status}
 
-                                        </span>
+                                        <button
+                                            className="pdf-btn"
+                                            onClick={() =>
+                                                handlePDFDownload(
+                                                    report.module
+                                                )
+                                            }
+                                            title="Export PDF"
+                                        >
+                                            Download PDF
+                                        </button>
 
-                                    </td>
-
-                                    <td>
-
-                                        {report.totalRecords}
-
-                                    </td>
-
-                                    <td>
-
-                                        <div className="table-actions">
-                                                                                        <button
-                                                className="download-btn"
-                                                onClick={() =>
-                                                    handleCSVDownload(
-                                                        report.module
-                                                    )
-                                                }
-                                                title="Export CSV"
-                                            >
-
-                                                Export CSV
-
-                                            </button>
-
-                                            <button
-                                                className="pdf-btn"
-                                                onClick={() =>
-                                                    handlePDFDownload(
-                                                        report.module
-                                                    )
-                                                }
-                                                title="Export PDF"
-                                            >
-
-                                                Download PDF
-
-                                            </button>
-
-                                            
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-
-                            ))
-
-                        ) : (
-
-                            <tr>
-
-                                <td
-                                    colSpan="8"
-                                    style={{
-                                        textAlign: "center",
-                                        padding: "30px",
-                                        fontWeight: "600",
-                                    }}
-                                >
-
-                                    No Reports Found.
+                                    </div>
 
                                 </td>
 
                             </tr>
 
-                        )
+                        ))
 
-                    }
+                    ) : (
+
+                        <tr>
+
+                            <td
+                                colSpan="8"
+                                style={{
+                                    textAlign: "center",
+                                    padding: "30px",
+                                    fontWeight: "600",
+                                }}
+                            >
+                                No Reports Found.
+                            </td>
+
+                        </tr>
+
+                    )}
 
                 </tbody>
 

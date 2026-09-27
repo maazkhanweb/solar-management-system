@@ -187,15 +187,10 @@ function InventoryManagement() {
        INITIAL LOAD
     ======================================================================== */
 
-    useEffect(() => {
-
-        loadInventory();
-
-        loadAssignments();
-
-        loadAreas();
-
-    }, []);
+  useEffect(() => {
+    loadInventory();
+    loadAreas();
+}, []);
 
 
     /* ========================================================================
@@ -698,30 +693,22 @@ setAreas(
        OPEN CATEGORY MODAL
     ======================================================================== */
 
-    const openCategoryModal = (type) => {
+   const openCategoryModal = async (type) => {
+    const config = categoryConfig[type];
 
-        const config =
-            categoryConfig[type];
+    if (!config) {
+        return;
+    }
 
-        if (!config) {
+    await loadAssignments();
 
-            return;
+    setSelectedCategory({
+        ...config,
+        statistics: categoryStatistics[type],
+    });
 
-        }
-
-
-        setSelectedCategory({
-
-            ...config,
-
-            statistics:
-                categoryStatistics[type],
-
-        });
-
-        setCategoryModalOpen(true);
-
-    };
+    setCategoryModalOpen(true);
+};
 
 
     /* ========================================================================
