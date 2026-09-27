@@ -1,0 +1,536 @@
+/* ==========================================================================
+   Inventory Transaction History
+========================================================================== */
+
+.inventory-transaction-page{
+
+    width:100%;
+
+    min-height:100vh;
+
+    padding:30px;
+
+    background:var(--background-color);
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+    box-sizing:border-box;
+
+    transition:background .3s ease;
+
+}
+
+/* ==========================================================================
+   Header
+========================================================================== */
+
+.inventory-transaction-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+
+}
+
+.inventory-transaction-header h1{
+
+    margin:0;
+
+    font-size:38px;
+
+    font-weight:700;
+
+    color:var(--text-primary);
+
+}
+
+.inventory-transaction-header p{
+
+    margin-top:8px;
+
+    margin-bottom:0;
+
+    max-width:720px;
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+    line-height:1.7;
+
+}
+
+/* ==========================================================================
+   Refresh Button
+========================================================================== */
+
+.transaction-refresh-btn{
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    padding:12px 24px;
+
+    border-radius:12px;
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.transaction-refresh-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(15,118,110,.25);
+
+}
+
+/* ==========================================================================
+   Sections
+========================================================================== */
+
+.transaction-summary-section,
+
+.transaction-filter-section,
+
+.transaction-table-section{
+
+    width:100%;
+
+    background:var(--card-background);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    padding:22px;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:.3s;
+
+}
+
+.transaction-summary-section:hover,
+
+.transaction-filter-section:hover,
+
+.transaction-table-section:hover{
+
+    box-shadow:var(--shadow-md);
+
+}
+
+/* ==========================================================================
+   Loading
+========================================================================== */
+
+.transaction-loading{
+
+    width:100%;
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:var(--primary-color);
+
+    font-size:17px;
+
+    font-weight:600;
+
+}
+
+/* ==========================================================================
+   Error
+========================================================================== */
+
+.transaction-error{
+
+    width:100%;
+
+    padding:18px;
+
+    border-radius:12px;
+
+    background:#FEE2E2;
+
+    border:1px solid #FECACA;
+
+    color:#DC2626;
+
+    font-size:15px;
+
+}
+
+/* ==========================================================================
+   Empty State
+========================================================================== */
+
+.transaction-empty-state{
+
+    text-align:center;
+
+    padding:80px 20px;
+
+    color:var(--text-secondary);
+
+}
+
+.transaction-empty-state h3{
+
+    margin-bottom:10px;
+
+    color:var(--text-primary);
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.transaction-empty-state p{
+
+    margin:0;
+
+    font-size:15px;
+
+    line-height:1.7;
+
+}
+/* ==========================================================================
+   Pagination
+========================================================================== */
+
+.transaction-pagination{
+
+    margin-top:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+
+}
+
+.transaction-pagination-info{
+
+    color:var(--text-secondary);
+
+    font-size:14px;
+
+}
+
+.transaction-pagination-info strong{
+
+    color:var(--text-primary);
+
+    font-weight:700;
+
+}
+
+.transaction-pagination-buttons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.transaction-pagination-buttons span{
+
+    color:var(--text-primary);
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+.transaction-pagination-buttons button{
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.transaction-pagination-buttons button:hover:not(:disabled){
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(15,118,110,.25);
+
+}
+
+.transaction-pagination-buttons button:disabled{
+
+    background:#CBD5E1;
+
+    color:#64748B;
+
+    cursor:not-allowed;
+
+    box-shadow:none;
+
+}
+
+/* ==========================================================================
+   Dark Theme
+========================================================================== */
+
+[data-theme="dark"] .transaction-summary-section,
+
+[data-theme="dark"] .transaction-filter-section,
+
+[data-theme="dark"] .transaction-table-section{
+
+    background:#111C2D;
+
+    border-color:#253247;
+
+}
+
+[data-theme="dark"] .transaction-error{
+
+    background:#451A1A;
+
+    border-color:#7F1D1D;
+
+    color:#FCA5A5;
+
+}
+
+[data-theme="dark"] .transaction-pagination-info{
+
+    color:#CBD5E1;
+
+}
+
+[data-theme="dark"] .transaction-pagination-info strong,
+
+[data-theme="dark"] .transaction-pagination-buttons span{
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .transaction-pagination-buttons button:disabled{
+
+    background:#334155;
+
+    color:#94A3B8;
+
+}
+
+/* ==========================================================================
+   Animation
+========================================================================== */
+
+.transaction-summary-section,
+
+.transaction-filter-section,
+
+.transaction-table-section,
+
+.transaction-pagination{
+
+    animation:transactionFadeUp .35s ease;
+
+}
+
+@keyframes transactionFadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================================================================
+   Responsive
+========================================================================== */
+
+@media (max-width:992px){
+
+    .inventory-transaction-page{
+
+        padding:20px;
+
+    }
+
+    .inventory-transaction-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .transaction-refresh-btn{
+
+        width:100%;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .inventory-transaction-page{
+
+        padding:16px;
+
+        gap:18px;
+
+    }
+
+    .inventory-transaction-header h1{
+
+        font-size:28px;
+
+    }
+
+    .inventory-transaction-header p{
+
+        font-size:14px;
+
+    }
+
+    .transaction-summary-section,
+
+    .transaction-filter-section,
+
+    .transaction-table-section{
+
+        padding:18px;
+
+    }
+
+    .transaction-pagination{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .transaction-pagination-info{
+
+        text-align:center;
+
+    }
+
+    .transaction-pagination-buttons{
+
+        justify-content:center;
+
+        flex-wrap:wrap;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .inventory-transaction-page{
+
+        padding:12px;
+
+    }
+
+    .inventory-transaction-header h1{
+
+        font-size:24px;
+
+    }
+
+    .transaction-pagination-buttons{
+
+        flex-direction:column;
+
+        width:100%;
+
+    }
+
+    .transaction-pagination-buttons button{
+
+        width:100%;
+
+    }
+
+}
+
+/* ==========================================================================
+   Smooth Transition
+========================================================================== */
+
+.inventory-transaction-page *{
+
+    transition:
+
+        background .30s ease,
+
+        color .30s ease,
+
+        border-color .30s ease,
+
+        box-shadow .30s ease;
+
+}

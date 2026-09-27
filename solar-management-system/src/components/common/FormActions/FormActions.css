@@ -1,0 +1,211 @@
+/* ==========================================================
+   Form Actions
+========================================================== */
+
+.form-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+
+}
+
+/* ==========================================================
+   Base Button
+========================================================== */
+
+.form-btn{
+
+    min-width:130px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#ffffff;
+
+    transition:.30s;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+.form-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.form-btn:active{
+
+    transform:scale(.97);
+
+}
+
+/* ==========================================================
+   Cancel
+========================================================== */
+
+.form-btn-cancel{
+
+    background:linear-gradient(
+        135deg,
+        #64748B,
+        #475569
+    );
+
+}
+
+.form-btn-cancel:hover{
+
+    box-shadow:0 10px 20px rgba(71,85,105,.35);
+
+}
+
+/* ==========================================================
+   Primary
+========================================================== */
+
+.form-btn-primary{
+
+    background:linear-gradient(
+        135deg,
+        #2563EB,
+        #1D4ED8
+    );
+
+}
+
+.form-btn-primary:hover{
+
+    box-shadow:0 10px 22px rgba(37,99,235,.35);
+
+}
+
+/* ==========================================================
+   Success
+========================================================== */
+
+.form-btn-success{
+
+    background:linear-gradient(
+        135deg,
+        #16A34A,
+        #15803D
+    );
+
+}
+
+.form-btn-success:hover{
+
+    box-shadow:0 10px 22px rgba(22,163,74,.35);
+
+}
+
+/* ==========================================================
+   Danger
+========================================================== */
+
+.form-btn-danger{
+
+    background:linear-gradient(
+        135deg,
+        #EF4444,
+        #DC2626
+    );
+
+}
+
+.form-btn-danger:hover{
+
+    box-shadow:0 10px 22px rgba(220,38,38,.35);
+
+}
+
+/* ==========================================================
+   Dark Mode
+========================================================== */
+
+[data-theme="dark"] .form-btn{
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+[data-theme="dark"] .form-btn-cancel{
+
+    background:linear-gradient(
+        135deg,
+        #475569,
+        #334155
+    );
+
+}
+
+[data-theme="dark"] .form-btn-primary{
+
+    background:linear-gradient(
+        135deg,
+        #2563EB,
+        #1E40AF
+    );
+
+}
+
+[data-theme="dark"] .form-btn-success{
+
+    background:linear-gradient(
+        135deg,
+        #16A34A,
+        #166534
+    );
+
+}
+
+[data-theme="dark"] .form-btn-danger{
+
+    background:linear-gradient(
+        135deg,
+        #DC2626,
+        #991B1B
+    );
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:576px){
+
+.form-actions{
+
+flex-direction:column;
+
+align-items:stretch;
+
+}
+
+.form-btn{
+
+width:100%;
+
+}
+
+}

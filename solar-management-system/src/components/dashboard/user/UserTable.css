@@ -1,0 +1,212 @@
+/* ==========================================================
+   Users Table Container
+========================================================== */
+
+.users-table-container {
+
+    width: 100%;
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-md);
+
+    transition: .30s;
+
+}
+
+/* ==========================================================
+   Table
+========================================================== */
+
+.users-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.users-table thead {
+
+    background: var(--table-header);
+
+}
+
+.users-table th {
+
+    padding: 20px;
+
+    text-align: left;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+    border-bottom: 1px solid var(--border-color);
+
+    white-space: nowrap;
+
+}
+
+/* ==========================================================
+   Body
+========================================================== */
+
+.users-table td {
+
+    padding: 20px;
+
+    font-size: 15px;
+
+    color: var(--text-primary);
+
+    border-bottom: 1px solid var(--border-color);
+
+    vertical-align: middle;
+
+    transition: .25s;
+
+}
+
+.users-table tbody tr {
+
+    transition: .25s;
+
+}
+
+.users-table tbody tr:hover {
+
+    background: var(--table-hover);
+
+}
+
+/* ==========================================================
+   Status Badge
+========================================================== */
+
+.status {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    min-width: 90px;
+
+    padding: 7px 16px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.status.active {
+
+    background: rgba(34,197,94,.18);
+
+    color: #22C55E;
+
+}
+
+.status.inactive {
+
+    background: rgba(239,68,68,.18);
+
+    color: #EF4444;
+
+}
+
+/* ==========================================================
+   Actions
+========================================================== */
+
+.table-actions {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.users-table th:last-child,
+.users-table td:last-child {
+
+    width: 180px;
+
+    text-align: center;
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .users-table-container {
+
+    background: #12202D;
+
+    border: 1px solid #234056;
+
+}
+
+[data-theme="dark"] .users-table thead {
+
+    background: #162838;
+
+}
+
+[data-theme="dark"] .users-table th {
+
+    color: #F8FAFC;
+
+    border-bottom: 1px solid #234056;
+
+}
+
+[data-theme="dark"] .users-table td {
+
+    color: #E2E8F0;
+
+    border-bottom: 1px solid #234056;
+
+}
+
+[data-theme="dark"] .users-table tbody tr:hover {
+
+    background: #183042;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:992px){
+
+    .users-table{
+
+        min-width:900px;
+
+    }
+
+}

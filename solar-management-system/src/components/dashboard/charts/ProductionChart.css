@@ -1,0 +1,105 @@
+/* ============================================================================
+   File:
+   src/components/dashboard/charts/ProductionChart.css
+
+   Description:
+   Solar Production Chart
+============================================================================ */
+
+.chart-card {
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+
+    transition: all .3s ease;
+
+}
+
+.chart-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 16px 35px rgba(0, 0, 0, .12);
+
+}
+
+.chart-card h2 {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+    color: var(--text-primary);
+
+}
+
+.recharts-responsive-container {
+
+    margin-top: 10px;
+
+}
+
+/* =========================================================
+   Light Theme
+========================================================= */
+
+[data-theme="light"] .chart-card {
+
+    background: #ffffff;
+
+    border-color: #e5e7eb;
+
+}
+
+[data-theme="light"] .chart-card h2 {
+
+    color: #0f172a;
+
+}
+
+/* =========================================================
+   Dark Theme
+========================================================= */
+
+[data-theme="dark"] .chart-card {
+
+    background: #18273c;
+
+    border-color: #2d415b;
+
+}
+
+[data-theme="dark"] .chart-card h2 {
+
+    color: #ffffff;
+
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chart-card {
+
+        padding: 20px;
+
+    }
+
+    .chart-card h2 {
+
+        font-size: 20px;
+
+    }
+
+}

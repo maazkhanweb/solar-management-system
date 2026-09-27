@@ -1,16 +1,61 @@
-# React + Vite
+# ☀️ Solar Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## AI-Powered Solar Monitoring & Reporting System
 
-Currently, two official plugins are available:
+A modern web-based Solar Management System designed to monitor solar energy generation, manage solar areas and inverters, analyze WAPDA bills, extract bill information using OCR, and generate meaningful reports and energy insights.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The system follows a modular frontend-backend architecture with a React.js frontend and Laravel REST API backend.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Key Features
 
-## Expanding the Oxlint configuration
+- ☀️ Solar energy monitoring
+- 📊 Dashboard and analytics
+- 🏢 Solar area management
+- ⚡ Inverter management
+- 🧾 WAPDA bill management
+- 🔍 OCR-based bill data extraction
+- 🤖 AI-assisted bill analysis
+- 📈 Reports and data visualization
+- 🔄 REST API architecture
+- 👥 User management
+- 🌙 Modern responsive interface
+- 🔐 Environment-based configuration
+- 📱 Architecture prepared for future mobile app integration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+---
+
+## 🧠 AI & OCR
+
+The system includes AI-assisted capabilities for processing and analyzing solar and WAPDA bill data.
+
+### OCR Workflow
+
+1. Upload WAPDA bill image
+2. Extract bill information using OCR
+3. Process and structure extracted data
+4. Verify extracted information
+5. Store verified data
+6. Use the data for analysis and reporting
+
+Gemini AI is used/planned for AI-assisted processing and analysis.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+Solar Management System
+│
+├── Frontend
+│   └── React.js + Vite
+│
+├── Backend
+│   └── Laravel REST API
+│
+├── Database
+│   └── PostgreSQL
+│
+└── AI / OCR
+    └── OCR + Gemini AI

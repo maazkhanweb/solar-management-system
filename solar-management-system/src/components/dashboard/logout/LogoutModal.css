@@ -1,0 +1,126 @@
+.logout-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.5);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.logout-modal{
+
+    width:400px;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    padding:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+
+    animation:fadeIn .25s ease;
+
+}
+
+.logout-modal h2{
+
+    margin-bottom:15px;
+
+    color:#1e293b;
+
+}
+
+.logout-modal p{
+
+    color:#64748b;
+
+    line-height:1.6;
+
+}
+
+.logout-actions{
+
+    margin-top:25px;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+}
+
+.cancel-btn,
+.logout-btn{
+
+    padding:10px 20px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+.cancel-btn{
+
+    background:#e2e8f0;
+
+    color:#1e293b;
+
+}
+
+.cancel-btn:hover{
+
+    background:#cbd5e1;
+
+}
+
+.logout-btn{
+
+    background:#dc2626;
+
+    color:#fff;
+
+}
+
+.logout-btn:hover{
+
+    background:#b91c1c;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        transform:scale(.9);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}

@@ -1,0 +1,44 @@
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.action-btn.edit {
+    background: #2563eb;
+}
+
+.action-btn.edit:hover {
+    background: #1d4ed8;
+}
+
+.action-btn.delete {
+    background: #dc2626;
+}
+
+.action-btn.delete:hover {
+    background: #b91c1c;
+}
+
+.action-btn.analysis {
+    background: #16a34a;
+}
+
+.action-btn.analysis:hover {
+    background: #15803d;
+}

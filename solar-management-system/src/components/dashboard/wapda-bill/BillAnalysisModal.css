@@ -1,0 +1,297 @@
+/* ===========================================================
+   FILE:
+   src/components/dashboard/wapda-bill/BillAnalysisModal.css
+
+   DESCRIPTION:
+   Solid White + Blue Bill Analysis Modal
+   Glass / Transparency Completely Removed
+=========================================================== */
+
+
+/* ===========================================================
+   MODAL OVERLAY
+=========================================================== */
+
+.bill-analysis-modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 20px !important;
+
+    background: rgba(15, 23, 42, 0.55) !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    filter: none !important;
+    opacity: 1 !important;
+
+    z-index: 9999 !important;
+}
+
+
+/* ===========================================================
+   MAIN MODAL - PURE WHITE
+=========================================================== */
+
+.bill-analysis-modal {
+    width: 1200px !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+
+    overflow-y: auto !important;
+
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+
+    opacity: 1 !important;
+
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    border: 1px solid #d9e0ea !important;
+    border-radius: 18px !important;
+
+    box-shadow:
+        0 20px 60px rgba(15, 23, 42, 0.25) !important;
+}
+
+
+/* ===========================================================
+   HEADER - BLUE
+=========================================================== */
+
+.bill-analysis-modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    padding: 26px 30px !important;
+
+    background: linear-gradient(
+        135deg,
+        #163d87 0%,
+        #2456a6 100%
+    ) !important;
+
+    background-color: #1f4fa3 !important;
+
+    opacity: 1 !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+
+    color: #ffffff !important;
+
+    border-radius: 17px 17px 0 0 !important;
+}
+
+
+.bill-analysis-modal-header h2 {
+    margin: 0 !important;
+
+    color: #ffffff !important;
+
+    font-size: 30px !important;
+    font-weight: 700 !important;
+}
+
+
+.bill-analysis-modal-header p {
+    margin: 7px 0 0 !important;
+
+    color: #ffffff !important;
+
+    opacity: 0.85 !important;
+
+    font-size: 15px !important;
+}
+
+
+/* ===========================================================
+   CLOSE BUTTON
+=========================================================== */
+
+.bill-analysis-modal-header button {
+    width: 48px !important;
+    height: 48px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 12px !important;
+
+    background: rgba(255, 255, 255, 0.14) !important;
+
+    color: #ffffff !important;
+
+    font-size: 26px !important;
+
+    cursor: pointer !important;
+
+    opacity: 1 !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    transition: 0.2s ease !important;
+}
+
+
+.bill-analysis-modal-header button:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+
+    transform: scale(1.04) !important;
+}
+
+
+/* ===========================================================
+   BILL INFORMATION SECTION - PURE WHITE
+=========================================================== */
+
+.bill-info-grid {
+    display: grid !important;
+
+    grid-template-columns: repeat(4, 1fr) !important;
+
+    gap: 20px !important;
+
+    padding: 30px 30px 0 !important;
+
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+
+    opacity: 1 !important;
+
+    filter: none !important;
+    backdrop-filter: none !important;
+}
+
+
+/* ===========================================================
+   BILL INFO CARDS - PURE WHITE
+=========================================================== */
+
+.bill-info-grid > div {
+    min-height: 118px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    padding: 20px !important;
+
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+
+    opacity: 1 !important;
+
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    border: 1px solid #d7dee8 !important;
+    border-radius: 14px !important;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.05) !important;
+}
+
+
+.bill-info-grid span {
+    display: block !important;
+
+    margin-bottom: 10px !important;
+
+    color: #687991 !important;
+
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+
+.bill-info-grid strong {
+    display: block !important;
+
+    color: #243b5a !important;
+
+    font-size: 19px !important;
+    font-weight: 700 !important;
+
+    word-break: break-word !important;
+}
+
+
+/* ===========================================================
+   SCROLLBAR
+=========================================================== */
+
+.bill-analysis-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+.bill-analysis-modal::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+
+.bill-analysis-modal::-webkit-scrollbar-thumb {
+    background: #b7c2d0;
+
+    border-radius: 20px;
+}
+
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
+
+@media (max-width: 992px) {
+
+    .bill-info-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .bill-analysis-modal-overlay {
+        padding: 12px !important;
+    }
+
+
+    .bill-analysis-modal {
+        max-height: 95vh !important;
+
+        border-radius: 14px !important;
+    }
+
+
+    .bill-analysis-modal-header {
+        padding: 22px !important;
+
+        border-radius: 13px 13px 0 0 !important;
+    }
+
+
+    .bill-analysis-modal-header h2 {
+        font-size: 24px !important;
+    }
+
+
+    .bill-info-grid {
+        grid-template-columns: 1fr !important;
+
+        padding: 20px 20px 0 !important;
+    }
+
+}

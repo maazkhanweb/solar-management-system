@@ -1,0 +1,141 @@
+/* ============================================================================
+   File:
+   src/components/dashboard/charts/AIChart.css
+
+   Description:
+   AI Performance Analysis Chart
+============================================================================ */
+
+.chart-card {
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+
+    transition: all .3s ease;
+
+}
+
+.chart-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 16px 35px rgba(0,0,0,.12);
+
+}
+
+.chart-card h2 {
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+    color: var(--text-primary);
+
+}
+
+.recharts-legend-wrapper {
+
+    margin-top: 15px !important;
+
+}
+
+.recharts-default-tooltip {
+
+    border-radius: 10px !important;
+
+    overflow: hidden;
+
+}
+
+/* =========================================================
+   Light Theme
+========================================================= */
+
+[data-theme="light"] .chart-card {
+
+    background: #ffffff;
+
+    border-color: #e5e7eb;
+
+}
+
+[data-theme="light"] .chart-card h2 {
+
+    color: #0f172a;
+
+}
+
+/* =========================================================
+   Dark Theme
+========================================================= */
+
+[data-theme="dark"] .chart-card {
+
+    background: #18273c;
+
+    border-color: #2d415b;
+
+}
+
+[data-theme="dark"] .chart-card h2 {
+
+    color: #ffffff;
+
+}
+
+[data-theme="dark"] .recharts-default-tooltip {
+
+    background: #1e293b !important;
+
+    border: 1px solid #334155 !important;
+
+    color: #ffffff !important;
+
+}
+
+[data-theme="dark"] .recharts-tooltip-label {
+
+    color: #ffffff !important;
+
+}
+
+[data-theme="dark"] .recharts-tooltip-item {
+
+    color: #ffffff !important;
+
+}
+
+[data-theme="dark"] .recharts-legend-item-text {
+
+    color: #ffffff !important;
+
+}
+
+/* =========================================================
+   Responsive
+========================================================= */
+
+@media (max-width:768px) {
+
+    .chart-card {
+
+        padding: 20px;
+
+    }
+
+    .chart-card h2 {
+
+        font-size: 20px;
+
+    }
+
+}

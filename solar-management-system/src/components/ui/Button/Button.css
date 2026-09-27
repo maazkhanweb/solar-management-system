@@ -1,0 +1,30 @@
+.button{
+    padding:12px 24px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    color:#fff;
+    font-size:15px;
+    font-weight:100;
+    transition:.3s;
+}
+
+.button:hover{
+    opacity:.9;
+}
+
+.primary{
+    background:#0F766E;
+}
+
+.success{
+    background:#22C55E;
+}
+
+.danger{
+    background:#EF4444;
+}
+
+.secondary{
+    background:#6B7280;
+}

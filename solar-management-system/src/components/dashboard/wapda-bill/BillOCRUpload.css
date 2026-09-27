@@ -1,0 +1,135 @@
+/**
+ * ============================================================================
+ * File:
+ * src/components/dashboard/wapda-bill/BillOCRUpload.css
+ *
+ * Description:
+ * Styling for reusable WAPDA and Solar OCR upload components.
+ * ============================================================================
+ */
+
+.ocr-upload-container {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+.ocr-upload-title {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+
+.ocr-upload-button {
+
+    width: fit-content;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+
+}
+
+
+.ocr-upload-button:hover {
+
+    background: #1d4ed8;
+
+}
+
+
+.ocr-upload-button:disabled {
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+}
+
+
+.ocr-preview {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    border: 1px solid #dbe4ef;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+}
+
+
+.ocr-preview img {
+
+    width: 100%;
+
+    max-height: 350px;
+
+    object-fit: contain;
+
+    display: block;
+
+}
+
+
+.ocr-file-name {
+
+    margin: 0;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: #64748b;
+
+    word-break: break-word;
+
+}
+
+
+.ocr-success {
+
+    width: fit-content;
+
+    padding: 10px 14px;
+
+    border-radius: 8px;
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}

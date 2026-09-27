@@ -1,0 +1,217 @@
+/* ==========================================================
+   Navbar
+========================================================== */
+
+.navbar{
+
+    height:76px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 32px;
+
+    background:var(--navbar-bg);
+
+    border-bottom:1px solid var(--border-color);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:500;
+
+    transition:.30s;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+}
+
+/* ==========================================================
+   Left
+========================================================== */
+
+.navbar__left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/* ==========================================================
+   Right
+========================================================== */
+
+.navbar__right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+/* ==========================================================
+   Theme Button
+========================================================== */
+
+.theme-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:var(--surface-color);
+
+    color:var(--text-primary);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    transition:.25s;
+
+    border:1px solid var(--border-color);
+
+}
+
+.theme-btn:hover{
+
+    background:var(--primary-color);
+
+    color:#fff;
+
+    transform:rotate(20deg);
+
+}
+
+/* ==========================================================
+   Logout
+========================================================== */
+
+.navbar__logout-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#FFF1F2;
+
+    color:#DC2626;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:22px;
+
+    transition:.25s;
+
+}
+
+.navbar__logout-btn:hover{
+
+    background:#DC2626;
+
+    color:#fff;
+
+}
+
+/* ==========================================================
+   Dark Mode
+========================================================== */
+
+[data-theme="dark"] .navbar{
+
+    background:#081521;
+
+    border-bottom:1px solid #17344C;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+}
+
+[data-theme="dark"] .theme-btn{
+
+    background:#102638;
+
+    border-color:#1C445C;
+
+    color:#fff;
+
+}
+
+[data-theme="dark"] .theme-btn:hover{
+
+    background:#16D3B4;
+
+    color:#07131F;
+
+}
+
+[data-theme="dark"] .navbar__logout-btn{
+
+    background:#2A1616;
+
+    color:#FF6B6B;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+.navbar{
+
+padding:0 18px;
+
+}
+
+.navbar__right{
+
+gap:12px;
+
+}
+
+.theme-btn{
+
+width:42px;
+height:42px;
+
+}
+
+.navbar__logout-btn{
+
+width:42px;
+height:42px;
+
+}
+
+}

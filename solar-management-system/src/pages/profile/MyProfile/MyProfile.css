@@ -1,0 +1,420 @@
+/* ==========================================================
+   My Profile
+========================================================== */
+
+.profile-page {
+
+    width: 100%;
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.profile-header {
+
+    margin-bottom: 28px;
+
+}
+
+.profile-header h1 {
+
+    margin: 0;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+}
+
+.profile-header p {
+
+    margin-top: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 16px;
+
+}
+
+/* ==========================================================
+   Demo Banner
+========================================================== */
+
+.demo-banner {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+
+    padding: 16px 20px;
+
+    background: #FEF3C7;
+
+    border: 1px solid #FCD34D;
+
+    border-left: 5px solid #F59E0B;
+
+    border-radius: 12px;
+
+    color: #92400E;
+
+    font-size: 14px;
+
+    animation: fadeDown .30s ease;
+
+}
+
+/* ==========================================================
+   Card
+========================================================== */
+
+.profile-card {
+
+    background: var(--surface-color);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    display: flex;
+
+    gap: 45px;
+
+    box-shadow: var(--shadow-md);
+
+    transition: .30s;
+
+}
+
+/* ==========================================================
+   Left
+========================================================== */
+
+.profile-left {
+
+    width: 240px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+}
+
+.profile-image {
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 5px solid var(--primary-color);
+
+    box-shadow: 0 12px 30px rgba(15,118,110,.20);
+
+}
+
+/* ==========================================================
+   Change Photo
+========================================================== */
+
+.change-photo-btn {
+
+    margin-top: 22px;
+
+    width: 100%;
+
+    height: 46px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--primary-color);
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    transition: .25s;
+
+}
+
+.change-photo-btn:hover:not(:disabled) {
+
+    transform: translateY(-2px);
+
+}
+
+.change-photo-btn:disabled {
+
+    opacity: .45;
+
+    cursor: not-allowed;
+
+}
+
+/* ==========================================================
+   Right
+========================================================== */
+
+.profile-right {
+
+    flex: 1;
+
+}
+
+.profile-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 22px;
+
+}
+
+/* ==========================================================
+   Form
+========================================================== */
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+.form-group label {
+
+    margin-bottom: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+.form-group input {
+
+    height: 50px;
+
+    padding: 0 16px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 10px;
+
+    background: var(--background-color);
+
+    color: var(--text-primary);
+
+    font-size: 15px;
+
+    transition: all .25s ease;
+
+}
+
+/* ==========================================================
+   Read Only
+========================================================== */
+
+.form-group input:read-only {
+
+    background: #F8FAFC;
+
+    cursor: default;
+
+}
+
+/* ==========================================================
+   Editable
+========================================================== */
+
+.form-group input:not(:read-only) {
+
+    background: #ffffff;
+
+}
+
+.form-group input:focus {
+
+    outline: none;
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 4px rgba(15,118,110,.15);
+
+}
+
+/* ==========================================================
+   Buttons
+========================================================== */
+
+.profile-actions {
+
+    margin-top: 35px;
+
+    display: flex;
+
+    gap: 15px;
+
+}
+
+.btn-primary {
+
+    min-width: 170px;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--primary-color);
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.btn-primary:hover {
+
+    transform: translateY(-2px);
+
+}
+
+.btn-secondary {
+
+    min-width: 150px;
+
+    height: 48px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--text-primary);
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.btn-secondary:hover {
+
+    background: #EF4444;
+
+    border-color: #EF4444;
+
+    color: #ffffff;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes fadeDown {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-12px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:992px) {
+
+    .profile-card {
+
+        flex-direction: column;
+
+    }
+
+    .profile-left {
+
+        width: 100%;
+
+    }
+
+    .profile-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media (max-width:576px) {
+
+    .profile-card {
+
+        padding: 20px;
+
+    }
+
+    .profile-image {
+
+        width: 150px;
+
+        height: 150px;
+
+    }
+
+    .profile-actions {
+
+        flex-direction: column;
+
+    }
+
+    .btn-primary,
+    .btn-secondary {
+
+        width: 100%;
+
+    }
+
+}

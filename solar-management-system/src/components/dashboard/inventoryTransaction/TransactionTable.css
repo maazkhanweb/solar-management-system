@@ -1,0 +1,677 @@
+/* ==========================================================================
+   Transaction Table
+========================================================================== */
+
+.transaction-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius: 16px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border-color);
+
+    box-shadow: var(--shadow-md);
+
+    transition: all .3s ease;
+
+}
+
+/* ==========================================================================
+   Table
+========================================================================== */
+
+.transaction-table {
+
+    width: 100%;
+
+    min-width: 1250px;
+
+    border-collapse: collapse;
+
+    background: transparent;
+
+}
+
+/* ==========================================================================
+   Table Header
+========================================================================== */
+
+.transaction-table thead {
+
+    background: var(--table-header-bg);
+
+}
+
+.transaction-table thead th {
+
+    padding: 18px 16px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: var(--text-primary);
+
+    text-align: left;
+
+    white-space: nowrap;
+
+    border-bottom: 1px solid var(--border-color);
+
+}
+
+/* ==========================================================================
+   Table Body
+========================================================================== */
+
+.transaction-table tbody tr {
+
+    background: var(--card-bg);
+
+    transition: .3s ease;
+
+}
+
+.transaction-table tbody tr:nth-child(even){
+
+    background: var(--card-bg-secondary);
+
+}
+
+.transaction-table tbody tr:hover{
+
+    background: var(--table-row-hover);
+
+}
+
+.transaction-table tbody td{
+
+    padding: 16px;
+
+    font-size: 14px;
+
+    color: var(--text-secondary);
+
+    border-bottom: 1px solid var(--border-color);
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+    transition: .3s ease;
+
+}
+
+.transaction-table tbody tr:last-child td{
+
+    border-bottom: none;
+
+}
+
+/* ==========================================================================
+   Item Name
+========================================================================== */
+
+.transaction-table tbody td:nth-child(2){
+
+    font-weight: 600;
+
+    color: var(--text-primary);
+
+}
+
+/* ==========================================================================
+   Quantity
+========================================================================== */
+
+.transaction-table tbody td:nth-child(5){
+
+    font-weight: 700;
+
+    color: var(--primary-color);
+
+}
+
+/* ==========================================================================
+   Serial Number
+========================================================================== */
+
+.transaction-table tbody td:nth-child(3){
+
+    font-family: monospace;
+
+    font-size: 14px;
+
+}
+
+/* ==========================================================================
+   Date & Time
+========================================================================== */
+
+.transaction-table tbody td:nth-child(10){
+
+    color: var(--text-muted);
+
+    font-size: 13px;
+
+}
+
+/* ==========================================================================
+   Dark Mode
+========================================================================== */
+
+[data-theme="dark"] .transaction-table-wrapper{
+
+    background:#111C2D;
+
+    border:1px solid #243247;
+
+}
+
+[data-theme="dark"] .transaction-table{
+
+    background:#111C2D;
+
+}
+
+[data-theme="dark"] .transaction-table thead{
+
+    background:#162338;
+
+}
+
+[data-theme="dark"] .transaction-table thead th{
+
+    color:#F8FAFC;
+
+    border-bottom:1px solid #2D415B;
+
+}
+
+[data-theme="dark"] .transaction-table tbody tr{
+
+    background:#111C2D;
+
+}
+
+[data-theme="dark"] .transaction-table tbody tr:nth-child(even){
+
+    background:#162338;
+
+}
+
+[data-theme="dark"] .transaction-table tbody tr:hover{
+
+    background:#1D2A3D;
+
+}
+
+[data-theme="dark"] .transaction-table tbody td{
+
+    color:#CBD5E1;
+
+    border-bottom:1px solid #253247;
+
+}
+
+[data-theme="dark"] .transaction-table tbody td:nth-child(2){
+
+    color:#F8FAFC;
+
+}
+
+[data-theme="dark"] .transaction-table tbody td:nth-child(5){
+
+    color:#2DD4BF;
+
+}
+
+[data-theme="dark"] .transaction-table tbody td:nth-child(10){
+
+    color:#94A3B8;
+
+}
+/* ==========================================================================
+   Transaction Badges
+========================================================================== */
+
+.transaction-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:90px;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:.4px;
+
+}
+
+/* ADD */
+
+.badge-add{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+/* ASSIGN */
+
+.badge-assign{
+
+    background:#DBEAFE;
+
+    color:#2563EB;
+
+}
+
+/* RETURN */
+
+.badge-return{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+}
+
+/* UPDATE */
+
+.badge-update{
+
+    background:#EDE9FE;
+
+    color:#7C3AED;
+
+}
+
+/* DELETE */
+
+.badge-delete{
+
+    background:#FEE2E2;
+
+    color:#DC2626;
+
+}
+
+/* DAMAGE */
+
+.badge-damage{
+
+    background:#FFE4E6;
+
+    color:#E11D48;
+
+}
+
+/* REPAIR */
+
+.badge-repair{
+
+    background:#CFFAFE;
+
+    color:#0891B2;
+
+}
+
+/* ==========================================================================
+   View Button
+========================================================================== */
+
+.transaction-view-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:9px 16px;
+
+    border-radius:10px;
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.transaction-view-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.18);
+
+}
+
+.transaction-view-btn svg{
+
+    font-size:16px;
+
+}
+
+/* ==========================================================================
+   No Data
+========================================================================== */
+
+.transaction-no-data{
+
+    padding:70px 20px !important;
+
+    text-align:center;
+
+    font-size:15px;
+
+    color:var(--text-muted);
+
+}
+
+/* ==========================================================================
+   Scrollbar
+========================================================================== */
+
+.transaction-table-wrapper::-webkit-scrollbar{
+
+    height:10px;
+
+}
+
+.transaction-table-wrapper::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+.transaction-table-wrapper::-webkit-scrollbar-thumb{
+
+    background:#64748B;
+
+    border-radius:999px;
+
+}
+
+.transaction-table-wrapper::-webkit-scrollbar-thumb:hover{
+
+    background:#475569;
+
+}
+
+/* ==========================================================================
+   Dark Mode Badge
+========================================================================== */
+
+[data-theme="dark"] .badge-add{
+
+    background:#14532D;
+
+    color:#BBF7D0;
+
+}
+
+[data-theme="dark"] .badge-assign{
+
+    background:#1E3A8A;
+
+    color:#BFDBFE;
+
+}
+
+[data-theme="dark"] .badge-return{
+
+    background:#78350F;
+
+    color:#FDE68A;
+
+}
+
+[data-theme="dark"] .badge-update{
+
+    background:#4C1D95;
+
+    color:#DDD6FE;
+
+}
+
+[data-theme="dark"] .badge-delete{
+
+    background:#7F1D1D;
+
+    color:#FECACA;
+
+}
+
+[data-theme="dark"] .badge-damage{
+
+    background:#881337;
+
+    color:#FDA4AF;
+
+}
+
+[data-theme="dark"] .badge-repair{
+
+    background:#164E63;
+
+    color:#A5F3FC;
+
+}
+
+/* ==========================================================================
+   Dark Mode View Button
+========================================================================== */
+
+[data-theme="dark"] .transaction-view-btn{
+
+    background:var(--primary-color);
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .transaction-view-btn:hover{
+
+    box-shadow:0 12px 25px rgba(45,212,191,.25);
+
+}
+
+/* ==========================================================================
+   Action Buttons
+========================================================================== */
+
+.transaction-action-buttons{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+/* ==========================================================================
+   Delete Button
+========================================================================== */
+
+.transaction-delete-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:9px 16px;
+
+    border-radius:10px;
+
+    background:#DC2626;
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.transaction-delete-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:#B91C1C;
+
+    box-shadow:0 10px 25px rgba(220,38,38,.35);
+
+}
+
+.transaction-delete-btn svg{
+
+    font-size:16px;
+
+}
+
+/* ==========================================================================
+   Dark Mode Delete Button
+========================================================================== */
+
+[data-theme="dark"] .transaction-delete-btn{
+
+    background:#DC2626;
+
+    color:#ffffff;
+
+}
+
+[data-theme="dark"] .transaction-delete-btn:hover{
+
+    background:#B91C1C;
+
+    box-shadow:0 12px 25px rgba(220,38,38,.35);
+
+}
+
+/* ==========================================================================
+   Responsive
+========================================================================== */
+
+@media (max-width:992px){
+
+    .transaction-table{
+
+        min-width:1150px;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .transaction-table thead th,
+
+    .transaction-table tbody td{
+
+        padding:14px;
+
+        font-size:13px;
+
+    }
+
+    .transaction-view-btn,
+.transaction-delete-btn{
+
+    padding:8px 14px;
+
+    font-size:12px;
+
+}
+    .transaction-badge{
+
+        min-width:78px;
+
+        font-size:11px;
+
+        padding:5px 10px;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .transaction-table{
+
+        min-width:1050px;
+
+    }
+
+}
+
+/* ==========================================================================
+   Smooth Transition
+========================================================================== */
+
+.transaction-table-wrapper,
+
+.transaction-table,
+
+.transaction-table tr,
+
+.transaction-table td,
+
+.transaction-table th,
+
+.transaction-view-btn,
+.transaction-delete-btn,
+
+.transaction-badge{
+
+    transition:
+
+        background .30s ease,
+
+        color .30s ease,
+
+        border-color .30s ease,
+
+        box-shadow .30s ease;
+
+}
