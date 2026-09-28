@@ -30,6 +30,8 @@ const AreaManagement = () => {
 
     const [loading, setLoading] = useState(true);
 
+    const [areaError, setAreaError] = useState("");
+
     const [searchTerm, setSearchTerm] = useState("");
 
 
@@ -159,6 +161,8 @@ const AreaManagement = () => {
 
         try {
 
+            setAreaError("");
+
             const response =
                 await authService.getAreas();
 
@@ -179,7 +183,9 @@ const AreaManagement = () => {
 
             console.error(error);
 
-            setAreas([]);
+            setAreaError(
+                "Unable to load areas. Please refresh and try again."
+            );
 
         }
 
@@ -760,6 +766,17 @@ const AreaManagement = () => {
                         Loading...
 
                     </p>
+
+                ) : areaError ? (
+
+                    <div
+                        className="area-error"
+                        role="alert"
+                    >
+
+                        {areaError}
+
+                    </div>
 
                 ) : (
 

@@ -148,6 +148,22 @@
 
 }
 
+.area-error {
+
+    padding: 16px 20px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 12px;
+
+    color: #b91c1c;
+
+    background: #fef2f2;
+
+    font-weight: 600;
+
+}
+
 /* ==========================================================
    Dark Theme
 ========================================================== */
