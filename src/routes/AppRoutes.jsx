@@ -17,6 +17,8 @@ import InventoryTransactionHistory from "../pages/dashboard/inventoryTransaction
 import BillManagement from "../pages/dashboard/wapda-bill/WapdaBillManagement";
 
 import Reports from "../pages/dashboard/reports/Reports";
+import ComparisonACDC from "../pages/dashboard/comparison/ComparisonACDC";
+import SavingsAnalysis from "../pages/dashboard/comparison/SavingsAnalysis";
 
 import Charts from "../pages/dashboard/charts/Charts";
 
@@ -104,6 +106,16 @@ function AppRoutes() {
                     path="/reports"
                     element={<Reports />}
                 />
+
+                <Route
+                    path="/comparison-ac-dc"
+                    element={<ComparisonACDC />}
+                />
+
+                <Route
+    path="/comparison-ac-dc/savings-analysis"
+    element={<SavingsAnalysis />}
+/>
 
                 <Route
                     path="/charts"

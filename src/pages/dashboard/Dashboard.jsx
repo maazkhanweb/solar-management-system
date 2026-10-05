@@ -18,6 +18,7 @@ import {
     RiCloseLine,
     RiArrowLeftLine,
     RiCalendarLine,
+    RiSunLine,
 } from "react-icons/ri";
 
 import {
@@ -207,6 +208,15 @@ const Dashboard = () => {
             icon: <RiBarChartBoxLine />,
             path: "/reports",
         },
+        
+{
+    id: 9,
+    title: "Comparison AC & DC",
+    value: "AC & DC",
+    subtitle: "Save Electricity",
+    icon: <RiSunLine />,
+    path: "/comparison-ac-dc",
+},
 
     ];
 

@@ -1,0 +1,885 @@
+.comparison-acdc-page {
+    width: 100%;
+    min-width: 0;
+    min-height: calc(100vh - 110px);
+    padding: 0 2px 48px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow: visible;
+}
+
+.comparison-acdc-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.comparison-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.comparison-back-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.comparison-back-button svg {
+    font-size: 20px;
+}
+
+.comparison-acdc-header h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.comparison-upload-card {
+    width: 100%;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+    box-sizing: border-box;
+}
+
+.comparison-hidden-file-input {
+    display: none;
+}
+
+.comparison-upload-button {
+    min-width: 230px;
+    min-height: 64px;
+    padding: 14px 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #16D3B4, #0F766E);
+    color: #ffffff;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 12px 25px rgba(22, 211, 180, .24);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.comparison-upload-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(22, 211, 180, .30);
+}
+
+.comparison-upload-button:active:not(:disabled) {
+    transform: scale(.98);
+}
+
+.comparison-upload-button:disabled {
+    opacity: .78;
+    cursor: wait;
+}
+
+.comparison-upload-button svg {
+    font-size: 26px;
+}
+
+.comparison-upload-spinner {
+    animation: comparison-acdc-spin 1s linear infinite;
+}
+
+@keyframes comparison-acdc-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.comparison-selected-file {
+    max-width: min(90%, 620px);
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--background-secondary, #f3f7fa);
+    color: var(--text-primary);
+    font-size: 14px;
+    word-break: break-word;
+    text-align: center;
+}
+
+.comparison-upload-error {
+    max-width: min(90%, 700px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #dc2626;
+    font-size: 14px;
+    text-align: center;
+}
+
+.comparison-results-section {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-sizing: border-box;
+}
+
+.comparison-results-topbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.comparison-results-eyebrow {
+    display: block;
+    margin-bottom: 5px;
+    color: #0f766e;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.comparison-results-topbar h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 26px;
+}
+
+.comparison-results-topbar p {
+    margin: 7px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.comparison-reset-button {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--card-background);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.comparison-reset-button:hover {
+    border-color: #16a085;
+}
+
+.comparison-file-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--card-background);
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.comparison-file-badge strong {
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.comparison-results-grid {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+}
+
+.comparison-data-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 154px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--card-background);
+    box-shadow: var(--shadow-sm, 0 4px 14px rgba(0, 0, 0, .05));
+    overflow: hidden;
+}
+
+.comparison-data-label {
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.comparison-data-urdu {
+    margin-top: 5px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.35;
+    direction: rtl;
+    text-align: left;
+}
+
+.comparison-data-value {
+    margin-top: 16px;
+    color: #0f766e;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.comparison-ocr-status-card {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.comparison-ocr-status-card > div {
+    min-width: 0;
+    min-height: 92px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--card-background);
+}
+
+.comparison-ocr-status-card span {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.comparison-ocr-status-card strong {
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.comparison-savings-action {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+    padding-bottom: 12px;
+}
+
+.comparison-savings-button {
+    min-width: 300px;
+    min-height: 52px;
+    padding: 13px 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #16D3B4, #0F766E);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(15, 118, 110, .20);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.comparison-savings-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(15, 118, 110, .27);
+}
+
+.comparison-savings-button:active {
+    transform: scale(.98);
+}
+
+.comparison-savings-button svg {
+    font-size: 21px;
+}
+
+@media (max-width: 1000px) {
+    .comparison-results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .comparison-acdc-page {
+        min-height: auto;
+        padding-bottom: 32px;
+    }
+
+    .comparison-acdc-header h1 {
+        font-size: 28px;
+    }
+
+    .comparison-upload-card {
+        min-height: 280px;
+    }
+
+    .comparison-upload-button {
+        min-width: 200px;
+        font-size: 17px;
+    }
+
+    .comparison-results-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .comparison-results-grid,
+    .comparison-ocr-status-card {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-savings-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+/* =========================================================
+   AC/DC COMPARISON - COMPACT SINGLE SCREEN LAYOUT
+   Paste this section at the VERY END of ComparisonACDC.css
+   ========================================================= */
+
+.comparison-acdc-page {
+    width: 100%;
+    min-width: 0;
+    height: calc(100vh - 78px);
+    min-height: 0;
+    padding: 8px 4px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   Header
+   --------------------------------------------------------- */
+
+.comparison-acdc-header {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.comparison-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.comparison-back-button svg {
+    font-size: 16px;
+}
+
+.comparison-acdc-header h1 {
+    margin: 0;
+    font-size: 27px;
+    line-height: 1.15;
+}
+
+/* ---------------------------------------------------------
+   Upload State
+   --------------------------------------------------------- */
+
+.comparison-upload-card {
+    width: 100%;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 14px;
+}
+
+/* ---------------------------------------------------------
+   OCR Results Main Section
+   --------------------------------------------------------- */
+
+.comparison-results-section {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   Results Heading
+   --------------------------------------------------------- */
+
+.comparison-results-topbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.comparison-results-eyebrow {
+    margin: 0 0 2px;
+    font-size: 10px;
+    line-height: 1;
+}
+
+.comparison-results-topbar h2 {
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.15;
+}
+
+.comparison-results-topbar p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.comparison-reset-button {
+    min-height: 34px;
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 11px;
+}
+
+/* ---------------------------------------------------------
+   Uploaded File
+   --------------------------------------------------------- */
+
+.comparison-file-badge {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 7px 11px;
+    border-radius: 8px;
+    font-size: 11px;
+    box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+   BILL CARDS
+   --------------------------------------------------------- */
+
+.comparison-results-grid {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 9px;
+
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Equal-size cards */
+
+.comparison-data-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    height: 100%;
+
+    padding: 12px 16px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+/* English label */
+
+.comparison-data-label {
+    font-size: 12px;
+    line-height: 1.15;
+    font-weight: 800;
+}
+
+/* Urdu */
+
+.comparison-data-urdu {
+    margin-top: 3px;
+    font-size: 10px;
+    line-height: 1.15;
+}
+
+/* Actual value */
+
+.comparison-data-value {
+    margin-top: 8px;
+    font-size: 17px;
+    line-height: 1.15;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* ---------------------------------------------------------
+   OCR STATUS
+   --------------------------------------------------------- */
+
+.comparison-ocr-status-card {
+    width: 100%;
+    flex: 0 0 58px;
+
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+
+    min-height: 0;
+}
+
+.comparison-ocr-status-card > div {
+    min-width: 0;
+    min-height: 0;
+
+    padding: 9px 16px;
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 2px;
+}
+
+.comparison-ocr-status-card span {
+    font-size: 10px;
+    line-height: 1;
+}
+
+.comparison-ocr-status-card strong {
+    font-size: 14px;
+    line-height: 1.1;
+}
+
+/* ---------------------------------------------------------
+   CONTINUE BUTTON
+   --------------------------------------------------------- */
+
+.comparison-savings-action {
+    width: 100%;
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+}
+
+.comparison-savings-button {
+    min-width: 270px;
+    min-height: 42px;
+
+    padding: 9px 20px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    gap: 8px;
+}
+
+.comparison-savings-button svg {
+    font-size: 18px;
+}
+
+/* =========================================================
+   DESKTOP - LARGE SCREENS
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+    .comparison-acdc-page {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .comparison-results-grid {
+        gap: 10px;
+    }
+
+    .comparison-data-card {
+        padding: 13px 17px;
+    }
+
+    .comparison-data-label {
+        font-size: 13px;
+    }
+
+    .comparison-data-value {
+        font-size: 18px;
+    }
+}
+
+
+/* =========================================================
+   LAPTOP
+   ========================================================= */
+
+@media (max-height: 850px) {
+
+    .comparison-acdc-page {
+        height: calc(100vh - 70px);
+        gap: 6px;
+        padding-top: 4px;
+        padding-bottom: 5px;
+    }
+
+    .comparison-acdc-header {
+        gap: 3px;
+    }
+
+    .comparison-acdc-header h1 {
+        font-size: 24px;
+    }
+
+    .comparison-results-section {
+        gap: 6px;
+    }
+
+    .comparison-results-grid {
+        gap: 7px;
+    }
+
+    .comparison-data-card {
+        padding: 9px 13px;
+    }
+
+    .comparison-data-label {
+        font-size: 11px;
+    }
+
+    .comparison-data-urdu {
+        font-size: 9px;
+    }
+
+    .comparison-data-value {
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    .comparison-ocr-status-card {
+        flex-basis: 50px;
+        gap: 7px;
+    }
+
+    .comparison-ocr-status-card > div {
+        padding: 7px 13px;
+    }
+
+    .comparison-savings-action {
+        flex-basis: 38px;
+    }
+
+    .comparison-savings-button {
+        min-height: 36px;
+        font-size: 12px;
+        padding: 7px 18px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .comparison-results-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows: none;
+
+        overflow-y: auto;
+    }
+
+    .comparison-data-card {
+        min-height: 110px;
+        height: auto;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .comparison-acdc-page {
+        height: auto;
+        min-height: calc(100vh - 70px);
+        overflow: visible;
+        padding: 6px 0 20px;
+    }
+
+    .comparison-results-section {
+        overflow: visible;
+    }
+
+    .comparison-results-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .comparison-results-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        overflow: visible;
+    }
+
+    .comparison-data-card {
+        min-height: 105px;
+        height: auto;
+    }
+
+    .comparison-ocr-status-card {
+        grid-template-columns: 1fr;
+        flex-basis: auto;
+    }
+
+    .comparison-ocr-status-card > div {
+        min-height: 55px;
+    }
+
+    .comparison-savings-action {
+        flex-basis: auto;
+        padding-top: 5px;
+    }
+
+    .comparison-savings-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+/* =========================================================
+   FINAL SPACING - MATCH OTHER MANAGEMENT PAGES
+   ========================================================= */
+
+.comparison-acdc-page {
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+/* Header ko thora neeche aur right */
+.comparison-acdc-header {
+    padding-left: 2px;
+}
+
+/* Cards ko container ke edges se thora gap */
+.comparison-results-section {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Upload card bhi same spacing maintain kare */
+.comparison-upload-card {
+    width: 100%;
+}
+
+/* Desktop par thora balanced spacing */
+@media (min-width: 1200px) {
+    .comparison-acdc-page {
+        padding-left: 28px;
+        padding-right: 28px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+/* Laptop */
+@media (max-height: 850px) {
+    .comparison-acdc-page {
+        padding-left: 22px;
+        padding-right: 22px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .comparison-acdc-page {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 8px;
+        padding-bottom: 15px;
+    }
+}
