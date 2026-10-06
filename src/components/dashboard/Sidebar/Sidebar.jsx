@@ -1,17 +1,27 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import {
+    NavLink,
+    useNavigate,
+} from "react-router-dom";
+
 import { RiSunFoggyLine } from "react-icons/ri";
 
 import menuData from "./menuData";
+
 import "./Sidebar.css";
 
 import useAuthentication from "../../../hooks/useAuth";
 import authService from "../../../services/authService";
 
-const Sidebar = () => {
+
+const Sidebar = ({
+    isOpen = false,
+    onClose,
+}) => {
 
     const navigate = useNavigate();
 
     const { logout } = useAuthentication();
+
 
     const handleLogout = async () => {
 
@@ -27,37 +37,76 @@ const Sidebar = () => {
 
         logout();
 
+        onClose?.();
+
         navigate("/");
 
     };
 
+
+    const handleNavigation = () => {
+
+        onClose?.();
+
+    };
+
+
     return (
 
-        <aside className="sidebar">
+        <aside
+            className={
+                isOpen
+                    ? "sidebar sidebar--open"
+                    : "sidebar"
+            }
+        >
 
-            {/* Logo */}
+            {/* ==================================================
+                Logo
+            ================================================== */}
+
             <div className="sidebar__logo">
 
                 <div className="sidebar__logo-icon">
+
                     <RiSunFoggyLine />
+
                 </div>
 
+
                 <div className="sidebar__logo-text">
-                    <h2>Solar Management</h2>
-                    <span>by Maaz Khan</span>
+
+                    <h2>
+                        Solar Management
+                    </h2>
+
+                    <span>
+                        by Maaz Khan
+                    </span>
+
                 </div>
 
             </div>
 
-            {/* Navigation */}
+
+            {/* ==================================================
+                Navigation
+            ================================================== */}
+
             <nav className="sidebar__navigation">
 
                 {menuData.map((item) => {
 
                     const Icon = item.icon;
 
-                    // Logout Item
-                    if (item.title === "Logout") {
+
+                    /* ==========================================
+                       Logout
+                    ========================================== */
+
+                    if (
+                        item.title === "Logout"
+                    ) {
 
                         return (
 
@@ -68,10 +117,15 @@ const Sidebar = () => {
                                 onClick={handleLogout}
                             >
 
-                                <Icon className="sidebar__icon" />
+                                <Icon
+                                    className="sidebar__icon"
+                                />
+
 
                                 <span className="sidebar__text">
+
                                     {item.title}
+
                                 </span>
 
                             </button>
@@ -80,12 +134,17 @@ const Sidebar = () => {
 
                     }
 
-                    // Normal Navigation
+
+                    /* ==========================================
+                       Normal Navigation
+                    ========================================== */
+
                     return (
 
                         <NavLink
                             key={item.id}
                             to={item.path}
+                            onClick={handleNavigation}
                             className={({ isActive }) =>
                                 isActive
                                     ? "sidebar__link sidebar__link--active"
@@ -93,10 +152,15 @@ const Sidebar = () => {
                             }
                         >
 
-                            <Icon className="sidebar__icon" />
+                            <Icon
+                                className="sidebar__icon"
+                            />
+
 
                             <span className="sidebar__text">
+
                                 {item.title}
+
                             </span>
 
                         </NavLink>
@@ -107,12 +171,20 @@ const Sidebar = () => {
 
             </nav>
 
-            {/* Footer */}
+
+            {/* ==================================================
+                Footer
+            ================================================== */}
+
             <div className="sidebar__footer">
 
-                <p>Version 1.0.0</p>
+                <p>
+                    Version 1.0.0
+                </p>
 
-                <span>© Maaz Khan</span>
+                <span>
+                    © Maaz Khan
+                </span>
 
             </div>
 
@@ -121,5 +193,6 @@ const Sidebar = () => {
     );
 
 };
+
 
 export default Sidebar;

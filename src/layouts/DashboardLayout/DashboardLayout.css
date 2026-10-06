@@ -1,10 +1,20 @@
+/* ==========================================================
+   MAIN DASHBOARD LAYOUT
+========================================================== */
+
 .dashboard-layout {
 
-    display: flex;
+    width: 100%;
 
     height: 100vh;
 
+    min-height: 100vh;
+
+    display: flex;
+
     overflow: hidden;
+
+    position: relative;
 
     background: var(--background-color);
 
@@ -13,9 +23,19 @@
 }
 
 
+/* ==========================================================
+   MAIN AREA
+========================================================== */
+
 .dashboard-main {
 
     flex: 1;
+
+    min-width: 0;
+
+    width: 0;
+
+    height: 100vh;
 
     display: flex;
 
@@ -30,11 +50,23 @@
 }
 
 
+/* ==========================================================
+   CONTENT
+========================================================== */
+
 .dashboard-content {
 
     flex: 1;
 
+    min-width: 0;
+
+    width: 100%;
+
+    min-height: 0;
+
     overflow-y: auto;
+
+    overflow-x: hidden;
 
     padding: 0;
 
@@ -48,32 +80,79 @@
 
 
 /* ==========================================================
-   Dashboard Scrollbar
+   DASHBOARD CONTENT SCROLLBAR
 ========================================================== */
 
 .dashboard-content::-webkit-scrollbar {
 
-    width: 0;
-
-    display: none;
+    width: 6px;
 
 }
 
 
-/* Firefox */
+.dashboard-content::-webkit-scrollbar-thumb {
+
+    background: #5B7288;
+
+    border-radius: 20px;
+
+}
+
+
+.dashboard-content::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
 
 .dashboard-content {
 
-    scrollbar-width: none;
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #5B7288
+        transparent;
 
 }
 
 
 /* ==========================================================
-   Desktop
+   MOBILE SIDEBAR OVERLAY
 ========================================================== */
 
-@media(min-width:1200px) {
+.dashboard-sidebar-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    border: 0;
+
+    padding: 0;
+
+    margin: 0;
+
+    background: rgba(3, 18, 30, .52);
+
+    z-index: 1900;
+
+    cursor: pointer;
+
+}
+
+
+/* ==========================================================
+   DESKTOP
+========================================================== */
+
+@media (min-width: 1200px) {
 
     .dashboard-content {
 
@@ -85,10 +164,10 @@
 
 
 /* ==========================================================
-   Tablet
+   TABLET
 ========================================================== */
 
-@media(max-width:992px) {
+@media (max-width: 992px) {
 
     .dashboard-content {
 
@@ -100,14 +179,93 @@
 
 
 /* ==========================================================
-   Mobile
+   MOBILE
 ========================================================== */
 
-@media(max-width:768px) {
+@media (max-width: 768px) {
+
+    .dashboard-layout {
+
+        width: 100%;
+
+        min-width: 0;
+
+        height: 100dvh;
+
+        min-height: 100dvh;
+
+        overflow: hidden;
+
+    }
+
+
+    .dashboard-main {
+
+        width: 100%;
+
+        min-width: 0;
+
+        height: 100dvh;
+
+        min-height: 0;
+
+    }
+
 
     .dashboard-content {
 
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 0;
+
         padding: 0;
+
+        overflow-x: hidden;
+
+        overflow-y: auto;
+
+    }
+
+
+    .dashboard-sidebar-overlay {
+
+        display: block;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+========================================================== */
+
+@media (max-width: 480px) {
+
+    .dashboard-content {
+
+        width: 100%;
+
+        padding: 0;
+
+    }
+
+}
+
+
+/* ==========================================================
+   REDUCED MOTION
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .dashboard-layout,
+    .dashboard-main,
+    .dashboard-content {
+
+        transition: none;
 
     }
 
