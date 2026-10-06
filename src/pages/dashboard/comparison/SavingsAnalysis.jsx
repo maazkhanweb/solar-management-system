@@ -8,6 +8,8 @@ import {
     RiFlashlightLine,
     RiLightbulbLine,
     RiPlantLine,
+    RiAlarmWarningLine,
+    RiGlobeLine,
 } from "react-icons/ri";
 
 import "./SavingsAnalysis.css";
@@ -77,8 +79,17 @@ function SavingsAnalysis() {
         })();
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | State
+    |--------------------------------------------------------------------------
+    */
+
     const [viewMode, setViewMode] =
         useState("card");
+
+    const [language, setLanguage] =
+        useState("ur");
 
 
     /*
@@ -132,6 +143,291 @@ function SavingsAnalysis() {
 
     /*
     |--------------------------------------------------------------------------
+    | Translation
+    |--------------------------------------------------------------------------
+    */
+
+    const isEnglish =
+        language === "en";
+
+
+    const t = {
+
+        back:
+            isEnglish
+                ? "Back to Dashboard"
+                : "ڈیش بورڈ پر واپس جائیں",
+
+        title:
+            isEnglish
+                ? "Comparison: AC vs DC"
+                : "Comparison: AC vs DC",
+
+        titleUrdu:
+            isEnglish
+                ? "Household Appliance Comparison"
+                : "عام گھریلو آلات کا موازنہ",
+
+        description:
+            isEnglish
+                ? "Compare common household appliances and see how efficient DC alternatives can help reduce electricity consumption. This analysis is based on your uploaded bill and general usage patterns."
+                : "مختلف گھریلو آلات کا موازنہ کریں اور دیکھیں کہ DC متبادل آپ کے بجلی کے استعمال میں کس طرح کمی لا سکتے ہیں۔ یہ تجزیہ آپ کے اپ لوڈ کیے گئے بل اور عام استعمال کے انداز پر مبنی ہے۔",
+
+        billConsumption:
+            isEnglish
+                ? "Your Electricity Consumption"
+                : "آپ کے بل کا بجلی استعمال",
+
+        monthlyUnits:
+            isEnglish
+                ? "Monthly consumed units"
+                : "ماہانہ استعمال شدہ یونٹس",
+
+        accordingBill:
+            isEnglish
+                ? "According to your uploaded bill"
+                : "آپ کے اپ لوڈ کیے گئے بل کے مطابق",
+
+        units:
+            "Units",
+
+        potentialSavings:
+            isEnglish
+                ? "Potential Electricity Savings"
+                : "ممکنہ بجلی کی بچت",
+
+        estimatedSavings:
+            isEnglish
+                ? "Estimated potential savings"
+                : "اندازاً ممکنہ بچت",
+
+        savingsDescription:
+            isEnglish
+                ? "Using efficient DC appliances and better usage habits can reduce electricity consumption."
+                : "مؤثر DC آلات اور بہتر استعمال کی عادات اپنانے سے بجلی کی کھپت کم کی جا سکتی ہے۔",
+
+        important:
+            isEnglish
+                ? "Key Insight"
+                : "اہم بات",
+
+        importantSubtitle:
+            isEnglish
+                ? "Important electricity-saving point"
+                : "بجلی کی بچت کا اہم نکتہ",
+
+        importantDescription:
+            isEnglish
+                ? "Some household appliances consume much more electricity than others. Using efficient appliances can significantly reduce your electricity bill."
+                : "کچھ گھریلو آلات دوسرے آلات کے مقابلے میں بہت زیادہ بجلی استعمال کرتے ہیں۔ زیادہ مؤثر آلات استعمال کرنے سے آپ کے بجلی کے بل میں نمایاں کمی آ سکتی ہے۔",
+
+        peakHours:
+            isEnglish
+                ? "Peak Hours"
+                : "زیادہ لوڈ کے اوقات",
+
+        peakDescription:
+            isEnglish
+                ? "Electricity demand and rates may be higher during these hours. Where possible, avoid using high-consumption appliances during this period."
+                : "اس وقت بجلی کا لوڈ اور نرخ عام طور پر زیادہ ہو سکتے ہیں۔ جہاں ممکن ہو، اس دوران زیادہ بجلی استعمال کرنے والے آلات کے استعمال سے گریز کریں۔",
+
+        bestOpportunities:
+            isEnglish
+                ? "Best Opportunities"
+                : "زیادہ بچت کے مواقع",
+
+        highImpact:
+            isEnglish
+                ? "High Impact"
+                : "زیادہ اثر",
+
+        highImpactItems:
+            isEnglish
+                ? "Water pump, refrigerator, iron"
+                : "واٹر پمپ، فریج، استری",
+
+        mediumImpact:
+            isEnglish
+                ? "Medium Impact"
+                : "درمیانہ اثر",
+
+        mediumImpactItems:
+            isEnglish
+                ? "Fans"
+                : "پنکھے",
+
+        easySaving:
+            isEnglish
+                ? "Easy Saving"
+                : "آسان بچت",
+
+        easySavingItems:
+            isEnglish
+                ? "LED / DC lights"
+                : "LED / DC لائٹس",
+
+        quickTips:
+            isEnglish
+                ? "Quick Tips"
+                : "اہم مشورے",
+
+        tips: isEnglish
+            ? [
+                "Use DC and energy-efficient appliances where possible.",
+                "Replace old appliances with efficient energy-saving alternatives.",
+                "Avoid unnecessary heavy appliance usage during peak hours.",
+                "Use LED lights instead of high-wattage bulbs.",
+                "Use solar energy for high-consumption activities during the day.",
+            ]
+            : [
+                "جہاں ممکن ہو DC اور مؤثر آلات استعمال کریں۔",
+                "پرانے آلات کو توانائی بچانے والے مؤثر آلات سے تبدیل کریں۔",
+                "زیادہ لوڈ کے اوقات میں غیر ضروری بھاری آلات استعمال نہ کریں۔",
+                "زیادہ واٹ والے بلب کے بجائے LED لائٹس استعمال کریں۔",
+                "دن کے وقت زیادہ بجلی والے کاموں کے لیے سولر توانائی استعمال کریں۔",
+            ],
+
+        applianceComparison:
+            isEnglish
+                ? "Household Appliance Comparison"
+                : "گھریلو آلات کا موازنہ",
+
+        acDcAppliances:
+            isEnglish
+                ? "AC and DC Appliances"
+                : "AC اور DC آلات",
+
+        view:
+            isEnglish
+                ? "View:"
+                : "دیکھیں:",
+
+        table:
+            isEnglish
+                ? "Table"
+                : "ٹیبل",
+
+        card:
+            isEnglish
+                ? "Cards"
+                : "کارڈ",
+
+        appliance:
+            isEnglish
+                ? "Appliance"
+                : "آلہ",
+
+        household:
+            isEnglish
+                ? "Household Equipment"
+                : "گھریلو سامان",
+
+        traditional:
+            isEnglish
+                ? "Traditional"
+                : "روایتی",
+
+        efficientAlternative:
+            isEnglish
+                ? "Efficient Alternative"
+                : "مؤثر متبادل",
+
+        comparisonBenefit:
+            isEnglish
+                ? "Comparison / Benefit"
+                : "موازنہ / فائدہ",
+
+        electricitySaving:
+            isEnglish
+                ? "Electricity Saving"
+                : "بجلی کی بچت",
+
+        acTraditional:
+            isEnglish
+                ? "AC (Traditional)"
+                : "AC (روایتی)",
+
+        dcEfficient:
+            isEnglish
+                ? "DC (Efficient)"
+                : "DC (مؤثر)",
+
+        estimatedSavingsTitle:
+            isEnglish
+                ? "Estimated Savings"
+                : "ممکنہ بچت کا اندازہ",
+
+        exampleSavings:
+            isEnglish
+                ? "Example Potential Savings"
+                : "مثال کے طور پر ممکنہ بچت",
+
+        householdExample:
+            isEnglish
+                ? "Household Usage Example"
+                : "گھریلو استعمال کی مثال",
+
+        estimateDescription:
+            isEnglish
+                ? "This is an estimated calculation based on typical electricity usage. Actual savings may vary depending on your appliances, usage hours and solar system."
+                : "یہ ایک اندازاً حساب ہے جو عام بجلی کے استعمال کی بنیاد پر تیار کیا گیا ہے۔ اصل بچت آپ کے استعمال ہونے والے آلات، استعمال کے اوقات اور سولر سسٹم کے مطابق مختلف ہو سکتی ہے۔",
+
+        currentMonthly:
+            isEnglish
+                ? "Current Monthly Electricity Usage"
+                : "موجودہ ماہانہ بجلی کا استعمال",
+
+        estimated:
+            isEnglish
+                ? "(Estimated)"
+                : "(اندازاً)",
+
+        afterEfficient:
+            isEnglish
+                ? "After Using Efficient Appliances"
+                : "مؤثر آلات استعمال کرنے کے بعد",
+
+        possibleSavings:
+            isEnglish
+                ? "40% - 70% Potential Savings"
+                : "40% - 70% ممکنہ بچت",
+
+        benefits:
+            isEnglish
+                ? "Benefits"
+                : "فوائد",
+
+        benefitsList: isEnglish
+            ? [
+                "Lower monthly electricity bill.",
+                "More efficient electricity usage.",
+                "Better compatibility with solar systems.",
+                "More backup during load shedding.",
+                "Better for the environment.",
+            ]
+            : [
+                "ماہانہ بجلی کے بل میں کمی۔",
+                "بجلی کا زیادہ مؤثر استعمال۔",
+                "سولر سسٹم کے ساتھ بہتر مطابقت۔",
+                "لوڈ شیڈنگ کے دوران زیادہ بیک اپ۔",
+                "ماحول کے لیے بہتر۔",
+            ],
+
+        currentBill:
+            isEnglish
+                ? "Current bill amount"
+                : "موجودہ بل کی رقم",
+
+        peakAlert:
+            isEnglish
+                ? "HIGH CONSUMPTION ALERT"
+                : "زیادہ بجلی کے استعمال کا الرٹ",
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Appliance Data
     |--------------------------------------------------------------------------
     */
@@ -141,130 +437,130 @@ function SavingsAnalysis() {
         {
             key: "fan",
 
-            name: "پنکھا",
-
-            urdu: "پنکھا",
+            nameUrdu: "پنکھا",
+            nameEnglish: "Fan",
 
             acImage: fanAc,
-
             dcImage: fanDc,
 
             ac: "1 AC Fan",
-
             acPower: "80W",
 
             dc: "3 DC Fans",
-
             dcPower: "25W each",
 
-            saving: "تقریباً 69% کم بجلی",
+            savingUrdu: "تقریباً 69% کم بجلی",
+            savingEnglish: "Approximately 69% less electricity",
 
-            note:
+            noteUrdu:
                 "DC پنکھے بجلی کے استعمال میں نمایاں کمی کر سکتے ہیں۔",
+
+            noteEnglish:
+                "DC fans can significantly reduce electricity consumption.",
         },
 
 
         {
             key: "lighting",
 
-            name: "لائٹنگ",
-
-            urdu: "لائٹ / بلب",
+            nameUrdu: "لائٹنگ",
+            nameEnglish: "Lighting",
 
             acImage: bulbAc,
-
             dcImage: bulbDc,
 
             ac: "1 AC Bulb",
-
             acPower: "100W",
 
             dc: "1 DC / LED Bulb",
-
             dcPower: "12W",
 
-            saving: "تقریباً 80–90% کم بجلی",
+            savingUrdu: "تقریباً 80–90% کم بجلی",
+            savingEnglish: "Approximately 80–90% less electricity",
 
-            note:
+            noteUrdu:
                 "LED یا DC بلب استعمال کرنے سے بجلی کی کھپت بہت کم ہو سکتی ہے۔",
+
+            noteEnglish:
+                "LED or DC bulbs can significantly reduce electricity consumption.",
         },
 
 
         {
             key: "refrigerator",
 
-            name: "فریج",
-
-            urdu: "ریفریجریٹر",
+            nameUrdu: "فریج",
+            nameEnglish: "Refrigerator",
 
             acImage: fridgeAc,
-
             dcImage: fridgeDc,
 
             ac: "1 AC Refrigerator",
-
             acPower: "200–300W",
 
             dc: "DC / Inverter Refrigerator",
-
             dcPower: "60–120W",
 
-            saving: "تقریباً 50–70% کم بجلی",
+            savingUrdu: "تقریباً 50–70% کم بجلی",
+            savingEnglish: "Approximately 50–70% less electricity",
 
-            note:
+            noteUrdu:
                 "Inverter فریج زیادہ مؤثر طریقے سے کام کرتے ہیں اور بجلی کی کھپت کم کرتے ہیں۔",
+
+            noteEnglish:
+                "Inverter refrigerators operate more efficiently and can reduce electricity consumption.",
         },
 
 
         {
             key: "pump",
 
-            name: "واٹر پمپ",
-
-            urdu: "پانی کا پمپ",
+            nameUrdu: "واٹر پمپ",
+            nameEnglish: "Water Pump",
 
             acImage: pumpAc,
-
             dcImage: pumpDc,
 
             ac: "1 AC Water Pump",
-
             acPower: "750–1000W",
 
             dc: "DC / Solar Pump",
-
             dcPower: "200–400W",
 
-            saving: "تقریباً 50–70% کم بجلی",
+            savingUrdu: "تقریباً 50–70% کم بجلی",
+            savingEnglish: "Approximately 50–70% less electricity",
 
-            note:
+            noteUrdu:
                 "DC یا Solar پمپ بجلی کے استعمال کو نمایاں طور پر کم کر سکتے ہیں۔",
+
+            noteEnglish:
+                "DC or solar pumps can significantly reduce electricity consumption.",
         },
 
 
         {
             key: "iron",
 
-            name: "استری",
-
-            urdu: "استری",
+            nameUrdu: "استری",
+            nameEnglish: "Iron",
 
             acImage: ironAc,
-
             dcImage: ironDc,
 
             ac: "1 AC Iron",
-
             acPower: "1000–1200W",
 
             dc: "DC / Efficient Iron",
-
             dcPower: "300–500W",
 
-            saving: "تقریباً 50–60% کم بجلی",
+            savingUrdu: "تقریباً 50–60% کم بجلی",
+            savingEnglish: "Approximately 50–60% less electricity",
 
-            note:
+            noteUrdu:
                 "زیادہ مؤثر استری استعمال کریں اور غیر ضروری طور پر زیادہ دیر تک استعمال نہ کریں۔",
+
+            noteEnglish:
+                "Use an efficient iron and avoid unnecessary prolonged usage.",
         },
 
     ];
@@ -300,26 +596,105 @@ function SavingsAnalysis() {
         Number(value || 0).toLocaleString("en-US");
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Current Language Helpers
+    |--------------------------------------------------------------------------
+    */
+
+    const getApplianceName = (item) =>
+        isEnglish
+            ? item.nameEnglish
+            : item.nameUrdu;
+
+
+    const getSaving = (item) =>
+        isEnglish
+            ? item.savingEnglish
+            : item.savingUrdu;
+
+
+    const getNote = (item) =>
+        isEnglish
+            ? item.noteEnglish
+            : item.noteUrdu;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Render
+    |--------------------------------------------------------------------------
+    */
+
     return (
 
-        <section className="acdc-savings-page">
-
+        <section
+            className={`acdc-savings-page ${
+                isEnglish
+                    ? "language-en"
+                    : "language-ur"
+            }`}
+            dir={isEnglish ? "ltr" : "rtl"}
+        >
 
             {/* =========================================================
-                Back
+                Top Bar
             ========================================================== */}
 
-            <button
-                type="button"
-                className="acdc-savings-back"
-                onClick={handleBack}
-            >
+            <div className="acdc-top-bar">
 
-                <RiArrowLeftLine />
+                <button
+                    type="button"
+                    className="acdc-savings-back"
+                    onClick={handleBack}
+                >
 
-                ڈیش بورڈ پر واپس جائیں
+                    <RiArrowLeftLine />
 
-            </button>
+                    <span>
+                        {t.back}
+                    </span>
+
+                </button>
+
+
+                <div className="acdc-language-switch">
+
+                    <RiGlobeLine />
+
+                    <button
+                        type="button"
+                        className={
+                            isEnglish
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setLanguage("en")
+                        }
+                    >
+                        English
+                    </button>
+
+                    <span>|</span>
+
+                    <button
+                        type="button"
+                        className={
+                            !isEnglish
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setLanguage("ur")
+                        }
+                    >
+                        اردو
+                    </button>
+
+                </div>
+
+            </div>
 
 
             {/* =========================================================
@@ -337,22 +712,17 @@ function SavingsAnalysis() {
 
                 <h1>
 
-                    Comparison: AC vs DC
+                    {t.title}
 
                     <span>
-                        عام گھریلو آلات کا موازنہ
+                        {t.titleUrdu}
                     </span>
 
                 </h1>
 
 
                 <p>
-
-                    مختلف گھریلو آلات کا موازنہ کریں اور دیکھیں
-                    کہ DC متبادل آپ کے بجلی کے بل میں کس طرح
-                    کمی لا سکتے ہیں۔ یہ تجزیہ آپ کے اپ لوڈ کیے
-                    گئے بل اور عام استعمال کے انداز پر مبنی ہے۔
-
+                    {t.description}
                 </p>
 
             </div>
@@ -363,7 +733,6 @@ function SavingsAnalysis() {
             ========================================================== */}
 
             <div className="acdc-summary-grid">
-
 
                 {/* Bill Consumption */}
 
@@ -379,23 +748,25 @@ function SavingsAnalysis() {
                     <div>
 
                         <h3>
-                            آپ کے بل کا بجلی استعمال
+                            {t.billConsumption}
                         </h3>
 
                         <span>
-                            ماہانہ استعمال شدہ یونٹس
+                            {t.monthlyUnits}
                         </span>
 
                         <strong>
-                            {formatUnits(unitsConsumed)}
+                            {formatUnits(
+                                unitsConsumed
+                            )}
                         </strong>
 
                         <b>
-                            Units
+                            {t.units}
                         </b>
 
                         <small>
-                            آپ کے اپ لوڈ کیے گئے بل کے مطابق
+                            {t.accordingBill}
                         </small>
 
                     </div>
@@ -417,11 +788,11 @@ function SavingsAnalysis() {
                     <div>
 
                         <h3>
-                            ممکنہ بجلی کی بچت
+                            {t.potentialSavings}
                         </h3>
 
                         <span>
-                            اندازاً ممکنہ بچت
+                            {t.estimatedSavings}
                         </span>
 
                         <strong>
@@ -429,8 +800,7 @@ function SavingsAnalysis() {
                         </strong>
 
                         <small>
-                            مؤثر DC آلات اور بہتر استعمال کی عادات
-                            اپنانے سے بجلی کی کھپت کم کی جا سکتی ہے۔
+                            {t.savingsDescription}
                         </small>
 
                     </div>
@@ -452,20 +822,15 @@ function SavingsAnalysis() {
                     <div>
 
                         <h3>
-                            اہم بات
+                            {t.important}
                         </h3>
 
                         <span>
-                            بجلی کی بچت کا اہم نکتہ
+                            {t.importantSubtitle}
                         </span>
 
                         <p>
-
-                            کچھ گھریلو آلات دوسرے آلات کے مقابلے
-                            میں بہت زیادہ بجلی استعمال کرتے ہیں۔
-                            زیادہ مؤثر آلات استعمال کرنے سے آپ کے
-                            بجلی کے بل میں نمایاں کمی آ سکتی ہے۔
-
+                            {t.importantDescription}
                         </p>
 
                     </div>
@@ -476,369 +841,29 @@ function SavingsAnalysis() {
 
 
             {/* =========================================================
-                Appliance Comparison
-            ========================================================== */}
-
-            <section className="acdc-appliance-section">
-
-
-                <div className="acdc-section-header">
-
-                    <h2>
-
-                        گھریلو آلات کا موازنہ
-
-                        <span>
-                            AC اور DC آلات
-                        </span>
-
-                    </h2>
-
-
-                    <div className="acdc-view-toggle">
-
-                        <span>
-                            دیکھیں:
-                        </span>
-
-
-                        <button
-                            className={
-                                viewMode === "table"
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setViewMode("table")
-                            }
-                        >
-                            ٹیبل
-                        </button>
-
-
-                        <button
-                            className={
-                                viewMode === "card"
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setViewMode("card")
-                            }
-                        >
-                            کارڈ
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                {/* =====================================================
-                    Card View
-                ====================================================== */}
-
-                {viewMode === "card" ? (
-
-                    <div className="acdc-appliance-card-grid">
-
-                        {applianceData.map(
-                            (item) => (
-
-                                <article
-                                    className="acdc-appliance-card"
-                                    key={item.key}
-                                >
-
-                                    <header>
-
-                                        <strong>
-                                            {item.name}
-                                        </strong>
-
-                                        <span>
-                                            {item.urdu}
-                                        </span>
-
-                                    </header>
-
-
-                                    <div className="acdc-appliance-comparison">
-
-
-                                        {/* AC */}
-
-                                        <div className="acdc-appliance-side ac">
-
-                                            <img
-                                                src={item.acImage}
-                                                alt={item.name}
-                                            />
-
-
-                                            <small>
-                                                AC (روایتی)
-                                            </small>
-
-
-                                            <b>
-                                                {item.ac}
-                                            </b>
-
-
-                                            <span>
-                                                ({item.acPower})
-                                            </span>
-
-                                        </div>
-
-
-                                        {/* DC */}
-
-                                        <div className="acdc-appliance-side dc">
-
-                                            <img
-                                                src={item.dcImage}
-                                                alt={item.name}
-                                            />
-
-
-                                            <small>
-                                                DC (موثر)
-                                            </small>
-
-
-                                            <b>
-                                                {item.dc}
-                                            </b>
-
-
-                                            <span>
-                                                ({item.dcPower})
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* Saving */}
-
-                                    <div className="acdc-saving-note">
-
-                                        <RiFlashlightLine />
-
-
-                                        <div>
-
-                                            <strong>
-                                                {item.saving}
-                                            </strong>
-
-                                            <p>
-                                                {item.note}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-
-                                </article>
-
-                            )
-                        )}
-
-                    </div>
-
-                ) : (
-
-
-                    /* =================================================
-                       Table View
-                    ================================================== */
-
-                    <div className="acdc-table-wrap">
-
-                        <table className="acdc-table">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>
-                                        آلہ
-                                        <br />
-                                        <span>
-                                            گھریلو سامان
-                                        </span>
-                                    </th>
-
-
-                                    <th>
-                                        AC
-                                        <br />
-                                        <span>
-                                            روایتی
-                                        </span>
-                                    </th>
-
-
-                                    <th>
-                                        DC
-                                        <br />
-                                        <span>
-                                            مؤثر متبادل
-                                        </span>
-                                    </th>
-
-
-                                    <th>
-                                        موازنہ / فائدہ
-                                        <br />
-                                        <span>
-                                            بجلی کی بچت
-                                        </span>
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                                {applianceData.map(
-                                    (item) => (
-
-                                        <tr
-                                            key={item.key}
-                                        >
-
-                                            {/* Appliance */}
-
-                                            <td>
-
-                                                <strong>
-                                                    {item.name}
-                                                </strong>
-
-                                                <span>
-                                                    {item.urdu}
-                                                </span>
-
-                                            </td>
-
-
-                                            {/* AC */}
-
-                                            <td>
-
-                                                <div className="acdc-table-device">
-
-                                                    <img
-                                                        src={item.acImage}
-                                                        alt=""
-                                                    />
-
-                                                    <span>
-
-                                                        {item.ac}
-
-                                                        <br />
-
-                                                        {item.acPower}
-
-                                                    </span>
-
-                                                </div>
-
-                                            </td>
-
-
-                                            {/* DC */}
-
-                                            <td>
-
-                                                <div className="acdc-table-device">
-
-                                                    <img
-                                                        src={item.dcImage}
-                                                        alt=""
-                                                    />
-
-                                                    <span>
-
-                                                        {item.dc}
-
-                                                        <br />
-
-                                                        {item.dcPower}
-
-                                                    </span>
-
-                                                </div>
-
-                                            </td>
-
-
-                                            {/* Benefit */}
-
-                                            <td>
-
-                                                <div className="acdc-table-benefit">
-
-                                                    <RiFlashlightLine />
-
-                                                    <div>
-
-                                                        <strong>
-                                                            {item.saving}
-                                                        </strong>
-
-                                                        <p>
-                                                            {item.note}
-                                                        </p>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </td>
-
-                                        </tr>
-
-                                    )
-                                )}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                )}
-
-            </section>
-
-
-            {/* =========================================================
-                Information Cards
+                INFO CARDS — MOVED TO TOP
             ========================================================== */}
 
             <div className="acdc-info-grid">
-
 
                 {/* Peak Hours */}
 
                 <article className="acdc-info-card peak">
 
-                    <h2>
+                    <div className="acdc-alert-label">
 
-                        🕘 زیادہ لوڈ کے اوقات
+                        <RiAlarmWarningLine />
 
                         <span>
-                            Peak Hours
+                            {t.peakAlert}
                         </span>
+
+                    </div>
+
+
+                    <h2>
+
+                        🕘 {t.peakHours}
 
                     </h2>
 
@@ -855,12 +880,7 @@ function SavingsAnalysis() {
 
 
                     <p>
-
-                        اس وقت بجلی کا لوڈ اور نرخ عام طور پر
-                        زیادہ ہوتے ہیں۔ جہاں ممکن ہو، اس دوران
-                        زیادہ بجلی استعمال کرنے والے آلات کے
-                        استعمال سے گریز کریں۔
-
+                        {t.peakDescription}
                     </p>
 
                 </article>
@@ -871,24 +891,18 @@ function SavingsAnalysis() {
                 <article className="acdc-info-card opportunities">
 
                     <h2>
-
-                        📈 زیادہ بچت کے مواقع
-
-                        <span>
-                            Best Opportunities
-                        </span>
-
+                        📈 {t.bestOpportunities}
                     </h2>
 
 
                     <div>
 
                         <b className="high">
-                            ⚡ زیادہ اثر
+                            ⚡ {t.highImpact}
                         </b>
 
                         <span>
-                            واٹر پمپ، فریج، استری
+                            {t.highImpactItems}
                         </span>
 
                     </div>
@@ -897,11 +911,11 @@ function SavingsAnalysis() {
                     <div>
 
                         <b className="medium">
-                            ⚙ درمیانہ اثر
+                            ⚙ {t.mediumImpact}
                         </b>
 
                         <span>
-                            پنکھے
+                            {t.mediumImpactItems}
                         </span>
 
                     </div>
@@ -910,11 +924,11 @@ function SavingsAnalysis() {
                     <div>
 
                         <b className="easy">
-                            💡 آسان بچت
+                            💡 {t.easySaving}
                         </b>
 
                         <span>
-                            LED / DC لائٹس
+                            {t.easySavingItems}
                         </span>
 
                     </div>
@@ -927,34 +941,20 @@ function SavingsAnalysis() {
                 <article className="acdc-info-card tips">
 
                     <h2>
-
-                        ⚙️ اہم مشورے
-
-                        <span>
-                            Quick Tips
-                        </span>
-
+                        ⚙️ {t.quickTips}
                     </h2>
 
 
-                    {[
-                        "جہاں ممکن ہو DC اور مؤثر آلات استعمال کریں۔",
+                    {t.tips.map(
+                        (tip, index) => (
 
-                        "پرانے آلات کو توانائی بچانے والے مؤثر آلات سے تبدیل کریں۔",
-
-                        "زیادہ لوڈ کے اوقات میں غیر ضروری بھاری آلات استعمال نہ کریں۔",
-
-                        "زیادہ واٹ والے بلب کے بجائے LED لائٹس استعمال کریں۔",
-
-                        "دن کے وقت زیادہ بجلی والے کاموں کے لیے سولر توانائی استعمال کریں۔",
-                    ].map(
-                        (tip) => (
-
-                            <p key={tip}>
+                            <p key={index}>
 
                                 <RiCheckLine />
 
-                                {tip}
+                                <span>
+                                    {tip}
+                                </span>
 
                             </p>
 
@@ -967,156 +967,522 @@ function SavingsAnalysis() {
 
 
             {/* =========================================================
-                Estimated Savings
+                MAIN ANALYSIS GRID
+                Appliance Comparison + Estimated Savings
             ========================================================== */}
 
-            <section className="acdc-estimate-section">
+            <div className="acdc-main-analysis-grid">
+
+                {/* =====================================================
+                    Appliance Comparison
+                ====================================================== */}
+
+                <section className="acdc-appliance-section">
+
+                    <div className="acdc-section-header">
+
+                        <h2>
+
+                            {t.applianceComparison}
+
+                            <span>
+                                {t.acDcAppliances}
+                            </span>
+
+                        </h2>
 
 
-                <div className="acdc-section-header">
+                        <div className="acdc-view-toggle">
 
-                    <h2>
-
-                        ⚖ ممکنہ بچت کا اندازہ
-
-                        <span>
-                            مثال کے طور پر ممکنہ بچت
-                        </span>
-
-                    </h2>
+                            <span>
+                                {t.view}
+                            </span>
 
 
-                    <select defaultValue="example">
+                            <button
+                                type="button"
+                                className={
+                                    viewMode === "table"
+                                        ? "active"
+                                        : ""
+                                }
+                                onClick={() =>
+                                    setViewMode("table")
+                                }
+                            >
+                                {t.table}
+                            </button>
 
-                        <option value="example">
-                            گھریلو استعمال کی مثال
-                        </option>
 
-                    </select>
+                            <button
+                                type="button"
+                                className={
+                                    viewMode === "card"
+                                        ? "active"
+                                        : ""
+                                }
+                                onClick={() =>
+                                    setViewMode("card")
+                                }
+                            >
+                                {t.card}
+                            </button>
 
-                </div>
+                        </div>
+
+                    </div>
 
 
-                <p className="acdc-estimate-description">
+                    {/* =================================================
+                        Card View
+                    ================================================== */}
 
-                    یہ ایک اندازاً حساب ہے جو عام بجلی کے استعمال
-                    کی بنیاد پر تیار کیا گیا ہے۔ اصل بچت آپ کے
-                    استعمال ہونے والے آلات، استعمال کے اوقات اور
-                    سولر سسٹم کے مطابق مختلف ہو سکتی ہے۔
+                    {viewMode === "card" ? (
 
-                    {billAmount > 0 && (
+                        <div className="acdc-appliance-card-grid">
 
-                        <>
-                            {" "}
-                            موجودہ بل کی رقم: Rs.{" "}
-                            {billAmount.toLocaleString("en-US")}.
-                        </>
+                            {applianceData.map(
+                                (item) => (
+
+                                    <article
+                                        className="acdc-appliance-card"
+                                        key={item.key}
+                                    >
+
+                                        <header>
+
+                                            <strong>
+                                                {getApplianceName(item)}
+                                            </strong>
+
+                                        </header>
+
+
+                                        <div className="acdc-appliance-comparison">
+
+                                            {/* AC */}
+
+                                            <div className="acdc-appliance-side ac">
+
+                                                <img
+                                                    src={item.acImage}
+                                                    alt={item.ac}
+                                                />
+
+
+                                                <small>
+                                                    {t.acTraditional}
+                                                </small>
+
+
+                                                <b>
+                                                    {item.ac}
+                                                </b>
+
+
+                                                <span>
+                                                    ({item.acPower})
+                                                </span>
+
+                                            </div>
+
+
+                                            {/* DC */}
+
+                                            <div className="acdc-appliance-side dc">
+
+                                                <img
+                                                    src={item.dcImage}
+                                                    alt={item.dc}
+                                                />
+
+
+                                                <small>
+                                                    {t.dcEfficient}
+                                                </small>
+
+
+                                                <b>
+                                                    {item.dc}
+                                                </b>
+
+
+                                                <span>
+                                                    ({item.dcPower})
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        {/* Saving */}
+
+                                        <div className="acdc-saving-note">
+
+                                            <RiFlashlightLine />
+
+
+                                            <div>
+
+                                                <strong>
+                                                    {getSaving(item)}
+                                                </strong>
+
+                                                <p>
+                                                    {getNote(item)}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </article>
+
+                                )
+                            )}
+
+                        </div>
+
+                    ) : (
+
+                        /* =================================================
+                           Table View
+                        ================================================== */
+
+                        <div className="acdc-table-wrap">
+
+                            <table className="acdc-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+
+                                            {t.appliance}
+
+                                            <br />
+
+                                            <span>
+                                                {t.household}
+                                            </span>
+
+                                        </th>
+
+
+                                        <th>
+
+                                            AC
+
+                                            <br />
+
+                                            <span>
+                                                {t.traditional}
+                                            </span>
+
+                                        </th>
+
+
+                                        <th>
+
+                                            DC
+
+                                            <br />
+
+                                            <span>
+                                                {t.efficientAlternative}
+                                            </span>
+
+                                        </th>
+
+
+                                        <th>
+
+                                            {t.comparisonBenefit}
+
+                                            <br />
+
+                                            <span>
+                                                {t.electricitySaving}
+                                            </span>
+
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {applianceData.map(
+                                        (item) => (
+
+                                            <tr
+                                                key={item.key}
+                                            >
+
+                                                {/* Appliance */}
+
+                                                <td>
+
+                                                    <strong>
+                                                        {getApplianceName(item)}
+                                                    </strong>
+
+                                                </td>
+
+
+                                                {/* AC */}
+
+                                                <td>
+
+                                                    <div className="acdc-table-device">
+
+                                                        <img
+                                                            src={item.acImage}
+                                                            alt={item.ac}
+                                                        />
+
+                                                        <span>
+
+                                                            {item.ac}
+
+                                                            <br />
+
+                                                            {item.acPower}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                {/* DC */}
+
+                                                <td>
+
+                                                    <div className="acdc-table-device">
+
+                                                        <img
+                                                            src={item.dcImage}
+                                                            alt={item.dc}
+                                                        />
+
+                                                        <span>
+
+                                                            {item.dc}
+
+                                                            <br />
+
+                                                            {item.dcPower}
+
+                                                        </span>
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                {/* Benefit */}
+
+                                                <td>
+
+                                                    <div className="acdc-table-benefit">
+
+                                                        <RiFlashlightLine />
+
+                                                        <div>
+
+                                                            <strong>
+                                                                {getSaving(item)}
+                                                            </strong>
+
+                                                            <p>
+                                                                {getNote(item)}
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        )
+                                    )}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
 
                     )}
 
-                </p>
+                </section>
 
 
-                <div className="acdc-estimate-grid">
+                {/* =====================================================
+                    Estimated Savings
+                ====================================================== */}
+
+                <section className="acdc-estimate-section">
+
+                    <div className="acdc-section-header">
+
+                        <h2>
+
+                            ⚖ {t.estimatedSavingsTitle}
+
+                            <span>
+                                {t.exampleSavings}
+                            </span>
+
+                        </h2>
 
 
-                    {/* Current Consumption */}
-
-                    <div className="estimate-box blue">
-
-                        <h3>
-                            موجودہ ماہانہ بجلی کا استعمال
-                        </h3>
-
-                        <span>
-                            (اندازاً)
-                        </span>
-
-
-                        <strong>
-                            {formatUnits(unitsConsumed)} Units
-                        </strong>
-
-                    </div>
-
-
-                    {/* After Efficient Alternatives */}
-
-                    <div className="estimate-box green">
-
-                        <h3>
-                            مؤثر آلات استعمال کرنے کے بعد
-                        </h3>
-
-                        <span>
-                            (اندازاً)
-                        </span>
-
-
-                        <strong>
-
-                            {formatUnits(
-                                estimatedRange.low
-                            )}
-
-                            {" - "}
-
-                            {formatUnits(
-                                estimatedRange.high
-                            )}
-
-                            <br />
-
-                            Units
-
-                        </strong>
-
-
-                        <b>
-                            40% - 70% ممکنہ بچت
-                        </b>
+                        
 
                     </div>
 
 
-                    {/* Benefits */}
+                    <p className="acdc-estimate-description">
 
-                    <div className="estimate-box yellow">
-
-                        <h3>
-                            ⭐ فوائد
-                        </h3>
+                        {t.estimateDescription}
 
 
-                        {[
-                            "ماہانہ بجلی کے بل میں کمی۔",
+                        {billAmount > 0 && (
 
-                            "بجلی کا زیادہ مؤثر استعمال۔",
+                            <>
 
-                            "سولر سسٹم کے ساتھ بہتر مطابقت۔",
+                                {" "}
 
-                            "لوڈ شیڈنگ کے دوران زیادہ بیک اپ۔",
+                                {t.currentBill}:
 
-                            "ماحول کے لیے بہتر۔",
-                        ].map(
-                            (benefit) => (
+                                {" "}
 
-                                <p key={benefit}>
+                                Rs.{" "}
 
-                                    <RiCheckLine />
+                                {billAmount.toLocaleString(
+                                    "en-US"
+                                )}
 
-                                    {benefit}
+                                .
 
-                                </p>
+                            </>
 
-                            )
                         )}
 
+                    </p>
+
+
+                    <div className="acdc-estimate-grid">
+
+                        {/* Current */}
+
+                        <div className="estimate-box blue">
+
+                            <h3>
+                                {t.currentMonthly}
+                            </h3>
+
+                            <span>
+                                {t.estimated}
+                            </span>
+
+
+                            <strong>
+
+                                {formatUnits(
+                                    unitsConsumed
+                                )}
+
+                                {" "}
+
+                                {t.units}
+
+                            </strong>
+
+                        </div>
+
+
+                        {/* After Efficient */}
+
+                        <div className="estimate-box green">
+
+                            <h3>
+                                {t.afterEfficient}
+                            </h3>
+
+                            <span>
+                                {t.estimated}
+                            </span>
+
+
+                            <strong>
+
+                                {formatUnits(
+                                    estimatedRange.low
+                                )}
+
+                                {" - "}
+
+                                {formatUnits(
+                                    estimatedRange.high
+                                )}
+
+                                <br />
+
+                                {t.units}
+
+                            </strong>
+
+
+                            <b>
+                                {t.possibleSavings}
+                            </b>
+
+                        </div>
+
+
+                        {/* Benefits */}
+
+                        <div className="estimate-box yellow">
+
+                            <h3>
+                                ⭐ {t.benefits}
+                            </h3>
+
+
+                            {t.benefitsList.map(
+                                (benefit, index) => (
+
+                                    <p
+                                        key={index}
+                                    >
+
+                                        <RiCheckLine />
+
+                                        <span>
+                                            {benefit}
+                                        </span>
+
+                                    </p>
+
+                                )
+                            )}
+
+                        </div>
+
                     </div>
 
-                </div>
+                </section>
 
-            </section>
+            </div>
 
         </section>
 
