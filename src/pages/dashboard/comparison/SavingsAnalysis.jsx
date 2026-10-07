@@ -10,6 +10,9 @@ import {
     RiPlantLine,
     RiAlarmWarningLine,
     RiGlobeLine,
+    RiHomeLine,
+    RiSubtractLine,
+    RiCheckboxCircleLine,
 } from "react-icons/ri";
 
 import "./SavingsAnalysis.css";
@@ -91,6 +94,231 @@ function SavingsAnalysis() {
     const [language, setLanguage] =
         useState("ur");
 
+    const isEnglish =
+        language === "en";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Home Analysis
+    |--------------------------------------------------------------------------
+    */
+
+    const [homeAnalysisOpen, setHomeAnalysisOpen] =
+        useState(false);
+
+    const [homeAnalysisSubmitted, setHomeAnalysisSubmitted] =
+        useState(false);
+
+    const defaultHomeForm = {
+        fanTotal: 0,
+        fanAc: 0,
+        fanDc: 0,
+        fanWatts: "",
+        bulbTotal: 0,
+        bulbAc: 0,
+        bulbDc: 0,
+        bulbWatts: "",
+        fridgeTotal: 0,
+        fridgeAc: 0,
+        fridgeDc: 0,
+        fridgeWatts: "",
+        pumpTotal: 0,
+        pumpAc: 0,
+        pumpDc: 0,
+        pumpWatts: "",
+        ironTotal: 0,
+        ironAc: 0,
+        ironDc: 0,
+        ironWatts: "",
+        hasUps: false,
+        hasAc: false,
+        hasSolar: false,
+        hasWaterPump: false,
+        hasGeyser: false,
+        hasWashingMachine: false,
+        hasOtherHighLoad: false,
+    };
+
+    const [homeForm, setHomeForm] =
+        useState(defaultHomeForm);
+
+    const [homeResults, setHomeResults] =
+        useState([]);
+
+    const homeApplianceDefaults = {
+        fan: { ac: 80, dc: 25 },
+        bulb: { ac: 100, dc: 12 },
+        fridge: { ac: 250, dc: 90 },
+        pump: { ac: 875, dc: 300 },
+        iron: { ac: 1100, dc: 400 },
+    };
+
+    const homeFieldLabels = {
+        fan: isEnglish ? "Fans" : "پنکھے",
+        bulb: isEnglish ? "Bulbs / Lights" : "بلب / لائٹس",
+        fridge: isEnglish ? "Refrigerator" : "فریج",
+        pump: isEnglish ? "Water Pump" : "واٹر پمپ",
+        iron: isEnglish ? "Iron" : "استری",
+    };
+
+    const homeText = {
+        button: isEnglish ? "Home Analysis" : "گھر کا تجزیہ",
+        title: isEnglish ? "Home Electricity Analysis" : "گھر کی بجلی کا تجزیہ",
+        subtitle: isEnglish
+            ? "Enter your household appliance details to estimate how much electricity you could save by using efficient DC alternatives."
+            : "اپنے گھر کے بجلی استعمال کرنے والے آلات کی تفصیلات درج کریں تاکہ مؤثر DC متبادل استعمال کرنے سے ممکنہ بجلی کی بچت کا اندازہ لگایا جا سکے۔",
+        total: isEnglish ? "Total" : "کل تعداد",
+        ac: isEnglish ? "AC" : "AC",
+        dc: isEnglish ? "DC" : "DC",
+        watts: isEnglish ? "Current watts (optional)" : "موجودہ واٹ (اختیاری)",
+        wattsHint: isEnglish
+            ? "Leave empty to use an approximate wattage."
+            : "خالی چھوڑنے پر تقریباً واٹ استعمال ہوں گے۔",
+        appliances: isEnglish ? "Household Appliances" : "گھریلو آلات",
+        options: isEnglish ? "Home Details" : "گھر کی بنیادی تفصیلات",
+        ups: isEnglish ? "UPS available" : "UPS موجود ہے",
+        acAvailable: isEnglish ? "Air conditioner available" : "ایئر کنڈیشنر موجود ہے",
+        solar: isEnglish ? "Solar system available" : "سولر سسٹم موجود ہے",
+        pumpAvailable: isEnglish ? "Water pump available" : "واٹر پمپ موجود ہے",
+        geyser: isEnglish ? "Geyser available" : "گیزر موجود ہے",
+        washing: isEnglish ? "Washing machine available" : "واشنگ مشین موجود ہے",
+        otherHighLoad: isEnglish ? "Other high-consumption appliance" : "کوئی اور زیادہ بجلی استعمال کرنے والا آلہ",
+        analyze: isEnglish ? "Analyze My Home" : "میرے گھر کا تجزیہ کریں",
+        reset: isEnglish ? "Reset" : "ری سیٹ",
+        results: isEnglish ? "Your Home Analysis" : "آپ کے گھر کا تجزیہ",
+        currentPower: isEnglish ? "Current estimated load" : "موجودہ اندازاً لوڈ",
+        efficientPower: isEnglish ? "Efficient DC alternative" : "مؤثر DC متبادل",
+        saving: isEnglish ? "Potential saving" : "ممکنہ بچت",
+        resultNote: isEnglish
+            ? "This is an estimate based on the information you entered. Actual savings depend on usage hours, appliance efficiency and operating conditions."
+            : "یہ آپ کی درج کردہ معلومات کی بنیاد پر ایک اندازہ ہے۔ اصل بچت استعمال کے اوقات، آلات کی کارکردگی اور استعمال کے حالات کے مطابق مختلف ہو سکتی ہے۔",
+        overall: isEnglish ? "Estimated Overall Potential" : "مجموعی ممکنہ بچت کا اندازہ",
+        noData: isEnglish
+            ? "Please enter at least one appliance quantity to generate the analysis."
+            : "تجزیہ حاصل کرنے کے لیے کم از کم ایک آلے کی تعداد درج کریں۔",
+    };
+
+    const updateHomeField = (field, value) => {
+        setHomeForm((previous) => ({
+            ...previous,
+            [field]: value,
+        }));
+    };
+
+    const calculateHomeAnalysis = () => {
+        const definitions = [
+            {
+                key: "fan",
+                total: getNumber(homeForm.fanTotal),
+                ac: getNumber(homeForm.fanAc),
+                dc: getNumber(homeForm.fanDc),
+                watts: getNumber(homeForm.fanWatts) || homeApplianceDefaults.fan.ac,
+            },
+            {
+                key: "bulb",
+                total: getNumber(homeForm.bulbTotal),
+                ac: getNumber(homeForm.bulbAc),
+                dc: getNumber(homeForm.bulbDc),
+                watts: getNumber(homeForm.bulbWatts) || homeApplianceDefaults.bulb.ac,
+            },
+            {
+                key: "fridge",
+                total: getNumber(homeForm.fridgeTotal),
+                ac: getNumber(homeForm.fridgeAc),
+                dc: getNumber(homeForm.fridgeDc),
+                watts: getNumber(homeForm.fridgeWatts) || homeApplianceDefaults.fridge.ac,
+            },
+            {
+                key: "pump",
+                total: getNumber(homeForm.pumpTotal),
+                ac: getNumber(homeForm.pumpAc),
+                dc: getNumber(homeForm.pumpDc),
+                watts: getNumber(homeForm.pumpWatts) || homeApplianceDefaults.pump.ac,
+            },
+            {
+                key: "iron",
+                total: getNumber(homeForm.ironTotal),
+                ac: getNumber(homeForm.ironAc),
+                dc: getNumber(homeForm.ironDc),
+                watts: getNumber(homeForm.ironWatts) || homeApplianceDefaults.iron.ac,
+            },
+        ];
+
+        const results = definitions
+            .filter((item) => item.total > 0 || item.ac > 0 || item.dc > 0)
+            .map((item) => {
+                const normalizedTotal = Math.max(
+                    item.total,
+                    item.ac + item.dc
+                );
+                const acCount = Math.min(item.ac, normalizedTotal);
+                const dcCount = Math.min(
+                    item.dc,
+                    Math.max(0, normalizedTotal - acCount)
+                );
+                const fallbackAcCount = Math.max(
+                    0,
+                    normalizedTotal - dcCount
+                );
+                const currentPower =
+                    (acCount * item.watts) +
+                    (dcCount * homeApplianceDefaults[item.key].dc);
+                const efficientPower =
+                    normalizedTotal * homeApplianceDefaults[item.key].dc;
+                const safeCurrent = currentPower > 0
+                    ? currentPower
+                    : fallbackAcCount * item.watts;
+                const savingPercent = safeCurrent > 0
+                    ? Math.max(0, Math.min(100, Math.round(
+                        ((safeCurrent - efficientPower) / safeCurrent) * 100
+                    )))
+                    : 0;
+
+                return {
+                    ...item,
+                    total: normalizedTotal,
+                    acCount,
+                    dcCount,
+                    currentPower: Math.round(safeCurrent),
+                    efficientPower: Math.round(efficientPower),
+                    savingPercent,
+                };
+            });
+
+        setHomeResults(results);
+        setHomeAnalysisSubmitted(true);
+    };
+
+    const homeOverallSaving = useMemo(() => {
+        if (!homeResults.length) {
+            return 0;
+        }
+
+        const current = homeResults.reduce(
+            (sum, item) => sum + item.currentPower,
+            0
+        );
+        const efficient = homeResults.reduce(
+            (sum, item) => sum + item.efficientPower,
+            0
+        );
+
+        if (!current) {
+            return 0;
+        }
+
+        return Math.max(0, Math.min(100, Math.round(
+            ((current - efficient) / current) * 100
+        )));
+    }, [homeResults]);
+
+    const resetHomeAnalysis = () => {
+        setHomeForm(defaultHomeForm);
+        setHomeResults([]);
+        setHomeAnalysisSubmitted(false);
+    };
+
 
     /*
     |--------------------------------------------------------------------------
@@ -147,16 +375,17 @@ function SavingsAnalysis() {
     |--------------------------------------------------------------------------
     */
 
-    const isEnglish =
-        language === "en";
-
-
     const t = {
 
         back:
             isEnglish
                 ? "Back to Dashboard"
                 : "ڈیش بورڈ پر واپس جائیں",
+
+        homeAnalysis:
+            isEnglish
+                ? "Home Analysis"
+                : "گھر کا تجزیہ",
 
         title:
             isEnglish
@@ -361,11 +590,6 @@ function SavingsAnalysis() {
             isEnglish
                 ? "Example Potential Savings"
                 : "مثال کے طور پر ممکنہ بچت",
-
-        householdExample:
-            isEnglish
-                ? "Household Usage Example"
-                : "گھریلو استعمال کی مثال",
 
         estimateDescription:
             isEnglish
@@ -658,6 +882,16 @@ function SavingsAnalysis() {
                 </button>
 
 
+                <button
+                    type="button"
+                    className="acdc-home-analysis-button"
+                    onClick={() => setHomeAnalysisOpen((previous) => !previous)}
+                >
+                    <RiHomeLine />
+                    <span>{t.homeAnalysis}</span>
+                </button>
+
+
                 <div className="acdc-language-switch">
 
                     <RiGlobeLine />
@@ -726,6 +960,194 @@ function SavingsAnalysis() {
                 </p>
 
             </div>
+
+
+            {/* =========================================================
+                HOME ANALYSIS
+            ========================================================== */}
+
+            {homeAnalysisOpen && (
+
+                <section className="acdc-home-analysis-card">
+
+                    <div className="acdc-home-analysis-header">
+                        <div>
+                            <div className="acdc-home-analysis-icon">
+                                <RiHomeLine />
+                            </div>
+
+                            <h2>{homeText.title}</h2>
+
+                            <p>{homeText.subtitle}</p>
+                        </div>
+                    </div>
+
+                    <div className="acdc-home-analysis-section-title">
+                        <h3>{homeText.appliances}</h3>
+                    </div>
+
+                    <div className="acdc-home-appliance-form-grid">
+                        {[
+                            { key: "fan", total: "fanTotal", ac: "fanAc", dc: "fanDc", watts: "fanWatts" },
+                            { key: "bulb", total: "bulbTotal", ac: "bulbAc", dc: "bulbDc", watts: "bulbWatts" },
+                            { key: "fridge", total: "fridgeTotal", ac: "fridgeAc", dc: "fridgeDc", watts: "fridgeWatts" },
+                            { key: "pump", total: "pumpTotal", ac: "pumpAc", dc: "pumpDc", watts: "pumpWatts" },
+                            { key: "iron", total: "ironTotal", ac: "ironAc", dc: "ironDc", watts: "ironWatts" },
+                        ].map((item) => (
+                            <article className="acdc-home-appliance-form-card" key={item.key}>
+                                <h4>{homeFieldLabels[item.key]}</h4>
+
+                                <div className="acdc-home-field-grid">
+                                    <label>
+                                        <span>{homeText.total}</span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={homeForm[item.total]}
+                                            onChange={(event) => updateHomeField(item.total, event.target.value)}
+                                        />
+                                    </label>
+
+                                    <label>
+                                        <span>{homeText.ac}</span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={homeForm[item.ac]}
+                                            onChange={(event) => updateHomeField(item.ac, event.target.value)}
+                                        />
+                                    </label>
+
+                                    <label>
+                                        <span>{homeText.dc}</span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={homeForm[item.dc]}
+                                            onChange={(event) => updateHomeField(item.dc, event.target.value)}
+                                        />
+                                    </label>
+
+                                    <label>
+                                        <span>{homeText.watts}</span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            placeholder={String(homeApplianceDefaults[item.key].ac)}
+                                            value={homeForm[item.watts]}
+                                            onChange={(event) => updateHomeField(item.watts, event.target.value)}
+                                        />
+                                        <small>{homeText.wattsHint}</small>
+                                    </label>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+
+                    <div className="acdc-home-analysis-section-title">
+                        <h3>{homeText.options}</h3>
+                    </div>
+
+                    <div className="acdc-home-check-grid">
+                        {[
+                            ["hasUps", homeText.ups],
+                            ["hasAc", homeText.acAvailable],
+                            ["hasSolar", homeText.solar],
+                            ["hasWaterPump", homeText.pumpAvailable],
+                            ["hasGeyser", homeText.geyser],
+                            ["hasWashingMachine", homeText.washing],
+                            ["hasOtherHighLoad", homeText.otherHighLoad],
+                        ].map(([field, label]) => (
+                            <label className="acdc-home-check-item" key={field}>
+                                <input
+                                    type="checkbox"
+                                    checked={homeForm[field]}
+                                    onChange={(event) => updateHomeField(field, event.target.checked)}
+                                />
+                                <span>{label}</span>
+                            </label>
+                        ))}
+                    </div>
+
+                    <div className="acdc-home-analysis-actions">
+                        <button
+                            type="button"
+                            className="acdc-home-reset-button"
+                            onClick={resetHomeAnalysis}
+                        >
+                            <RiSubtractLine />
+                            {homeText.reset}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="acdc-home-submit-button"
+                            onClick={calculateHomeAnalysis}
+                        >
+                            <RiCheckboxCircleLine />
+                            {homeText.analyze}
+                        </button>
+                    </div>
+
+                    {homeAnalysisSubmitted && (
+                        <div className="acdc-home-results">
+                            <div className="acdc-home-results-header">
+                                <div>
+                                    <h3>{homeText.results}</h3>
+                                    <p>{homeText.resultNote}</p>
+                                </div>
+
+                                <strong>{homeOverallSaving}%</strong>
+                            </div>
+
+                            {homeResults.length > 0 ? (
+                                <div className="acdc-home-results-grid">
+                                    {homeResults.map((item) => (
+                                        <article className="acdc-home-result-card" key={item.key}>
+                                            <h4>{homeFieldLabels[item.key]}</h4>
+
+                                            <div className="acdc-home-result-row">
+                                                <span>{homeText.currentPower}</span>
+                                                <strong>{item.currentPower} W</strong>
+                                            </div>
+
+                                            <div className="acdc-home-result-row efficient">
+                                                <span>{homeText.efficientPower}</span>
+                                                <strong>{item.efficientPower} W</strong>
+                                            </div>
+
+                                            <div className="acdc-home-result-saving">
+                                                <RiFlashlightLine />
+                                                <strong>
+                                                    {item.savingPercent}% {homeText.saving}
+                                                </strong>
+                                            </div>
+                                        </article>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="acdc-home-no-data">
+                                    {homeText.noData}
+                                </div>
+                            )}
+
+                            {homeResults.length > 0 && (
+                                <div className="acdc-home-overall-card">
+                                    <span>{homeText.overall}</span>
+                                    <strong>{homeOverallSaving}%</strong>
+                                    <p>
+                                        {isEnglish
+                                            ? "With suitable DC / efficient alternatives, your household may reduce the calculated appliance load. This is an estimate, not a guaranteed bill reduction."
+                                            : "موزوں DC / مؤثر متبادل استعمال کرنے سے گھریلو آلات کے حساب شدہ لوڈ میں کمی آ سکتی ہے۔ یہ صرف ایک اندازہ ہے، بل میں یقینی کمی کی ضمانت نہیں۔"}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                </section>
+
+            )}
 
 
             {/* =========================================================

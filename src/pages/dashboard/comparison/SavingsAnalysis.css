@@ -1398,3 +1398,444 @@
     }
 
 }
+/* =========================================================
+   HOME ANALYSIS BUTTON
+========================================================= */
+
+.acdc-home-analysis-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-inline-start: auto;
+    padding: 8px 13px;
+    border: 1px solid #10a87b;
+    border-radius: 9px;
+    background: #10a87b;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 5px 14px rgba(16, 168, 123, 0.18);
+    transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.acdc-home-analysis-button:hover {
+    background: #0d966e;
+    transform: translateY(-1px);
+}
+
+.acdc-home-analysis-button svg {
+    font-size: 17px;
+}
+
+/* =========================================================
+   HOME ANALYSIS FORM
+========================================================= */
+
+.acdc-home-analysis-card {
+    margin-top: 13px;
+    padding: 18px;
+    border: 1px solid #d8e2ed;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(16, 43, 74, 0.05);
+    box-sizing: border-box;
+}
+
+.acdc-home-analysis-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+.acdc-home-analysis-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #10a87b;
+    color: #ffffff;
+    font-size: 23px;
+}
+
+.acdc-home-analysis-header h2 {
+    margin: 9px 0 3px;
+    color: #102b4a;
+    font-size: 22px;
+}
+
+.acdc-home-analysis-header p {
+    max-width: 950px;
+    margin: 0;
+    color: #60758c;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.acdc-home-analysis-section-title {
+    margin: 15px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e3eaf1;
+}
+
+.acdc-home-analysis-section-title h3 {
+    margin: 0;
+    color: #102b4a;
+    font-size: 17px;
+}
+
+.acdc-home-appliance-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+
+.acdc-home-appliance-form-card {
+    padding: 13px;
+    border: 1px solid #dbe4ed;
+    border-radius: 12px;
+    background: #f8fbff;
+    box-sizing: border-box;
+}
+
+.acdc-home-appliance-form-card h4 {
+    margin: 0 0 10px;
+    color: #102b4a;
+    font-size: 15px;
+}
+
+.acdc-home-field-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.acdc-home-field-grid label {
+    min-width: 0;
+}
+
+.acdc-home-field-grid label > span {
+    display: block;
+    margin-bottom: 5px;
+    color: #60758c;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.acdc-home-field-grid input {
+    width: 100%;
+    height: 37px;
+    padding: 7px 9px;
+    border: 1px solid #d3dfeb;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: #102b4a;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.acdc-home-field-grid input:focus {
+    border-color: #10a87b;
+    box-shadow: 0 0 0 3px rgba(16, 168, 123, 0.10);
+}
+
+.acdc-home-field-grid small {
+    display: block;
+    margin-top: 4px;
+    color: #8797a8;
+    font-size: 9px;
+    line-height: 1.25;
+}
+
+.acdc-home-check-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.acdc-home-check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid #dbe4ed;
+    border-radius: 9px;
+    background: #f8fbff;
+    color: #20344d;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.acdc-home-check-item input {
+    width: 17px;
+    height: 17px;
+    accent-color: #10a87b;
+    cursor: pointer;
+}
+
+.acdc-home-analysis-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 16px;
+}
+
+.acdc-home-reset-button,
+.acdc-home-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 9px 15px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.acdc-home-reset-button {
+    border: 1px solid #d4dee8;
+    background: #ffffff;
+    color: #60758c;
+}
+
+.acdc-home-submit-button {
+    border: 1px solid #10a87b;
+    background: #10a87b;
+    color: #ffffff;
+    box-shadow: 0 5px 14px rgba(16, 168, 123, 0.18);
+}
+
+.acdc-home-submit-button:hover {
+    background: #0d966e;
+}
+
+/* =========================================================
+   HOME ANALYSIS RESULTS
+========================================================= */
+
+.acdc-home-results {
+    margin-top: 18px;
+    padding-top: 17px;
+    border-top: 1px solid #e3eaf1;
+}
+
+.acdc-home-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #e4f7ee;
+}
+
+.acdc-home-results-header h3 {
+    margin: 0;
+    color: #102b4a;
+    font-size: 18px;
+}
+
+.acdc-home-results-header p {
+    max-width: 850px;
+    margin: 4px 0 0;
+    color: #60758c;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.acdc-home-results-header > strong {
+    flex: 0 0 auto;
+    color: #10a87b;
+    font-size: 30px;
+}
+
+.acdc-home-results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 11px;
+}
+
+.acdc-home-result-card {
+    padding: 13px;
+    border: 1px solid #dbe4ed;
+    border-radius: 12px;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.acdc-home-result-card h4 {
+    margin: 0 0 9px;
+    color: #102b4a;
+    font-size: 15px;
+}
+
+.acdc-home-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 9px;
+    margin-top: 6px;
+    border-radius: 8px;
+    background: #e7f1ff;
+}
+
+.acdc-home-result-row.efficient {
+    background: #e4f7ee;
+}
+
+.acdc-home-result-row span {
+    color: #60758c;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.acdc-home-result-row strong {
+    color: #102b4a;
+    font-size: 13px;
+}
+
+.acdc-home-result-saving {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 8px;
+    padding: 8px 9px;
+    border-radius: 8px;
+    background: #10a87b;
+    color: #ffffff;
+}
+
+.acdc-home-result-saving svg {
+    font-size: 17px;
+}
+
+.acdc-home-result-saving strong {
+    font-size: 12px;
+}
+
+.acdc-home-overall-card {
+    margin-top: 11px;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e4f7ee, #d7f2e7);
+    text-align: center;
+}
+
+.acdc-home-overall-card > span {
+    display: block;
+    color: #60758c;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.acdc-home-overall-card > strong {
+    display: block;
+    margin-top: 3px;
+    color: #10a87b;
+    font-size: 34px;
+}
+
+.acdc-home-overall-card p {
+    max-width: 850px;
+    margin: 5px auto 0;
+    color: #60758c;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.acdc-home-no-data {
+    margin-top: 11px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #fff4d4;
+    color: #795b00;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* =========================================================
+   HOME ANALYSIS RTL
+========================================================= */
+
+.language-ur .acdc-home-analysis-card,
+.language-ur .acdc-home-result-card,
+.language-ur .acdc-home-results-header,
+.language-ur .acdc-home-overall-card {
+    text-align: right;
+}
+
+.language-ur .acdc-home-analysis-actions {
+    justify-content: flex-start;
+}
+
+/* =========================================================
+   HOME ANALYSIS RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+    .acdc-home-appliance-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .acdc-home-check-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .acdc-home-results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .acdc-top-bar {
+        flex-wrap: wrap;
+    }
+
+    .acdc-home-analysis-button {
+        order: 3;
+        width: 100%;
+        margin-inline-start: 0;
+    }
+
+    .acdc-home-analysis-card {
+        padding: 12px;
+    }
+
+    .acdc-home-field-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .acdc-home-check-grid,
+    .acdc-home-results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .acdc-home-results-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .acdc-home-analysis-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .acdc-home-reset-button,
+    .acdc-home-submit-button {
+        width: 100%;
+    }
+}
