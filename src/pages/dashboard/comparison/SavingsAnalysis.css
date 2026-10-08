@@ -1,1841 +1,7861 @@
 /* =========================================================
+
+
+
    MAIN PAGE
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-savings-page {
+
+
+
     width: 100%;
+
+
+
     min-width: 0;
+
+
+
     min-height: calc(100vh - 100px);
+
+
+
+
+
+
 
     padding: 22px 26px 35px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
+
+
+
 
     color: #102b4a;
 
+
+
+
+
+
+
     background: transparent;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    TOP BAR
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-top-bar {
+
+
+
     width: 100%;
+
+
+
+
+
+
 
     display: flex;
 
+
+
+
+
+
+
     align-items: center;
+
+
+
+
+
+
 
     justify-content: space-between;
 
+
+
+
+
+
+
     gap: 20px;
 
+
+
+
+
+
+
     margin-bottom: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-back {
+
+
+
     display: inline-flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 6px;
+
+
+
+
+
+
 
     border: 0;
 
+
+
+
+
+
+
     background: transparent;
+
+
+
+
+
+
 
     color: #1768c4;
 
+
+
+
+
+
+
     font-size: 14px;
 
+
+
+
+
+
+
     font-weight: 800;
+
+
+
+
+
+
 
     padding: 4px 0;
 
+
+
+
+
+
+
     cursor: pointer;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-back svg {
+
+
+
     font-size: 19px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-language-switch {
+
+
+
     display: inline-flex;
 
+
+
+
+
+
+
     align-items: center;
+
+
+
+
+
+
 
     gap: 7px;
 
+
+
+
+
+
+
     padding: 6px 10px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
+
+
+
 
     border-radius: 10px;
 
+
+
+
+
+
+
     background: #ffffff;
+
+
+
+
+
+
 
     box-shadow: 0 3px 10px rgba(16, 43, 74, 0.06);
 
+
+
+
+
+
+
     color: #71839a;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     font-weight: 700;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-language-switch svg {
+
+
+
     color: #10a87b;
 
+
+
+
+
+
+
     font-size: 17px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-language-switch button {
+
+
+
     border: 0;
+
+
+
+
+
+
 
     background: transparent;
 
+
+
+
+
+
+
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
+
+
+
 
     font-weight: 800;
 
+
+
+
+
+
+
     cursor: pointer;
+
+
+
+
+
+
 
     padding: 3px 4px;
 
+
+
+
+
+
+
     border-radius: 6px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-language-switch button:hover {
+
+
+
     color: #10a87b;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-language-switch button.active {
+
+
+
     color: #ffffff;
 
+
+
+
+
+
+
     background: #10a87b;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    TITLE
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-savings-title-row {
+
+
+
     margin-top: 5px;
 
+
+
+
+
+
+
     margin-bottom: 13px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-title-icon {
+
+
+
     width: 38px;
+
+
+
+
+
+
 
     height: 38px;
 
+
+
+
+
+
+
     display: grid;
 
+
+
+
+
+
+
     place-items: center;
+
+
+
+
+
+
 
     border-radius: 9px;
 
+
+
+
+
+
+
     background: #10a87b;
+
+
+
+
+
+
 
     color: #ffffff;
 
+
+
+
+
+
+
     font-size: 23px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-title-row h1 {
+
+
+
     margin: 10px 0 3px;
+
+
+
+
+
+
 
     font-size: 28px;
 
+
+
+
+
+
+
     line-height: 1.15;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-title-row h1 span {
+
+
+
     color: #10a87b;
+
+
+
+
+
+
 
     font-size: 18px;
 
+
+
+
+
+
+
     margin-inline-start: 5px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-savings-title-row p {
+
+
+
     margin: 4px 0 13px;
 
+
+
+
+
+
+
     color: #60758c;
+
+
+
+
+
+
 
     font-size: 14px;
 
+
+
+
+
+
+
     line-height: 1.5;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    FIRST MAIN CARD
+
+
+
    SUMMARY CARDS GROUP
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-summary-grid {
+
+
+
     display: grid;
 
+
+
+
+
+
+
     grid-template-columns:
+
+
+
         repeat(3, minmax(0, 1fr));
+
+
+
+
+
+
 
     gap: 12px;
 
+
+
+
+
+
+
     /*
+
+
+
        Outer Card
+
+
+
     */
+
+
+
+
+
+
 
     margin-top: 0;
 
+
+
+
+
+
+
     padding: 12px;
+
+
+
+
+
+
 
     border: 1px solid #d8e2ed;
 
+
+
+
+
+
+
     border-radius: 16px;
+
+
+
+
+
+
 
     background: #ffffff;
 
+
+
+
+
+
+
     box-shadow:
+
+
+
         0 3px 12px rgba(16, 43, 74, 0.04);
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card {
+
+
+
     min-height: 145px;
+
+
+
+
+
+
 
     padding: 17px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
 
+
+
+
+
+
+
     border-radius: 15px;
+
+
+
+
+
+
 
     display: flex;
 
+
+
+
+
+
+
     gap: 14px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-blue {
+
+
+
     background: #e7f1ff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-green {
+
+
+
     background: #e4f7ee;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-yellow {
+
+
+
     background: #fff5d7;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-icon {
+
+
+
     width: 42px;
+
+
+
+
+
+
 
     height: 42px;
 
+
+
+
+
+
+
     flex: 0 0 42px;
 
+
+
+
+
+
+
     display: grid;
+
+
+
+
+
+
 
     place-items: center;
 
+
+
+
+
+
+
     border-radius: 50%;
+
+
+
+
+
+
 
     background: #ffffff;
 
+
+
+
+
+
+
     color: #10a87b;
 
+
+
+
+
+
+
     font-size: 22px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card h3 {
+
+
+
     margin: 0;
 
+
+
+
+
+
+
     font-size: 16px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card span {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin-top: 2px;
 
+
+
+
+
+
+
     color: #63788e;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     font-weight: 700;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card strong {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin-top: 9px;
 
+
+
+
+
+
+
     font-size: 29px;
 
+
+
+
+
+
+
     line-height: 1;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card b {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin-top: 4px;
 
+
+
+
+
+
+
     font-size: 25px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card small,
+
+
+
 .acdc-summary-card p {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin: 8px 0 0;
 
+
+
+
+
+
+
     color: #60758c;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     line-height: 1.4;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-summary-card.acdc-green strong {
+
+
+
     color: #10a87b;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    SECOND MAIN CARD
+
+
+
    INFO CARDS GROUP
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-info-grid {
+
+
+
     margin-top: 13px;
+
+
+
+
+
+
 
     display: grid;
 
+
+
+
+
+
+
     grid-template-columns:
+
+
+
         1fr 1.05fr 1fr;
+
+
+
+
+
+
 
     gap: 12px;
 
+
+
+
+
+
+
     /*
+
+
+
        Outer Card
+
+
+
     */
+
+
+
+
+
+
 
     padding: 12px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
+
+
+
 
     border-radius: 16px;
 
+
+
+
+
+
+
     background: #ffffff;
 
+
+
+
+
+
+
     box-shadow:
+
+
+
         0 3px 12px rgba(16, 43, 74, 0.04);
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card {
+
+
+
     min-height: 205px;
+
+
+
+
+
+
 
     padding: 15px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
+
+
+
 
     border-radius: 15px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.peak {
+
+
+
     background: #ffe9ed;
 
+
+
+
+
+
+
     border-color: #f2c8cf;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.opportunities {
+
+
+
     background: #ffffff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.tips {
+
+
+
     background: #ffffff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    PEAK HOURS ALERT
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-alert-label {
+
+
+
     display: inline-flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 6px;
+
+
+
+
+
+
 
     margin-bottom: 7px;
 
+
+
+
+
+
+
     padding: 5px 9px;
+
+
+
+
+
+
 
     border-radius: 7px;
 
+
+
+
+
+
+
     background: #ffe1e6;
+
+
+
+
+
+
 
     color: #d92f45;
 
+
+
+
+
+
+
     font-size: 10px;
+
+
+
+
+
+
 
     font-weight: 900;
 
+
+
+
+
+
+
     letter-spacing: 0.3px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-alert-label svg {
+
+
+
     font-size: 15px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.peak {
+
+
+
     animation:
+
+
+
         acdcPeakCardPulse 2.5s ease-in-out infinite;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.peak > strong {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin: 15px 0;
 
+
+
+
+
+
+
     color: #e0444e;
+
+
+
+
+
+
 
     font-size: 27px;
 
+
+
+
+
+
+
     line-height: 1.15;
 
+
+
+
+
+
+
     animation:
+
+
+
         acdcPeakTextBlink 1.5s ease-in-out infinite;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 @keyframes acdcPeakTextBlink {
 
+
+
+
+
+
+
     0%,
+
+
+
     100% {
+
+
+
         opacity: 1;
+
+
+
     }
 
+
+
+
+
+
+
     50% {
+
+
+
         opacity: 0.48;
+
+
+
     }
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 @keyframes acdcPeakCardPulse {
 
+
+
+
+
+
+
     0%,
+
+
+
     100% {
+
+
+
         box-shadow:
+
+
+
             0 0 0 0 rgba(224, 68, 78, 0);
+
+
+
     }
 
+
+
+
+
+
+
     50% {
+
+
+
         box-shadow:
+
+
+
             0 0 0 5px rgba(224, 68, 78, 0.07);
+
+
+
     }
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card h2 {
+
+
+
     margin: 0 0 11px;
 
+
+
+
+
+
+
     font-size: 18px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card h2 span {
+
+
+
     color: #10a87b;
 
+
+
+
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card p {
+
+
+
     color: #60758c;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     line-height: 1.4;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    BEST OPPORTUNITIES
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-info-card.opportunities > div {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 10px;
 
+
+
+
+
+
+
     margin: 11px 0;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.opportunities b {
+
+
+
     min-width: 105px;
+
+
+
+
+
+
 
     padding: 8px;
 
+
+
+
+
+
+
     border-radius: 8px;
+
+
+
+
+
+
 
     color: #ffffff;
 
+
+
+
+
+
+
     font-size: 12px;
 
+
+
+
+
+
+
     text-align: center;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card .high {
+
+
+
     background: #ef4444;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card .medium {
+
+
+
     background: #f59e0b;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card .easy {
+
+
+
     background: #38b56b;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.opportunities span {
+
+
+
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    QUICK TIPS
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-info-card.tips p {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: flex-start;
 
+
+
+
+
+
+
     gap: 7px;
+
+
+
+
+
+
 
     margin: 9px 0;
 
+
+
+
+
+
+
     color: #20344d;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-info-card.tips p svg {
+
+
+
     flex: 0 0 auto;
+
+
+
+
+
+
 
     width: 18px;
 
+
+
+
+
+
+
     height: 18px;
+
+
+
+
+
+
 
     padding: 3px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
+
+
+
 
     border-radius: 50%;
 
+
+
+
+
+
+
     background: #10a87b;
 
+
+
+
+
+
+
     color: #ffffff;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    THIRD MAIN CARD
+
+
+
    APPLIANCE + ESTIMATED SAVINGS GROUP
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-main-analysis-grid {
+
+
+
     margin-top: 13px;
+
+
+
+
+
+
 
     display: grid;
 
+
+
+
+
+
+
     grid-template-columns:
+
+
+
         minmax(0, 2fr)
+
+
+
         minmax(330px, 1fr);
+
+
+
+
+
+
 
     gap: 13px;
 
+
+
+
+
+
+
     align-items: start;
 
+
+
+
+
+
+
     /*
+
+
+
        Outer Card
+
+
+
     */
+
+
+
+
+
+
 
     padding: 12px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
+
+
+
 
     border-radius: 16px;
 
+
+
+
+
+
+
     background: #ffffff;
 
+
+
+
+
+
+
     box-shadow:
+
+
+
         0 3px 12px rgba(16, 43, 74, 0.04);
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    INNER SECTIONS
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-appliance-section,
+
+
+
 .acdc-estimate-section {
+
+
+
     margin: 0;
+
+
+
+
+
+
 
     padding: 12px;
 
+
+
+
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
+
+
+
 
     border-radius: 15px;
 
+
+
+
+
+
+
     background: #ffffff;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-section-header {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     justify-content: space-between;
+
+
+
+
+
+
 
     gap: 15px;
 
+
+
+
+
+
+
     padding: 0 4px 10px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-section-header h2 {
+
+
+
     margin: 0;
 
+
+
+
+
+
+
     font-size: 20px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-section-header h2 span {
+
+
+
     color: #10a87b;
+
+
+
+
+
+
 
     font-size: 15px;
 
+
+
+
+
+
+
     margin-inline-start: 5px;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    VIEW TOGGLE
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-view-toggle {
+
+
+
     display: flex;
 
+
+
+
+
+
+
     align-items: center;
+
+
+
+
+
+
 
     gap: 5px;
 
+
+
+
+
+
+
     color: #71839a;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-view-toggle button {
+
+
+
     border: 1px solid #d7e0ea;
+
+
+
+
+
+
 
     background: #ffffff;
 
+
+
+
+
+
+
     border-radius: 8px;
+
+
+
+
+
+
 
     padding: 7px 13px;
 
+
+
+
+
+
+
     font-weight: 700;
+
+
+
+
+
+
 
     color: #20344d;
 
+
+
+
+
+
+
     cursor: pointer;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-view-toggle button.active {
+
+
+
     background: #10a87b;
+
+
+
+
+
+
 
     color: #ffffff;
 
+
+
+
+
+
+
     border-color: #10a87b;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    APPLIANCE CARD GRID
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-appliance-card-grid {
+
+
+
     display: grid;
 
+
+
+
+
+
+
     grid-template-columns:
+
+
+
         repeat(2, minmax(0, 1fr));
 
+
+
+
+
+
+
     gap: 11px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-card {
+
+
+
     overflow: hidden;
+
+
+
+
+
+
 
     border: 1px solid #dbe4ed;
 
+
+
+
+
+
+
     border-radius: 12px;
 
+
+
+
+
+
+
     background: #ffffff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-card header {
+
+
+
     min-height: 42px;
+
+
+
+
+
+
 
     padding: 9px 12px;
 
+
+
+
+
+
+
     background: #e5f0ff;
+
+
+
+
+
+
 
     display: flex;
 
+
+
+
+
+
+
     align-items: center;
 
+
+
+
+
+
+
     gap: 7px;
+
+
+
+
+
+
 
     font-size: 16px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    APPLIANCE COMPARISON
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-appliance-comparison {
+
+
+
     display: grid;
 
+
+
+
+
+
+
     grid-template-columns:
+
+
+
         1fr 1fr;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-side {
+
+
+
     min-height: 195px;
+
+
+
+
+
+
 
     padding: 12px 8px;
 
+
+
+
+
+
+
     display: flex;
+
+
+
+
+
+
 
     flex-direction: column;
 
+
+
+
+
+
+
     align-items: center;
+
+
+
+
+
+
 
     justify-content: flex-start;
 
+
+
+
+
+
+
     text-align: center;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /*
+
+
+
    LIGHT RED — AC
+
+
+
 */
+
+
+
+
+
+
 
 .acdc-appliance-side.ac {
+
+
+
     background: #fff0f2;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /*
+
+
+
    LIGHT GREEN — DC
+
+
+
 */
 
+
+
+
+
+
+
 .acdc-appliance-side.dc {
+
+
+
     background: #e3f7ee;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-side img {
+
+
+
     width: 80px;
+
+
+
+
+
+
 
     height: 80px;
 
+
+
+
+
+
+
     object-fit: contain;
+
+
+
+
+
+
 
     background: #ffffff;
 
+
+
+
+
+
+
     border-radius: 9px;
+
+
+
+
+
+
 
     padding: 5px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-side small {
+
+
+
     margin-top: 6px;
+
+
+
+
+
+
 
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 10px;
 
+
+
+
+
+
+
     font-weight: 800;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-side b {
+
+
+
     margin-top: 5px;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     line-height: 1.25;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-appliance-side span {
+
+
+
     font-size: 12px;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    SAVING NOTE
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-saving-note {
+
+
+
     min-height: 63px;
+
+
+
+
+
+
 
     padding: 9px 10px;
 
+
+
+
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 9px;
+
+
+
+
+
+
 
     background: #e5f7ef;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-saving-note > svg,
+
+
+
 .acdc-table-benefit > svg {
+
+
+
     flex: 0 0 auto;
+
+
+
+
+
+
 
     width: 28px;
 
+
+
+
+
+
+
     height: 28px;
+
+
+
+
+
+
 
     padding: 6px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
+
+
+
 
     border-radius: 50%;
 
+
+
+
+
+
+
     background: #10a87b;
 
+
+
+
+
+
+
     color: #ffffff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-saving-note strong,
+
+
+
 .acdc-table-benefit strong {
+
+
+
     color: #10a87b;
 
+
+
+
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-saving-note p,
+
+
+
 .acdc-table-benefit p {
+
+
+
     margin: 2px 0 0;
+
+
+
+
+
+
 
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 11px;
 
+
+
+
+
+
+
     line-height: 1.3;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    TABLE
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-table-wrap {
+
+
+
     width: 100%;
 
+
+
+
+
+
+
     overflow-x: auto;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table {
+
+
+
     width: 100%;
+
+
+
+
+
+
 
     border-collapse: collapse;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table th {
+
+
+
     padding: 10px;
+
+
+
+
+
+
 
     background: #e5f0ff;
 
+
+
+
+
+
+
     text-align: center;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table th span {
+
+
+
     color: #71839a;
 
+
+
+
+
+
+
     font-size: 11px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table td {
+
+
+
     padding: 9px;
+
+
+
+
+
+
 
     border-bottom: 1px solid #e2e8ef;
 
+
+
+
+
+
+
     vertical-align: middle;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table td:first-child {
+
+
+
     width: 15%;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table td:first-child span {
+
+
+
     display: block;
 
+
+
+
+
+
+
     font-weight: 700;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table-device {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 8px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table-device img {
+
+
+
     width: 55px;
+
+
+
+
+
+
 
     height: 55px;
 
+
+
+
+
+
+
     object-fit: contain;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-table-benefit {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: center;
 
+
+
+
+
+
+
     gap: 8px;
+
+
+
+
+
+
 
     padding: 7px;
 
+
+
+
+
+
+
     border-radius: 10px;
 
+
+
+
+
+
+
     background: #e5f7ef;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    ESTIMATED SAVINGS
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .acdc-estimate-section {
+
+
+
     height: 100%;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-estimate-section .acdc-section-header {
+
+
+
     align-items: flex-start;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-estimate-section .acdc-section-header h2 {
+
+
+
     line-height: 1.35;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-estimate-section .acdc-section-header h2 span {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin-inline-start: 0;
 
+
+
+
+
+
+
     margin-top: 2px;
 
+
+
+
+
+
+
     font-size: 13px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-section-header select {
+
+
+
     max-width: 150px;
+
+
+
+
+
+
 
     border: 1px solid #d7e0ea;
 
+
+
+
+
+
+
     border-radius: 8px;
+
+
+
+
+
+
 
     padding: 8px 10px;
 
+
+
+
+
+
+
     background: #ffffff;
+
+
+
+
+
+
 
     color: #20344d;
 
+
+
+
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-estimate-description {
+
+
+
     margin: 0 4px 12px;
+
+
+
+
+
+
 
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 13px;
 
+
+
+
+
+
+
     line-height: 1.45;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .acdc-estimate-grid {
+
+
+
     display: grid;
+
+
+
+
+
+
 
     grid-template-columns: 1fr;
 
+
+
+
+
+
+
     gap: 10px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box {
+
+
+
     min-height: 150px;
 
+
+
+
+
+
+
     padding: 16px;
+
+
+
+
+
+
 
     border-radius: 14px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.blue {
+
+
+
     background: #e5f0ff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.green {
+
+
+
     background: #e4f7ee;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.yellow {
+
+
+
     background: #fff4d4;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box h3 {
+
+
+
     margin: 0;
+
+
+
+
+
+
 
     font-size: 17px;
 
+
+
+
+
+
+
     line-height: 1.3;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box span {
+
+
+
     color: #60758c;
 
+
+
+
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box > strong {
+
+
+
     display: block;
+
+
+
+
+
+
 
     margin-top: 15px;
 
+
+
+
+
+
+
     font-size: 27px;
 
+
+
+
+
+
+
     line-height: 1.15;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.green > strong {
+
+
+
     font-size: 25px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.green > b {
+
+
+
     display: block;
 
+
+
+
+
+
+
     margin-top: 13px;
+
+
+
+
+
+
 
     padding: 9px;
 
+
+
+
+
+
+
     border-radius: 9px;
+
+
+
+
+
+
 
     background: #10a87b;
 
+
+
+
+
+
+
     color: #ffffff;
+
+
+
+
+
+
 
     text-align: center;
 
+
+
+
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.yellow h3 {
+
+
+
     margin-bottom: 12px;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.yellow p {
+
+
+
     display: flex;
+
+
+
+
+
+
 
     align-items: flex-start;
 
+
+
+
+
+
+
     gap: 7px;
+
+
+
+
+
+
 
     margin: 8px 0;
 
+
+
+
+
+
+
     color: #20344d;
+
+
+
+
+
+
 
     font-size: 13px;
 
+
+
+
+
+
+
     line-height: 1.35;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .estimate-box.yellow p svg {
+
+
+
     flex: 0 0 auto;
+
+
+
+
+
+
 
     width: 18px;
 
+
+
+
+
+
+
     height: 18px;
+
+
+
+
+
+
 
     padding: 3px;
 
+
+
+
+
+
+
     box-sizing: border-box;
+
+
+
+
+
+
 
     border-radius: 50%;
 
+
+
+
+
+
+
     background: #10a87b;
 
+
+
+
+
+
+
     color: #ffffff;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    RTL SUPPORT
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .language-ur {
+
+
+
     text-align: right;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .language-ur .acdc-summary-card,
+
+
+
 .language-ur .acdc-info-card,
+
+
+
 .language-ur .estimate-box {
+
+
+
     text-align: right;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .language-ur .acdc-saving-note,
+
+
+
 .language-ur .acdc-table-benefit {
+
+
+
     text-align: right;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .language-ur .acdc-info-card.tips p,
+
+
+
 .language-ur .estimate-box.yellow p {
+
+
+
     flex-direction: row;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
+
+
+
    ENGLISH SUPPORT
+
+
+
 ========================================================= */
 
+
+
+
+
+
+
 .language-en {
+
+
+
     text-align: left;
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 .language-en .acdc-summary-card,
+
+
+
 .language-en .acdc-info-card,
+
+
+
 .language-en .estimate-box {
+
+
+
     text-align: left;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    RESPONSIVE — TABLET
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 @media (max-width: 1200px) {
 
+
+
+
+
+
+
     .acdc-savings-page {
+
+
+
         padding: 20px 20px 30px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-main-analysis-grid {
+
+
+
         grid-template-columns:
+
+
+
             minmax(0, 1fr);
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-estimate-grid {
+
+
+
         grid-template-columns:
+
+
+
             repeat(3, minmax(0, 1fr));
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-appliance-card-grid {
+
+
+
         grid-template-columns:
+
+
+
             repeat(3, minmax(0, 1fr));
+
+
+
     }
+
+
+
+
+
+
 
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    RESPONSIVE — 1000
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 @media (max-width: 1000px) {
 
+
+
+
+
+
+
     .acdc-summary-grid,
+
+
+
     .acdc-info-grid {
+
+
+
         grid-template-columns:
+
+
+
             1fr;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-appliance-card-grid {
+
+
+
         grid-template-columns:
+
+
+
             repeat(2, minmax(0, 1fr));
+
+
+
     }
+
+
+
+
+
+
 
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    RESPONSIVE — MOBILE
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 @media (max-width: 700px) {
 
+
+
+
+
+
+
     .acdc-savings-page {
+
+
+
         padding: 14px 10px 22px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-top-bar {
+
+
+
         align-items: flex-start;
+
+
+
+
+
+
 
         flex-direction: column;
 
+
+
+
+
+
+
         gap: 10px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-language-switch {
+
+
+
         align-self: flex-end;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-savings-title-row h1 {
+
+
+
         font-size: 23px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-savings-title-row h1 span {
+
+
+
         display: block;
+
+
+
+
+
+
 
         margin-inline-start: 0;
 
+
+
+
+
+
+
         margin-top: 4px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-summary-grid,
+
+
+
     .acdc-info-grid,
+
+
+
     .acdc-main-analysis-grid {
+
+
+
         padding: 8px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-summary-card {
+
+
+
         min-height: auto;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-section-header {
+
+
+
         align-items: flex-start;
 
+
+
+
+
+
+
         flex-direction: column;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-view-toggle {
+
+
+
         width: 100%;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-view-toggle button {
+
+
+
         flex: 1;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-appliance-card-grid {
+
+
+
         grid-template-columns: 1fr;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-appliance-side {
+
+
+
         min-height: 190px;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-estimate-grid {
+
+
+
         grid-template-columns: 1fr;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-section-header select {
+
+
+
         max-width: 100%;
 
+
+
+
+
+
+
         width: 100%;
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 
     .acdc-table {
+
+
+
         min-width: 720px;
+
+
+
     }
+
+
+
+
+
+
 
 }
 
 
+
+
+
+
+
+
+
+
+
 /* =========================================================
+
+
+
    ACCESSIBILITY
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 @media (prefers-reduced-motion: reduce) {
 
+
+
+
+
+
+
     .acdc-info-card.peak,
+
+
+
     .acdc-info-card.peak > strong {
+
+
+
         animation: none;
+
+
+
     }
 
+
+
+
+
+
+
 }
+
+
+
 /* =========================================================
+
+
+
    HOME ANALYSIS BUTTON
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 .acdc-home-analysis-button {
+
+
+
     display: inline-flex;
+
+
+
     align-items: center;
+
+
+
     justify-content: center;
+
+
+
     gap: 7px;
+
+
+
     margin-inline-start: auto;
+
+
+
     padding: 8px 13px;
+
+
+
     border: 1px solid #10a87b;
+
+
+
     border-radius: 9px;
+
+
+
     background: #10a87b;
+
+
+
     color: #ffffff;
+
+
+
     font-size: 13px;
+
+
+
     font-weight: 800;
+
+
+
     cursor: pointer;
+
+
+
     box-shadow: 0 5px 14px rgba(16, 168, 123, 0.18);
+
+
+
     transition: transform 0.18s ease, background 0.18s ease;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-button:hover {
+
+
+
     background: #0d966e;
+
+
+
     transform: translateY(-1px);
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-button svg {
+
+
+
     font-size: 17px;
+
+
+
 }
 
+
+
+
+
+
+
 /* =========================================================
+
+
+
    HOME ANALYSIS FORM
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 .acdc-home-analysis-card {
+
+
+
     margin-top: 13px;
+
+
+
     padding: 18px;
+
+
+
     border: 1px solid #d8e2ed;
+
+
+
     border-radius: 16px;
+
+
+
     background: #ffffff;
+
+
+
     box-shadow: 0 5px 18px rgba(16, 43, 74, 0.05);
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-header {
+
+
+
     display: flex;
+
+
+
     align-items: flex-start;
+
+
+
     justify-content: space-between;
+
+
+
     gap: 15px;
+
+
+
     margin-bottom: 16px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-icon {
+
+
+
     width: 42px;
+
+
+
     height: 42px;
+
+
+
     display: grid;
+
+
+
     place-items: center;
+
+
+
     border-radius: 10px;
+
+
+
     background: #10a87b;
+
+
+
     color: #ffffff;
+
+
+
     font-size: 23px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-header h2 {
+
+
+
     margin: 9px 0 3px;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 22px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-header p {
+
+
+
     max-width: 950px;
+
+
+
     margin: 0;
+
+
+
     color: #60758c;
+
+
+
     font-size: 13px;
+
+
+
     line-height: 1.45;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-section-title {
+
+
+
     margin: 15px 0 10px;
+
+
+
     padding-bottom: 8px;
+
+
+
     border-bottom: 1px solid #e3eaf1;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-section-title h3 {
+
+
+
     margin: 0;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 17px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-appliance-form-grid {
+
+
+
     display: grid;
+
+
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
+
+
+
     gap: 11px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-appliance-form-card {
+
+
+
     padding: 13px;
+
+
+
     border: 1px solid #dbe4ed;
+
+
+
     border-radius: 12px;
+
+
+
     background: #f8fbff;
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-appliance-form-card h4 {
+
+
+
     margin: 0 0 10px;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 15px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid {
+
+
+
     display: grid;
+
+
+
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
+
+
     gap: 8px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid label {
+
+
+
     min-width: 0;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid label > span {
+
+
+
     display: block;
+
+
+
     margin-bottom: 5px;
+
+
+
     color: #60758c;
+
+
+
     font-size: 11px;
+
+
+
     font-weight: 800;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid input {
+
+
+
     width: 100%;
+
+
+
     height: 37px;
+
+
+
     padding: 7px 9px;
+
+
+
     border: 1px solid #d3dfeb;
+
+
+
     border-radius: 8px;
+
+
+
     outline: none;
+
+
+
     background: #ffffff;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 13px;
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid input:focus {
+
+
+
     border-color: #10a87b;
+
+
+
     box-shadow: 0 0 0 3px rgba(16, 168, 123, 0.10);
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-field-grid small {
+
+
+
     display: block;
+
+
+
     margin-top: 4px;
+
+
+
     color: #8797a8;
+
+
+
     font-size: 9px;
+
+
+
     line-height: 1.25;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-check-grid {
+
+
+
     display: grid;
+
+
+
     grid-template-columns: repeat(3, minmax(0, 1fr));
+
+
+
     gap: 9px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-check-item {
+
+
+
     display: flex;
+
+
+
     align-items: center;
+
+
+
     gap: 8px;
+
+
+
     min-height: 42px;
+
+
+
     padding: 8px 10px;
+
+
+
     border: 1px solid #dbe4ed;
+
+
+
     border-radius: 9px;
+
+
+
     background: #f8fbff;
+
+
+
     color: #20344d;
+
+
+
     font-size: 12px;
+
+
+
     font-weight: 700;
+
+
+
     cursor: pointer;
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-check-item input {
+
+
+
     width: 17px;
+
+
+
     height: 17px;
+
+
+
     accent-color: #10a87b;
+
+
+
     cursor: pointer;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-analysis-actions {
+
+
+
     display: flex;
+
+
+
     align-items: center;
+
+
+
     justify-content: flex-end;
+
+
+
     gap: 9px;
+
+
+
     margin-top: 16px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-reset-button,
+
+
+
 .acdc-home-submit-button {
+
+
+
     display: inline-flex;
+
+
+
     align-items: center;
+
+
+
     justify-content: center;
+
+
+
     gap: 7px;
+
+
+
     min-height: 42px;
+
+
+
     padding: 9px 15px;
+
+
+
     border-radius: 9px;
+
+
+
     font-size: 13px;
+
+
+
     font-weight: 800;
+
+
+
     cursor: pointer;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-reset-button {
+
+
+
     border: 1px solid #d4dee8;
+
+
+
     background: #ffffff;
+
+
+
     color: #60758c;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-submit-button {
+
+
+
     border: 1px solid #10a87b;
+
+
+
     background: #10a87b;
+
+
+
     color: #ffffff;
+
+
+
     box-shadow: 0 5px 14px rgba(16, 168, 123, 0.18);
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-submit-button:hover {
+
+
+
     background: #0d966e;
+
+
+
 }
 
+
+
+
+
+
+
 /* =========================================================
+
+
+
    HOME ANALYSIS RESULTS
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 .acdc-home-results {
+
+
+
     margin-top: 18px;
+
+
+
     padding-top: 17px;
+
+
+
     border-top: 1px solid #e3eaf1;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-results-header {
+
+
+
     display: flex;
+
+
+
     align-items: center;
+
+
+
     justify-content: space-between;
+
+
+
     gap: 15px;
+
+
+
     padding: 14px 16px;
+
+
+
     border-radius: 12px;
+
+
+
     background: #e4f7ee;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-results-header h3 {
+
+
+
     margin: 0;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 18px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-results-header p {
+
+
+
     max-width: 850px;
+
+
+
     margin: 4px 0 0;
+
+
+
     color: #60758c;
+
+
+
     font-size: 11px;
+
+
+
     line-height: 1.4;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-results-header > strong {
+
+
+
     flex: 0 0 auto;
+
+
+
     color: #10a87b;
+
+
+
     font-size: 30px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-results-grid {
+
+
+
     display: grid;
+
+
+
     grid-template-columns: repeat(3, minmax(0, 1fr));
+
+
+
     gap: 10px;
+
+
+
     margin-top: 11px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-card {
+
+
+
     padding: 13px;
+
+
+
     border: 1px solid #dbe4ed;
+
+
+
     border-radius: 12px;
+
+
+
     background: #ffffff;
+
+
+
     box-sizing: border-box;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-card h4 {
+
+
+
     margin: 0 0 9px;
+
+
+
     color: #102b4a;
+
+
+
     font-size: 15px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-row {
+
+
+
     display: flex;
+
+
+
     align-items: center;
+
+
+
     justify-content: space-between;
+
+
+
     gap: 8px;
+
+
+
     padding: 8px 9px;
+
+
+
     margin-top: 6px;
+
+
+
     border-radius: 8px;
+
+
+
     background: #e7f1ff;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-row.efficient {
+
+
+
     background: #e4f7ee;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-row span {
+
+
+
     color: #60758c;
+
+
+
     font-size: 10px;
+
+
+
     font-weight: 700;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-row strong {
+
+
+
     color: #102b4a;
+
+
+
     font-size: 13px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-saving {
+
+
+
     display: flex;
+
+
+
     align-items: center;
+
+
+
     gap: 7px;
+
+
+
     margin-top: 8px;
+
+
+
     padding: 8px 9px;
+
+
+
     border-radius: 8px;
+
+
+
     background: #10a87b;
+
+
+
     color: #ffffff;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-saving svg {
+
+
+
     font-size: 17px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-result-saving strong {
+
+
+
     font-size: 12px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-overall-card {
+
+
+
     margin-top: 11px;
+
+
+
     padding: 16px;
+
+
+
     border-radius: 12px;
+
+
+
     background: linear-gradient(135deg, #e4f7ee, #d7f2e7);
+
+
+
     text-align: center;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-overall-card > span {
+
+
+
     display: block;
+
+
+
     color: #60758c;
+
+
+
     font-size: 12px;
+
+
+
     font-weight: 800;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-overall-card > strong {
+
+
+
     display: block;
+
+
+
     margin-top: 3px;
+
+
+
     color: #10a87b;
+
+
+
     font-size: 34px;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-overall-card p {
+
+
+
     max-width: 850px;
+
+
+
     margin: 5px auto 0;
+
+
+
     color: #60758c;
+
+
+
     font-size: 11px;
+
+
+
     line-height: 1.4;
+
+
+
 }
+
+
+
+
+
+
 
 .acdc-home-no-data {
+
+
+
     margin-top: 11px;
+
+
+
     padding: 14px;
+
+
+
     border-radius: 10px;
+
+
+
     background: #fff4d4;
+
+
+
     color: #795b00;
+
+
+
     font-size: 13px;
+
+
+
     font-weight: 700;
+
+
+
     text-align: center;
+
+
+
 }
 
+
+
+
+
+
+
 /* =========================================================
+
+
+
    HOME ANALYSIS RTL
+
+
+
 ========================================================= */
+
+
+
+
+
+
 
 .language-ur .acdc-home-analysis-card,
+
+
+
 .language-ur .acdc-home-result-card,
+
+
+
 .language-ur .acdc-home-results-header,
+
+
+
 .language-ur .acdc-home-overall-card {
+
+
+
     text-align: right;
+
+
+
 }
 
+
+
+
+
+
+
 .language-ur .acdc-home-analysis-actions {
+
+
+
     justify-content: flex-start;
+
+
+
+}
+
+
+
+
+
+
+
+/* =========================================================
+
+
+
+   HOME ANALYSIS RESPONSIVE
+
+
+
+========================================================= */
+
+
+
+
+
+
+
+@media (max-width: 1000px) {
+
+
+
+    .acdc-home-appliance-form-grid {
+
+
+
+        grid-template-columns: 1fr;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-check-grid {
+
+
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-results-grid {
+
+
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+@media (max-width: 700px) {
+
+
+
+    .acdc-top-bar {
+
+
+
+        flex-wrap: wrap;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-analysis-button {
+
+
+
+        order: 3;
+
+
+
+        width: 100%;
+
+
+
+        margin-inline-start: 0;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-analysis-card {
+
+
+
+        padding: 12px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-field-grid {
+
+
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-check-grid,
+
+
+
+    .acdc-home-results-grid {
+
+
+
+        grid-template-columns: 1fr;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-results-header {
+
+
+
+        align-items: flex-start;
+
+
+
+        flex-direction: column;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-analysis-actions {
+
+
+
+        flex-direction: column;
+
+
+
+        align-items: stretch;
+
+
+
+    }
+
+
+
+
+
+
+
+    .acdc-home-reset-button,
+
+
+
+    .acdc-home-submit-button {
+
+
+
+        width: 100%;
+
+
+
+    }
+
+
+
+}
+
+
+
+
+
+/* =========================================================
+
+   HOME ANALYSIS - DYNAMIC APPLIANCE SELECTOR
+
+========================================================= */
+
+
+
+.appliance-selector-grid {
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    margin-bottom: 16px;
+
+}
+
+
+
+.acdc-home-check-item {
+
+    min-height: 48px;
+
+    border: 1px solid #d8e2ed;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 10px 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    transition: 0.18s ease;
+
+    box-sizing: border-box;
+
+}
+
+
+
+.acdc-home-check-item:hover {
+
+    border-color: #10a87b;
+
+    transform: translateY(-1px);
+
+}
+
+
+
+.acdc-home-check-item.selected {
+
+    border-color: #10a87b;
+
+    background: #ecfbf5;
+
+    box-shadow: 0 3px 10px rgba(16, 168, 123, 0.08);
+
+}
+
+
+
+.acdc-home-check-item input {
+
+    width: 17px;
+
+    height: 17px;
+
+    accent-color: #10a87b;
+
+    flex: 0 0 auto;
+
+}
+
+
+
+.acdc-home-check-item span {
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    color: #20344d;
+
+    line-height: 1.35;
+
+}
+
+
+
+.acdc-home-analysis-section-title p {
+
+    margin: 4px 0 0;
+
+    color: #71839a;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+
+.acdc-home-appliance-form-card {
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border: 1px solid #d8e2ed;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow: 0 3px 12px rgba(16, 43, 74, 0.035);
+
+}
+
+
+
+.acdc-home-appliance-form-title {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+.acdc-home-appliance-form-title h4 {
+
+    margin: 0;
+
+    color: #102b4a;
+
+    font-size: 16px;
+
+    font-weight: 850;
+
+}
+
+
+
+.acdc-home-appliance-form-title input {
+
+    width: min(320px, 100%);
+
+    min-height: 38px;
+
+    padding: 8px 11px;
+
+    border: 1px solid #d5dfe9;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    color: #20344d;
+
+    background: #ffffff;
+
+}
+
+
+
+.acdc-home-appliance-form-title input:focus,
+
+.acdc-home-field-grid input:focus {
+
+    border-color: #10a87b;
+
+    box-shadow: 0 0 0 3px rgba(16, 168, 123, 0.08);
+
+}
+
+
+
+.acdc-home-field-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
+
+}
+
+
+
+.acdc-home-field-grid label {
+
+    min-width: 0;
+
+}
+
+
+
+.acdc-home-field-grid label > span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #536b83;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+}
+
+
+
+.acdc-home-field-grid input {
+
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 8px 10px;
+
+    border: 1px solid #d5dfe9;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    color: #20344d;
+
+    background: #ffffff;
+
+}
+
+
+
+.acdc-home-field-grid small {
+
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8292a5;
+
+    font-size: 9px;
+
+    line-height: 1.35;
+
+}
+
+
+
+.acdc-home-submit-button:disabled {
+
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+}
+
+
+
+.acdc-home-save-message {
+
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    background: #f2f7fb;
+
+    border: 1px solid #d7e2ec;
+
+    color: #36536e;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1.5;
+
+}
+
+
+
+.language-ur .acdc-home-appliance-form-title,
+
+.language-ur .acdc-home-analysis-section-title,
+
+.language-ur .acdc-home-save-message {
+
+    text-align: right;
+
+}
+
+
+
+@media (max-width: 1100px) {
+
+    .appliance-selector-grid {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    }
+
+
+
+    .acdc-home-field-grid {
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    }
+
+}
+
+
+
+@media (max-width: 700px) {
+
+    .appliance-selector-grid,
+
+    .acdc-home-field-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+
+    .acdc-home-appliance-form-title {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+    }
+
+
+
+    .acdc-home-appliance-form-title input {
+
+        width: 100%;
+
+    }
+
+}
+/* =========================================================
+   PEAK HOURS - LIGHT RED BLINKING CARD
+========================================================= */
+
+.acdc-info-card.peak {
+    background: #fff1f3 !important;
+    border: 1px solid #f5aeb8 !important;
+    color: #b42332;
+
+    animation: peakHoursCardBlink 1.4s ease-in-out infinite;
+}
+
+/* Heading */
+.acdc-info-card.peak h2 {
+    color: #b42332;
+}
+
+/* Time */
+.acdc-info-card.peak > strong {
+    color: #d93649 !important;
+    animation: none;
+}
+
+/* Description */
+.acdc-info-card.peak p {
+    color: #7a4650;
+}
+
+/* Alert badge */
+.acdc-info-card.peak .acdc-alert-label {
+    background: #ffdce2;
+    color: #d93649;
 }
 
 /* =========================================================
-   HOME ANALYSIS RESPONSIVE
+   PEAK HOURS - STRONGER LIGHT RED BLINKING CARD
 ========================================================= */
 
-@media (max-width: 1000px) {
-    .acdc-home-appliance-form-grid {
-        grid-template-columns: 1fr;
-    }
+.acdc-info-card.peak {
+    background: #ffe0e5 !important;
+    border: 2px solid #f28b9a !important;
+    color: #b42332;
 
-    .acdc-home-check-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .acdc-home-results-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    animation: peakHoursCardBlink 1.4s ease-in-out infinite;
 }
 
-@media (max-width: 700px) {
-    .acdc-top-bar {
-        flex-wrap: wrap;
+/* Heading */
+.acdc-info-card.peak h2 {
+    color: #b42332;
+}
+
+/* Time */
+.acdc-info-card.peak > strong {
+    color: #d92f45 !important;
+    animation: none;
+}
+
+/* Description */
+.acdc-info-card.peak p {
+    color: #74343d;
+}
+
+/* Alert badge */
+.acdc-info-card.peak .acdc-alert-label {
+    background: #ffcbd3;
+    color: #d92f45;
+}
+
+/* =========================================================
+   PEAK HOURS - HIGH VISIBILITY / STRONG RED ALERT
+========================================================= */
+
+.acdc-info-card.peak {
+    background: #8b0015 !important;
+    border: 3px solid #ff002b !important;
+    color: #ffffff !important;
+
+    animation: peakHoursCardBlink 1.1s ease-in-out infinite;
+}
+
+/* Heading */
+.acdc-info-card.peak h2 {
+    color: #ffffff !important;
+}
+
+/* Peak Hours time */
+.acdc-info-card.peak > strong {
+    color: #ffffff !important;
+    animation: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Description */
+.acdc-info-card.peak p {
+    color: #ffffff !important;
+}
+
+/* High Consumption Alert badge */
+.acdc-info-card.peak .acdc-alert-label {
+    background: #ff002b !important;
+    color: #ffffff !important;
+    border: 1px solid #ffffff;
+}
+
+/* Complete card blinking */
+@keyframes peakHoursCardBlink {
+    0% {
+        background: #8b0015;
+        border-color: #ff002b;
+        box-shadow:
+            0 0 0 0 rgba(255, 0, 43, 0.35),
+            0 0 18px rgba(255, 0, 43, 0.25);
     }
 
-    .acdc-home-analysis-button {
-        order: 3;
-        width: 100%;
-        margin-inline-start: 0;
+    50% {
+        background: #c40021;
+        border-color: #ff304f;
+        box-shadow:
+            0 0 0 8px rgba(255, 0, 43, 0.18),
+            0 0 35px rgba(255, 0, 43, 0.55);
     }
 
-    .acdc-home-analysis-card {
-        padding: 12px;
-    }
-
-    .acdc-home-field-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .acdc-home-check-grid,
-    .acdc-home-results-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .acdc-home-results-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .acdc-home-analysis-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .acdc-home-reset-button,
-    .acdc-home-submit-button {
-        width: 100%;
+    100% {
+        background: #8b0015;
+        border-color: #ff002b;
+        box-shadow:
+            0 0 0 0 rgba(255, 0, 43, 0.35),
+            0 0 18px rgba(255, 0, 43, 0.25);
     }
 }

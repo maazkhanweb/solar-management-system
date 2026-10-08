@@ -116,6 +116,10 @@ function AppRoutes() {
     path="/comparison-ac-dc/savings-analysis"
     element={<SavingsAnalysis />}
 />
+<Route
+    path="/savings-analysis"
+    element={<SavingsAnalysis />}
+/>
 
                 <Route
                     path="/charts"

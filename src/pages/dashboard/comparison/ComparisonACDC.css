@@ -1,885 +1,1112 @@
+/* ============================================================================
+   COMPARISON AC / DC PAGE
+============================================================================ */
+
 .comparison-acdc-page {
     width: 100%;
-    min-width: 0;
-    min-height: calc(100vh - 110px);
-    padding: 0 2px 48px;
+    min-height: 100%;
+    padding: 34px 34px 60px;
+    background: #f5f7fb;
+    color: #102d53;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    overflow: visible;
 }
 
-.comparison-acdc-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 18px;
+.comparison-acdc-page *,
+.comparison-acdc-page *::before,
+.comparison-acdc-page *::after {
+    box-sizing: border-box;
 }
 
-.comparison-back-button {
+
+/* ============================================================================
+   PAGE HEADER
+============================================================================ */
+
+.comparison-page-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 26px;
+}
+
+.comparison-back-btn {
+    height: 44px;
+    padding: 0 17px;
+    border: 1px solid #d7e0ec;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #18395f;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    border: 0;
-    background: transparent;
-    color: var(--text-primary);
+    justify-content: center;
+    gap: 8px;
     font-size: 14px;
-    font-weight: 600;
     cursor: pointer;
-    padding: 4px 0;
+    transition: 0.2s ease;
 }
 
-.comparison-back-button:disabled {
-    opacity: .55;
+.comparison-back-btn:hover {
+    border-color: #b90000;
+    color: #b90000;
+}
+
+.comparison-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.comparison-title-icon {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+    border-radius: 13px;
+    background: #c40000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    box-shadow: 0 10px 24px rgba(196, 0, 0, 0.18);
+}
+
+.comparison-title-wrap h1 {
+    margin: 0;
+    color: #102d53;
+    font-size: 28px;
+    line-height: 1.15;
+    font-weight: 800;
+}
+
+.comparison-title-wrap p {
+    margin: 5px 0 0;
+    color: #70819a;
+    font-size: 13px;
+}
+
+.comparison-language {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.comparison-language button {
+    border: 0;
+    background: transparent;
+    padding: 3px 0;
+    color: #75849a;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.comparison-language button.active {
+    color: #b90000;
+    font-weight: 800;
+}
+
+
+/* ============================================================================
+   TOP ACTION CARDS
+============================================================================ */
+
+.comparison-top-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 21px;
+}
+
+.comparison-top-card {
+    min-height: 76px;
+    padding: 15px 20px;
+    border: 1px solid #dce4ef;
+    border-radius: 15px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    color: #102d53;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(25, 48, 79, 0.045);
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.comparison-top-card:hover {
+    border-color: #c40000;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(25, 48, 79, 0.08);
+}
+
+.comparison-top-card.active {
+    border-color: #c40000;
+    box-shadow: 0 10px 25px rgba(196, 0, 0, 0.09);
+}
+
+.comparison-top-card > svg {
+    color: #bd0000;
+    font-size: 27px;
+    flex: 0 0 auto;
+}
+
+.comparison-top-card:nth-child(2) > svg {
+    color: #b90000;
+}
+
+.comparison-top-card:nth-child(3) > svg {
+    color: #4e5f77;
+}
+
+.comparison-top-card div {
+    min-width: 0;
+}
+
+.comparison-top-card strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.comparison-top-card span {
+    display: block;
+    margin-top: 5px;
+    color: #71829a;
+    font-size: 12px;
+}
+
+
+/* ============================================================================
+   ALERTS
+============================================================================ */
+
+.comparison-alert {
+    min-height: 46px;
+    margin-bottom: 18px;
+    padding: 11px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+}
+
+.comparison-alert.error {
+    background: #fff1f1;
+    border: 1px solid #ffc5c5;
+    color: #bf0000;
+}
+
+.comparison-alert.success {
+    background: #effcf3;
+    border: 1px solid #bde9ca;
+    color: #187a36;
+}
+
+
+/* ============================================================================
+   UPLOAD SECTION
+============================================================================ */
+
+.comparison-upload-section,
+.comparison-history-section,
+.comparison-result-section {
+    width: 100%;
+    margin-bottom: 22px;
+    padding: 23px;
+    border: 1px solid #dce4ef;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(26, 48, 78, 0.045);
+}
+
+.comparison-section-top,
+.comparison-history-header,
+.comparison-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.comparison-section-top small,
+.comparison-history-header small,
+.comparison-result-header small,
+.comparison-section-heading small {
+    display: block;
+    margin-bottom: 6px;
+    color: #bd0000;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.comparison-section-top h2,
+.comparison-history-header h2,
+.comparison-result-header h2 {
+    margin: 0;
+    color: #102d53;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.comparison-section-top p,
+.comparison-result-header p {
+    margin: 5px 0 0;
+    color: #7789a2;
+    font-size: 12px;
+}
+
+
+/* ============================================================================
+   BUTTONS
+============================================================================ */
+
+.comparison-primary-btn,
+.comparison-secondary-btn,
+.comparison-cancel-btn {
+    min-height: 40px;
+    padding: 0 15px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.comparison-primary-btn {
+    border: 1px solid #b90000;
+    background: #c40000;
+    color: #ffffff;
+}
+
+.comparison-primary-btn:hover {
+    background: #a90000;
+    border-color: #a90000;
+}
+
+.comparison-primary-btn:disabled {
+    opacity: 0.65;
     cursor: not-allowed;
 }
 
-.comparison-back-button svg {
-    font-size: 20px;
+.comparison-secondary-btn {
+    border: 1px solid #d1dce9;
+    background: #ffffff;
+    color: #173b62;
 }
 
-.comparison-acdc-header h1 {
+.comparison-secondary-btn:hover {
+    border-color: #c40000;
+    color: #c40000;
+}
+
+.comparison-cancel-btn {
+    border: 1px solid #d4deeb;
+    background: #ffffff;
+    color: #50647e;
+}
+
+.comparison-cancel-btn:hover {
+    border-color: #bd0000;
+    color: #bd0000;
+}
+
+
+/* ============================================================================
+   SELECTED FILE
+============================================================================ */
+
+.comparison-selected-file {
+    margin-top: 20px;
+    padding: 13px 15px;
+    border: 1px solid #dbe4ef;
+    border-radius: 11px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.comparison-selected-file > div {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.comparison-selected-file > div > svg {
+    color: #c00000;
+    font-size: 25px;
+}
+
+.comparison-selected-file strong {
+    display: block;
+    color: #17375c;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+.comparison-selected-file span {
+    display: block;
+    margin-top: 3px;
+    color: #8291a6;
+    font-size: 11px;
+}
+
+
+/* ============================================================================
+   RESULT
+============================================================================ */
+
+.comparison-result-section {
+    margin-top: 22px;
+    margin-bottom: 0;
+    background: #f9fbfd;
+}
+
+.comparison-result-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.comparison-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.comparison-summary-card {
+    min-height: 78px;
+    padding: 14px;
+    border: 1px solid #dbe4ef;
+    border-radius: 11px;
+    background: #ffffff;
+}
+
+.comparison-summary-card span {
+    display: block;
+    margin-bottom: 7px;
+    color: #71839b;
+    font-size: 10px;
+    font-weight: 650;
+}
+
+.comparison-summary-card strong {
+    display: block;
+    color: #12375f;
+    font-size: 13px;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+
+/* ============================================================================
+   COMPLETE OCR GRID
+============================================================================ */
+
+.comparison-ocr-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.comparison-ocr-card {
+    min-height: 70px;
+    padding: 12px 14px;
+    border: 1px solid #dce5ef;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.comparison-ocr-card span {
+    display: block;
+    margin-bottom: 7px;
+    color: #73859d;
+    font-size: 10px;
+    text-transform: capitalize;
+}
+
+.comparison-ocr-card strong {
+    display: block;
+    color: #0e365e;
+    font-size: 12px;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+
+/* ============================================================================
+   DETAIL SECTIONS
+============================================================================ */
+
+.comparison-detail-section {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #dce5ee;
+}
+
+.comparison-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.comparison-section-heading h3 {
     margin: 0;
-    font-size: 34px;
-    line-height: 1.2;
-    color: var(--text-primary);
+    color: #12375e;
+    font-size: 17px;
 }
 
-.comparison-upload-card {
+
+/* ============================================================================
+   CHARGE TABLE
+============================================================================ */
+
+.comparison-charge-table-wrap {
+    margin-top: 13px;
+    overflow-x: auto;
+    border: 1px solid #dbe4ed;
+    border-radius: 10px;
+}
+
+.comparison-charge-table {
     width: 100%;
-    min-height: 360px;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.comparison-charge-table th {
+    padding: 12px 14px;
+    background: #f1f5f9;
+    color: #49627e;
+    text-align: left;
+    font-size: 11px;
+}
+
+.comparison-charge-table td {
+    padding: 11px 14px;
+    border-top: 1px solid #e6ecf3;
+    color: #244666;
+    font-size: 12px;
+}
+
+
+/* ============================================================================
+   COMPLETE DATA NOTE
+============================================================================ */
+
+.comparison-complete-data {
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px solid #d5e5f2;
+    border-radius: 10px;
+    background: #f1f8fd;
+}
+
+.comparison-complete-data > div {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.comparison-complete-data svg {
+    color: #1e6a9d;
+    font-size: 23px;
+}
+
+.comparison-complete-data strong {
+    display: block;
+    color: #17476d;
+    font-size: 12px;
+}
+
+.comparison-complete-data span {
+    display: block;
+    margin-top: 3px;
+    color: #68849c;
+    font-size: 11px;
+}
+
+.comparison-result-footer {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+/* ============================================================================
+   HISTORY
+============================================================================ */
+
+.comparison-history-header {
+    margin-bottom: 18px;
+}
+
+.comparison-history-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comparison-search {
+    width: 230px;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid #d9e2ec;
+    border-radius: 9px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.comparison-search svg {
+    color: #7a8ba1;
+    font-size: 17px;
+}
+
+.comparison-search input {
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #193b61;
+    font-size: 12px;
+}
+
+.comparison-count {
+    min-width: 35px;
+    height: 31px;
+    padding: 0 9px;
+    border-radius: 8px;
+    background: #fff0f0;
+    color: #bf0000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.comparison-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #dce4ed;
+    border-radius: 11px;
+}
+
+.comparison-bill-table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+}
+
+.comparison-bill-table th {
+    padding: 12px 10px;
+    background: #f2f5f8;
+    color: #4a6079;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.comparison-bill-table td {
+    padding: 12px 10px;
+    border-top: 1px solid #e6ebf1;
+    color: #244563;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.comparison-bill-table tbody tr:hover {
+    background: #fbfcfe;
+}
+
+.comparison-home-status {
+    min-height: 28px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 6px;
+    background: #f5f7fa;
+    color: #74859a;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.comparison-home-status.saved {
+    background: #ecfbf1;
+    color: #19803b;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.comparison-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comparison-actions button {
+    width: 32px;
+    height: 31px;
+    border: 1px solid #e0e6ed;
+    border-radius: 7px;
+    background: #f7f9fb;
+    color: #4f637c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.comparison-actions button:hover {
+    border-color: #c40000;
+    color: #c40000;
+    background: #ffffff;
+}
+
+.comparison-actions button.danger:hover {
+    border-color: #dc1f1f;
+    color: #dc1f1f;
+}
+
+
+/* ============================================================================
+   EMPTY
+============================================================================ */
+
+.comparison-empty-state {
+    min-height: 155px;
+    border: 1px dashed #cfdae7;
+    border-radius: 12px;
+    background: #f9fbfd;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 18px;
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
-    box-shadow: var(--shadow-md);
-    box-sizing: border-box;
+    gap: 8px;
+    color: #91a1b5;
 }
 
-.comparison-hidden-file-input {
-    display: none;
+.comparison-empty-state svg {
+    font-size: 30px;
 }
 
-.comparison-upload-button {
-    min-width: 230px;
-    min-height: 64px;
-    padding: 14px 28px;
-    display: inline-flex;
+.comparison-empty-state strong {
+    color: #274563;
+    font-size: 14px;
+}
+
+.comparison-empty-state span {
+    color: #8292a7;
+    font-size: 11px;
+}
+
+
+/* ============================================================================
+   MODAL
+============================================================================ */
+
+.comparison-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    padding: 35px;
+    background: rgba(8, 22, 39, 0.52);
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    border: 0;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #16D3B4, #0F766E);
-    color: #ffffff;
+}
+
+.comparison-modal,
+.comparison-view-modal {
+    width: min(100%, 950px);
+    max-height: 90vh;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.comparison-view-modal {
+    width: min(100%, 1100px);
+}
+
+.comparison-modal-header {
+    padding: 19px 22px;
+    border-bottom: 1px solid #e3e9f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.comparison-modal-header small {
+    color: #bd0000;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.comparison-modal-header h2 {
+    margin: 5px 0 0;
+    color: #12365d;
     font-size: 19px;
-    font-weight: 700;
+}
+
+.comparison-modal-header > button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #dbe3ec;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #5d7088;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 12px 25px rgba(22, 211, 180, .24);
-    transition: transform .2s ease, box-shadow .2s ease;
+    font-size: 18px;
 }
 
-.comparison-upload-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 30px rgba(22, 211, 180, .30);
+.comparison-modal-header > button:hover {
+    color: #c00000;
+    border-color: #c00000;
 }
 
-.comparison-upload-button:active:not(:disabled) {
-    transform: scale(.98);
+.comparison-edit-grid {
+    padding: 22px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
-.comparison-upload-button:disabled {
-    opacity: .78;
-    cursor: wait;
+.comparison-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.comparison-upload-button svg {
-    font-size: 26px;
+.comparison-edit-field span {
+    color: #60738a;
+    font-size: 11px;
+    font-weight: 700;
 }
 
-.comparison-upload-spinner {
-    animation: comparison-acdc-spin 1s linear infinite;
+.comparison-edit-field input {
+    width: 100%;
+    height: 39px;
+    padding: 0 10px;
+    border: 1px solid #d7e0ea;
+    border-radius: 8px;
+    outline: none;
+    color: #183c61;
+    font-size: 12px;
 }
 
-@keyframes comparison-acdc-spin {
+.comparison-edit-field input:focus {
+    border-color: #c40000;
+    box-shadow: 0 0 0 3px rgba(196, 0, 0, 0.06);
+}
+
+.comparison-modal-footer {
+    padding: 15px 22px;
+    border-top: 1px solid #e3e9f0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+}
+
+.comparison-view-content {
+    padding: 22px;
+    overflow-y: auto;
+}
+
+.comparison-view-content .comparison-result-section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.comparison-home-json {
+    margin-top: 12px;
+    max-height: 300px;
+    overflow: auto;
+    padding: 15px;
+    border-radius: 10px;
+    background: #0e243b;
+    color: #dceeff;
+}
+
+.comparison-home-json pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================================
+   LOADING
+============================================================================ */
+
+.comparison-action-loading {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 10000;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: #c40000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.comparison-spin {
+    animation: comparisonSpin 0.8s linear infinite;
+}
+
+@keyframes comparisonSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
     to {
         transform: rotate(360deg);
     }
 }
 
-.comparison-selected-file {
-    max-width: min(90%, 620px);
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: var(--background-secondary, #f3f7fa);
-    color: var(--text-primary);
-    font-size: 14px;
-    word-break: break-word;
-    text-align: center;
-}
 
-.comparison-upload-error {
-    max-width: min(90%, 700px);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #dc2626;
-    font-size: 14px;
-    text-align: center;
-}
+/* ============================================================================
+   URDU
+============================================================================ */
 
-.comparison-results-section {
-    width: 100%;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    box-sizing: border-box;
-}
-
-.comparison-results-topbar {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.comparison-results-eyebrow {
-    display: block;
-    margin-bottom: 5px;
-    color: #0f766e;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: .08em;
-}
-
-.comparison-results-topbar h2 {
-    margin: 0;
-    color: var(--text-primary);
-    font-size: 26px;
-}
-
-.comparison-results-topbar p {
-    margin: 7px 0 0;
-    color: var(--text-secondary);
-    font-size: 14px;
-}
-
-.comparison-reset-button {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    background: var(--card-background);
-    color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.comparison-reset-button:hover {
-    border-color: #16a085;
-}
-
-.comparison-file-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    background: var(--card-background);
-    color: var(--text-secondary);
-    font-size: 13px;
-}
-
-.comparison-file-badge strong {
-    color: var(--text-primary);
-    word-break: break-word;
-}
-
-.comparison-results-grid {
-    width: 100%;
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-    align-items: stretch;
-}
-
-.comparison-data-card {
-    width: 100%;
-    min-width: 0;
-    min-height: 154px;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    background: var(--card-background);
-    box-shadow: var(--shadow-sm, 0 4px 14px rgba(0, 0, 0, .05));
-    overflow: hidden;
-}
-
-.comparison-data-label {
-    color: var(--text-primary);
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.25;
-}
-
-.comparison-data-urdu {
-    margin-top: 5px;
-    color: var(--text-secondary);
-    font-size: 13px;
-    line-height: 1.35;
+.comparison-urdu {
     direction: rtl;
-    text-align: left;
 }
 
-.comparison-data-value {
-    margin-top: 16px;
-    color: #0f766e;
-    font-size: 21px;
-    font-weight: 800;
-    line-height: 1.3;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+.comparison-urdu .comparison-page-header,
+.comparison-urdu .comparison-top-card,
+.comparison-urdu .comparison-section-top,
+.comparison-urdu .comparison-history-header,
+.comparison-urdu .comparison-result-header {
+    direction: rtl;
 }
 
-.comparison-ocr-status-card {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+.comparison-urdu .comparison-top-card {
+    text-align: right;
 }
 
-.comparison-ocr-status-card > div {
-    min-width: 0;
-    min-height: 92px;
-    padding: 17px 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    background: var(--card-background);
+.comparison-urdu .comparison-title-wrap {
+    direction: rtl;
 }
 
-.comparison-ocr-status-card span {
-    color: var(--text-secondary);
-    font-size: 13px;
+.comparison-urdu .comparison-language {
+    direction: ltr;
 }
 
-.comparison-ocr-status-card strong {
-    color: var(--text-primary);
-    font-size: 18px;
-}
 
-.comparison-savings-action {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-top: 4px;
-    padding-bottom: 12px;
-}
+/* ============================================================================
+   RESPONSIVE
+============================================================================ */
 
-.comparison-savings-button {
-    min-width: 300px;
-    min-height: 52px;
-    padding: 13px 24px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border: 0;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #16D3B4, #0F766E);
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 10px 24px rgba(15, 118, 110, .20);
-    transition: transform .2s ease, box-shadow .2s ease;
-}
+@media (max-width: 1250px) {
 
-.comparison-savings-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(15, 118, 110, .27);
-}
+    .comparison-summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
-.comparison-savings-button:active {
-    transform: scale(.98);
-}
+    .comparison-ocr-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 
-.comparison-savings-button svg {
-    font-size: 21px;
 }
 
 @media (max-width: 1000px) {
-    .comparison-results-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
 
-@media (max-width: 768px) {
     .comparison-acdc-page {
-        min-height: auto;
-        padding-bottom: 32px;
+        padding: 25px 20px 50px;
     }
 
-    .comparison-acdc-header h1 {
-        font-size: 28px;
+    .comparison-page-header {
+        grid-template-columns: 1fr auto;
     }
 
-    .comparison-upload-card {
-        min-height: 280px;
+    .comparison-title-wrap {
+        grid-column: 1 / -1;
+        grid-row: 1;
     }
 
-    .comparison-upload-button {
-        min-width: 200px;
-        font-size: 17px;
+    .comparison-back-btn {
+        grid-column: 1;
+        grid-row: 2;
+        justify-self: start;
     }
 
-    .comparison-results-topbar {
-        align-items: flex-start;
-        flex-direction: column;
+    .comparison-language {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
     }
 
-    .comparison-results-grid,
-    .comparison-ocr-status-card {
+    .comparison-top-actions {
         grid-template-columns: 1fr;
     }
 
-    .comparison-savings-button {
-        width: 100%;
-        min-width: 0;
+    .comparison-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-}
-/* =========================================================
-   AC/DC COMPARISON - COMPACT SINGLE SCREEN LAYOUT
-   Paste this section at the VERY END of ComparisonACDC.css
-   ========================================================= */
 
-.comparison-acdc-page {
-    width: 100%;
-    min-width: 0;
-    height: calc(100vh - 78px);
-    min-height: 0;
-    padding: 8px 4px 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow: hidden;
+    .comparison-ocr-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .comparison-edit-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
 }
 
-/* ---------------------------------------------------------
-   Header
-   --------------------------------------------------------- */
-
-.comparison-acdc-header {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-}
-
-.comparison-back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--text-primary);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-.comparison-back-button svg {
-    font-size: 16px;
-}
-
-.comparison-acdc-header h1 {
-    margin: 0;
-    font-size: 27px;
-    line-height: 1.15;
-}
-
-/* ---------------------------------------------------------
-   Upload State
-   --------------------------------------------------------- */
-
-.comparison-upload-card {
-    width: 100%;
-    min-height: 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    border-radius: 14px;
-}
-
-/* ---------------------------------------------------------
-   OCR Results Main Section
-   --------------------------------------------------------- */
-
-.comparison-results-section {
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow: hidden;
-}
-
-/* ---------------------------------------------------------
-   Results Heading
-   --------------------------------------------------------- */
-
-.comparison-results-topbar {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.comparison-results-eyebrow {
-    margin: 0 0 2px;
-    font-size: 10px;
-    line-height: 1;
-}
-
-.comparison-results-topbar h2 {
-    margin: 0;
-    font-size: 21px;
-    line-height: 1.15;
-}
-
-.comparison-results-topbar p {
-    margin: 3px 0 0;
-    font-size: 11px;
-    line-height: 1.2;
-}
-
-.comparison-reset-button {
-    min-height: 34px;
-    padding: 7px 11px;
-    border-radius: 8px;
-    font-size: 11px;
-}
-
-/* ---------------------------------------------------------
-   Uploaded File
-   --------------------------------------------------------- */
-
-.comparison-file-badge {
-    flex: 0 0 auto;
-    min-height: 34px;
-    padding: 7px 11px;
-    border-radius: 8px;
-    font-size: 11px;
-    box-sizing: border-box;
-}
-
-/* ---------------------------------------------------------
-   BILL CARDS
-   --------------------------------------------------------- */
-
-.comparison-results-grid {
-    width: 100%;
-    min-width: 0;
-    flex: 1 1 auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    grid-template-rows:
-        repeat(5, minmax(0, 1fr));
-
-    gap: 9px;
-
-    min-height: 0;
-    overflow: hidden;
-}
-
-/* Equal-size cards */
-
-.comparison-data-card {
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-
-    height: 100%;
-
-    padding: 12px 16px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    overflow: hidden;
-}
-
-/* English label */
-
-.comparison-data-label {
-    font-size: 12px;
-    line-height: 1.15;
-    font-weight: 800;
-}
-
-/* Urdu */
-
-.comparison-data-urdu {
-    margin-top: 3px;
-    font-size: 10px;
-    line-height: 1.15;
-}
-
-/* Actual value */
-
-.comparison-data-value {
-    margin-top: 8px;
-    font-size: 17px;
-    line-height: 1.15;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
-/* ---------------------------------------------------------
-   OCR STATUS
-   --------------------------------------------------------- */
-
-.comparison-ocr-status-card {
-    width: 100%;
-    flex: 0 0 58px;
-
-    display: grid;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 9px;
-
-    min-height: 0;
-}
-
-.comparison-ocr-status-card > div {
-    min-width: 0;
-    min-height: 0;
-
-    padding: 9px 16px;
-
-    border-radius: 10px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    gap: 2px;
-}
-
-.comparison-ocr-status-card span {
-    font-size: 10px;
-    line-height: 1;
-}
-
-.comparison-ocr-status-card strong {
-    font-size: 14px;
-    line-height: 1.1;
-}
-
-/* ---------------------------------------------------------
-   CONTINUE BUTTON
-   --------------------------------------------------------- */
-
-.comparison-savings-action {
-    width: 100%;
-    flex: 0 0 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-}
-
-.comparison-savings-button {
-    min-width: 270px;
-    min-height: 42px;
-
-    padding: 9px 20px;
-
-    border-radius: 10px;
-
-    font-size: 13px;
-    font-weight: 800;
-
-    gap: 8px;
-}
-
-.comparison-savings-button svg {
-    font-size: 18px;
-}
-
-/* =========================================================
-   DESKTOP - LARGE SCREENS
-   ========================================================= */
-
-@media (min-width: 1400px) {
+@media (max-width: 700px) {
 
     .comparison-acdc-page {
-        padding-left: 2px;
-        padding-right: 2px;
+        padding: 20px 13px 40px;
     }
 
-    .comparison-results-grid {
-        gap: 10px;
+    .comparison-title-wrap h1 {
+        font-size: 23px;
     }
 
-    .comparison-data-card {
-        padding: 13px 17px;
+    .comparison-title-icon {
+        width: 45px;
+        height: 45px;
+        flex-basis: 45px;
     }
 
-    .comparison-data-label {
-        font-size: 13px;
+    .comparison-section-top,
+    .comparison-history-header,
+    .comparison-result-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    .comparison-data-value {
+    .comparison-summary-grid,
+    .comparison-ocr-grid,
+    .comparison-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-history-tools {
+        width: 100%;
+    }
+
+    .comparison-search {
+        flex: 1;
+        width: auto;
+    }
+
+    .comparison-selected-file {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .comparison-selected-file .comparison-primary-btn {
+        width: 100%;
+    }
+
+    .comparison-result-actions {
+        width: 100%;
+    }
+
+    .comparison-result-actions button {
+        width: 100%;
+    }
+
+    .comparison-modal-overlay {
+        padding: 12px;
+    }
+
+    .comparison-modal,
+    .comparison-view-modal {
+        max-height: 94vh;
+    }
+
+    .comparison-modal-footer {
+        flex-wrap: wrap;
+    }
+
+    .comparison-modal-footer button {
+        flex: 1;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .comparison-page-header {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .comparison-title-wrap {
+        width: 100%;
+        order: -1;
+    }
+
+    .comparison-language {
+        margin-left: auto;
+    }
+
+    .comparison-back-btn {
+        order: 3;
+    }
+
+    .comparison-title-wrap h1 {
+        font-size: 20px;
+    }
+
+    .comparison-top-card {
+        min-height: 70px;
+        padding: 13px;
+    }
+
+    .comparison-upload-section,
+    .comparison-history-section,
+    .comparison-result-section {
+        padding: 15px;
+        border-radius: 13px;
+    }
+
+    .comparison-section-top h2,
+    .comparison-history-header h2,
+    .comparison-result-header h2 {
         font-size: 18px;
     }
-}
 
-
-/* =========================================================
-   LAPTOP
-   ========================================================= */
-
-@media (max-height: 850px) {
-
-    .comparison-acdc-page {
-        height: calc(100vh - 70px);
-        gap: 6px;
-        padding-top: 4px;
-        padding-bottom: 5px;
-    }
-
-    .comparison-acdc-header {
-        gap: 3px;
-    }
-
-    .comparison-acdc-header h1 {
-        font-size: 24px;
-    }
-
-    .comparison-results-section {
-        gap: 6px;
-    }
-
-    .comparison-results-grid {
-        gap: 7px;
-    }
-
-    .comparison-data-card {
-        padding: 9px 13px;
-    }
-
-    .comparison-data-label {
-        font-size: 11px;
-    }
-
-    .comparison-data-urdu {
-        font-size: 9px;
-    }
-
-    .comparison-data-value {
-        margin-top: 5px;
-        font-size: 15px;
-    }
-
-    .comparison-ocr-status-card {
-        flex-basis: 50px;
-        gap: 7px;
-    }
-
-    .comparison-ocr-status-card > div {
-        padding: 7px 13px;
-    }
-
-    .comparison-savings-action {
-        flex-basis: 38px;
-    }
-
-    .comparison-savings-button {
-        min-height: 36px;
-        font-size: 12px;
-        padding: 7px 18px;
-    }
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 1000px) {
-
-    .comparison-results-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-        grid-template-rows: none;
-
-        overflow-y: auto;
-    }
-
-    .comparison-data-card {
-        min-height: 110px;
-        height: auto;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-    .comparison-acdc-page {
-        height: auto;
-        min-height: calc(100vh - 70px);
-        overflow: visible;
-        padding: 6px 0 20px;
-    }
-
-    .comparison-results-section {
-        overflow: visible;
-    }
-
-    .comparison-results-topbar {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .comparison-results-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: none;
-        overflow: visible;
-    }
-
-    .comparison-data-card {
-        min-height: 105px;
-        height: auto;
-    }
-
-    .comparison-ocr-status-card {
-        grid-template-columns: 1fr;
-        flex-basis: auto;
-    }
-
-    .comparison-ocr-status-card > div {
-        min-height: 55px;
-    }
-
-    .comparison-savings-action {
-        flex-basis: auto;
-        padding-top: 5px;
-    }
-
-    .comparison-savings-button {
-        width: 100%;
-        min-width: 0;
-    }
-}
-/* =========================================================
-   FINAL SPACING - MATCH OTHER MANAGEMENT PAGES
-   ========================================================= */
-
-.comparison-acdc-page {
-    padding-left: 26px;
-    padding-right: 26px;
-    padding-top: 14px;
-    padding-bottom: 14px;
-}
-
-/* Header ko thora neeche aur right */
-.comparison-acdc-header {
-    padding-left: 2px;
-}
-
-/* Cards ko container ke edges se thora gap */
-.comparison-results-section {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-/* Upload card bhi same spacing maintain kare */
-.comparison-upload-card {
-    width: 100%;
-}
-
-/* Desktop par thora balanced spacing */
-@media (min-width: 1200px) {
-    .comparison-acdc-page {
-        padding-left: 28px;
-        padding-right: 28px;
-        padding-top: 16px;
-        padding-bottom: 16px;
-    }
-}
-
-/* Laptop */
-@media (max-height: 850px) {
-    .comparison-acdc-page {
-        padding-left: 22px;
-        padding-right: 22px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .comparison-acdc-page {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 8px;
-        padding-bottom: 15px;
-    }
 }
