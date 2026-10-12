@@ -882,7 +882,8 @@ function ComparisonACDC() {
     ========================================================================= */
 
     const openHomeAnalysis = (
-        bill = null
+        bill = null,
+        formOnly = Boolean(bill)
     ) => {
 
         navigate(
@@ -901,6 +902,8 @@ function ComparisonACDC() {
                     comparisonBillId:
                         bill?.id ||
                         null,
+
+                    formOnly,
                 },
             }
         );
@@ -1916,51 +1919,34 @@ function ComparisonACDC() {
                                                 <div className="comparison-actions">
 
                                                     <button
-                                                        type="button"
-                                                        title={
-                                                            t.view
-                                                        }
-                                                        onClick={() =>
-                                                            handleViewBill(
-                                                                bill
-                                                            )
-                                                        }
-                                                    >
-                                                        <RiEyeLine />
-                                                    </button>
+    type="button"
+    className="view"
+    title={t.view}
+    onClick={() => handleViewBill(bill)}
+>
+    <RiEyeLine />
+</button>
 
                                                     {admin && (
 
                                                         <>
 
+                                                           <button
+    type="button"
+    className="edit"
+    title={t.edit}
+    onClick={() => handleEditBill(bill)}
+>
+    <RiEditLine />
+</button>
                                                             <button
-                                                                type="button"
-                                                                title={
-                                                                    t.edit
-                                                                }
-                                                                onClick={() =>
-                                                                    handleEditBill(
-                                                                        bill
-                                                                    )
-                                                                }
-                                                            >
-                                                                <RiEditLine />
-                                                            </button>
-
-                                                            <button
-                                                                type="button"
-                                                                title={
-                                                                    t.delete
-                                                                }
-                                                                className="danger"
-                                                                onClick={() =>
-                                                                    handleDeleteBill(
-                                                                        bill
-                                                                    )
-                                                                }
-                                                            >
-                                                                <RiDeleteBinLine />
-                                                            </button>
+    type="button"
+    className="danger"
+    title={t.delete}
+    onClick={() => handleDeleteBill(bill)}
+>
+    <RiDeleteBinLine />
+</button>
 
                                                         </>
 
@@ -2189,6 +2175,109 @@ function ComparisonACDC() {
     };
 
 
+
+
+    
+const renderSavedHomeAnalysis = (bill) => {
+    if (!bill) return null;
+
+    const parseValue = (value, fallback) => {
+        if (typeof value !== "string") {
+            return value ?? fallback;
+        }
+
+        try {
+            return JSON.parse(value);
+        } catch {
+            return fallback;
+        }
+    };
+
+    const homeData = parseValue(
+        bill.home_analysis_data,
+        {}
+    );
+
+    const homeResults = parseValue(
+        bill.home_analysis_result,
+        []
+    );
+
+    const applianceLabels = {
+        fan: "Fans",
+        bulb: "Bulbs / Lights",
+        fridge: "Refrigerator",
+        ac: "Air Conditioner",
+        pump: "Water Pump",
+        iron: "Iron",
+        washing: "Washing Machine",
+        geyser: "Geyser",
+        other: "Other Appliance",
+    };
+
+    const selected = homeData.selected || {};
+
+    const appliances = Object.keys(applianceLabels)
+        .filter((key) => selected[key])
+        .map((key) => ({
+            key,
+            label:
+                key === "other"
+                    ? homeData.other?.name || applianceLabels[key]
+                    : applianceLabels[key],
+            values: homeData[key] || {},
+        }));
+
+    return (
+        <div className="comparison-home-details">
+            <h4>Appliances Entered by User</h4>
+
+            {appliances.length > 0 ? (
+                <div className="comparison-home-grid">
+                    {appliances.map((item) => (
+                        <article
+                            className="comparison-home-item"
+                            key={item.key}
+                        >
+                            <h5>{item.label}</h5>
+                            <p>Total Quantity: {item.values.total ?? 0}</p>
+                            <p>AC Quantity: {item.values.ac ?? 0}</p>
+                            <p>DC Quantity: {item.values.dc ?? 0}</p>
+                            <p>AC Watts: {item.values.watts || "Default"}</p>
+                            <p>DC Watts: {item.values.dcWatts || "Default"}</p>
+                        </article>
+                    ))}
+                </div>
+            ) : (
+                <p>No saved appliance form data.</p>
+            )}
+
+            <h4>Analysis Results</h4>
+
+            {Array.isArray(homeResults) && homeResults.length > 0 ? (
+                <div className="comparison-home-grid">
+                    {homeResults.map((item, index) => (
+                        <article
+                            className="comparison-home-item result"
+                            key={`${item.key || item.name || "result"}-${index}`}
+                        >
+                            <h5>{item.name || item.key || "Appliance"}</h5>
+                            <p>Quantity: {item.total ?? 0}</p>
+                            <p>Current Load: {item.currentPower ?? 0} W</p>
+                            <p>Efficient Load: {item.efficientPower ?? 0} W</p>
+                            <p>Potential Saving: {item.savingPercent ?? 0}%</p>
+                        </article>
+                    ))}
+                </div>
+            ) : (
+                <p>No saved analysis results.</p>
+            )}
+        </div>
+    );
+};
+
+
+
     /* =========================================================================
        VIEW MODAL
     ========================================================================= */
@@ -2274,23 +2363,7 @@ function ComparisonACDC() {
 
                                 </div>
 
-                                <div className="comparison-home-json">
-
-                                    <pre>
-                                        {JSON.stringify(
-                                            {
-                                                home_data:
-                                                    viewBill.home_analysis_data,
-
-                                                home_result:
-                                                    viewBill.home_analysis_result,
-                                            },
-                                            null,
-                                            2
-                                        )}
-                                    </pre>
-
-                                </div>
+                                {renderSavedHomeAnalysis(viewBill)}
 
                             </section>
 

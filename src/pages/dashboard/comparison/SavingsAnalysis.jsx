@@ -110,6 +110,9 @@ function SavingsAnalysis() {
 
     const location = useLocation();
 
+    // Open only the Home Analysis form when launched from a saved bill.
+    const formOnly = Boolean(location.state?.formOnly);
+
 
 
 
@@ -478,13 +481,21 @@ function SavingsAnalysis() {
             try {
                 setHomeSaving(true);
 
-                await comparisonBillService.updateBill(
-                    comparisonBillId,
-                    {
-                        home_analysis_data: homeForm,
-                        home_analysis_result: results,
-                    }
-                );
+               
+const response = await comparisonBillService.saveHomeAnalysis(
+    comparisonBillId,
+    homeForm,
+    results
+);
+
+if (response?.success === false) {
+    throw new Error(
+        response?.message || "Home analysis could not be saved."
+    );
+}
+
+setHomeSaveMessage(homeText.saved);
+
 
                 setHomeSaveMessage(homeText.saved);
             } catch (error) {
@@ -1596,7 +1607,7 @@ const unitsConsumed =
 
                     : "language-ur"
 
-            }`}
+            } ${formOnly ? "form-only-mode" : ""}`}
 
             dir={isEnglish ? "ltr" : "rtl"}
 
@@ -1752,7 +1763,8 @@ const unitsConsumed =
 
 
 
-            <div className="acdc-savings-title-row">
+            {!formOnly && (
+<div className="acdc-savings-title-row">
 
 
 
@@ -1806,7 +1818,9 @@ const unitsConsumed =
 
 
 
-                        {/* =========================================================
+                        )} 
+
+{/* =========================================================
                 HOME ANALYSIS
             ========================================================== */}
 
@@ -2600,327 +2614,11 @@ const unitsConsumed =
 
 
 
-                        <div className="acdc-view-toggle">
-
-
-
-                            <span>
-
-                                {t.view}
-
-                            </span>
-
-
-
-
-
-                            <button
-
-                                type="button"
-
-                                className={
-
-                                    viewMode === "table"
-
-                                        ? "active"
-
-                                        : ""
-
-                                }
-
-                                onClick={() =>
-
-                                    setViewMode("table")
-
-                                }
-
-                            >
-
-                                {t.table}
-
-                            </button>
-
-
-
-
-
-                            <button
-
-                                type="button"
-
-                                className={
-
-                                    viewMode === "card"
-
-                                        ? "active"
-
-                                        : ""
-
-                                }
-
-                                onClick={() =>
-
-                                    setViewMode("card")
-
-                                }
-
-                            >
-
-                                {t.card}
-
-                            </button>
-
-
-
-                        </div>
-
-
-
-                    </div>
-
-
-
-
-
-                    {/* =================================================
-
-                        Card View
-
-                    ================================================== */}
-
-
-
-                    {viewMode === "card" ? (
-
-
-
-                        <div className="acdc-appliance-card-grid">
-
-
-
-                            {applianceData.map(
-
-                                (item) => (
-
-
-
-                                    <article
-
-                                        className="acdc-appliance-card"
-
-                                        key={item.key}
-
-                                    >
-
-
-
-                                        <header>
-
-
-
-                                            <strong>
-
-                                                {getApplianceName(item)}
-
-                                            </strong>
-
-
-
-                                        </header>
-
-
-
-
-
-                                        <div className="acdc-appliance-comparison">
-
-
-
-                                            {/* AC */}
-
-
-
-                                            <div className="acdc-appliance-side ac">
-
-
-
-                                                <img
-
-                                                    src={item.acImage}
-
-                                                    alt={item.ac}
-
-                                                />
-
-
-
-
-
-                                                <small>
-
-                                                    {t.acTraditional}
-
-                                                </small>
-
-
-
-
-
-                                                <b>
-
-                                                    {item.ac}
-
-                                                </b>
-
-
-
-
-
-                                                <span>
-
-                                                    ({item.acPower})
-
-                                                </span>
-
-
-
-                                            </div>
-
-
-
-
-
-                                            {/* DC */}
-
-
-
-                                            <div className="acdc-appliance-side dc">
-
-
-
-                                                <img
-
-                                                    src={item.dcImage}
-
-                                                    alt={item.dc}
-
-                                                />
-
-
-
-
-
-                                                <small>
-
-                                                    {t.dcEfficient}
-
-                                                </small>
-
-
-
-
-
-                                                <b>
-
-                                                    {item.dc}
-
-                                                </b>
-
-
-
-
-
-                                                <span>
-
-                                                    ({item.dcPower})
-
-                                                </span>
-
-
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-
-
-
-                                        {/* Saving */}
-
-
-
-                                        <div className="acdc-saving-note">
-
-
-
-                                            <RiFlashlightLine />
-
-
-
-
-
-                                            <div>
-
-
-
-                                                <strong>
-
-                                                    {getSaving(item)}
-
-                                                </strong>
-
-
-
-                                                <p>
-
-                                                    {getNote(item)}
-
-                                                </p>
-
-
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-
-                                    </article>
-
-
-
-                                )
-
-                            )}
-
-
-
-                        </div>
-
-
-
-                    ) : (
-
-
-
-                        /* =================================================
-
-                           Table View
-
-                        ================================================== */
-
-
-
-                        <div className="acdc-table-wrap">
-
-
-
-                            <table className="acdc-table">
+                       </div>
+
+                        {/* Table View */}
+<div className="acdc-table-wrap">
+    <table className="acdc-table">
 
 
 
@@ -3256,9 +2954,6 @@ const unitsConsumed =
 
                         </div>
 
-
-
-                    )}
 
 
 

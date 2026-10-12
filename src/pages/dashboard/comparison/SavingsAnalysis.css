@@ -7859,3 +7859,29 @@
             0 0 18px rgba(255, 0, 43, 0.25);
     }
 }
+
+/* =========================================================
+   FORM-ONLY MODE: launched from a saved bill's Home Analysis
+   Keep navigation back, show only the saved Home Analysis form/results.
+========================================================= */
+.acdc-savings-page.form-only-mode .acdc-savings-title-row,
+.acdc-savings-page.form-only-mode .acdc-summary-grid,
+.acdc-savings-page.form-only-mode .acdc-info-grid,
+.acdc-savings-page.form-only-mode .acdc-main-analysis-grid {
+    display: none !important;
+}
+
+.acdc-savings-page.form-only-mode .acdc-top-bar .acdc-home-analysis-button,
+.acdc-savings-page.form-only-mode .acdc-top-bar .acdc-language-switch {
+    display: none !important;
+}
+
+.acdc-savings-page.form-only-mode .acdc-home-analysis-card {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 12px;
+}
+
+.acdc-savings-page.form-only-mode .acdc-top-bar {
+    justify-content: flex-start;
+}

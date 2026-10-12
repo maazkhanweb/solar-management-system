@@ -1110,3 +1110,39 @@
     }
 
 }
+
+/* View - Blue */
+.comparison-actions button.view {
+    color: #1557b0;
+    background: #e8f1ff;
+    border-color: #b8d2ff;
+}
+
+.comparison-actions button.view:hover {
+    color: #fff;
+    background: #1557b0;
+}
+
+/* Edit - Orange */
+.comparison-actions button.edit {
+    color: #a95700;
+    background: #fff1dc;
+    border-color: #ffd39a;
+}
+
+.comparison-actions button.edit:hover {
+    color: #fff;
+    background: #c66b00;
+}
+
+/* Delete - Red */
+.comparison-actions button.danger {
+    color: #c51f32;
+    background: #ffeaed;
+    border-color: #ffc0c8;
+}
+
+.comparison-actions button.danger:hover {
+    color: #fff;
+    background: #c51f32;
+}
