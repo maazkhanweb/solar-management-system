@@ -29,6 +29,9 @@ import {
     useState,
 } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { RiHistoryLine } from "react-icons/ri";
+
 import "./InventoryManagement.css";
 
 import authService from "../../../services/authService";
@@ -47,6 +50,8 @@ import InventoryCategoryModal from "../../../components/dashboard/inventory/Inve
 
 
 function InventoryManagement() {
+
+    const navigate = useNavigate();
 
     /* ========================================================================
        INVENTORY STATE
@@ -1070,6 +1075,25 @@ setAreas(
 
                     </span>
 
+                </button>
+
+
+                {/* =============================================================
+                    INVENTORY TRANSACTION HISTORY
+                ============================================================= */}
+                <button
+                    type="button"
+                    className="summary-card summary-card-clickable transaction-history-summary-card"
+                    onClick={() => navigate("/inventory-transactions")}
+                >
+                    <div className="transaction-history-card-icon" aria-hidden="true">
+                        <RiHistoryLine />
+                    </div>
+                    <h3>Inventory Transaction History</h3>
+                    <h2>View</h2>
+                    <span className="summary-card-hint">
+                        View assignments, returns and inventory movements
+                    </span>
                 </button>
 
 

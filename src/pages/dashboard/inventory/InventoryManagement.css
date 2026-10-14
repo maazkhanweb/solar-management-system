@@ -134,7 +134,7 @@
 
     grid-template-columns:
 
-        repeat(4, 1fr);
+        repeat(5, minmax(0, 1fr));
 
     gap: 22px;
 
@@ -1614,14 +1614,18 @@
    RESPONSIVE
 =================================================== */
 
-@media (max-width: 1200px) {
+@media (max-width: 1450px) {
 
     .inventory-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 
-        grid-template-columns:
+}
 
-            repeat(2, 1fr);
+@media (max-width: 1000px) {
 
+    .inventory-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
 }
@@ -1825,4 +1829,37 @@
 
     }
 
+}
+
+/* Inventory transaction history summary card */
+.transaction-history-summary-card {
+    text-align: left;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.transaction-history-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    background: rgba(37, 99, 235, 0.10);
+    color: #2563eb;
+    font-size: 23px;
+}
+
+.transaction-history-summary-card h3 {
+    line-height: 1.35;
+}
+
+@media (min-width: 1451px) {
+    .inventory-summary .summary-card {
+        padding: 22px;
+    }
+    .transaction-history-summary-card h3 {
+        font-size: 15px;
+    }
 }

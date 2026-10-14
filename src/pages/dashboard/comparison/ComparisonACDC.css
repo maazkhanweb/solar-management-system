@@ -1146,3 +1146,46 @@
     color: #fff;
     background: #c51f32;
 }
+
+
+/* ============================================================================
+   SAVED HOME ANALYSIS — CARD LAYOUT
+============================================================================ */
+.comparison-home-details { display: flex; flex-direction: column; gap: 16px; }
+.saved-home-summary-grid, .saved-home-guidance-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.saved-home-summary-card, .saved-home-guidance-card { min-width: 0; padding: 16px; border: 1px solid #d8e4f1; border-radius: 14px; background: #fff; box-sizing: border-box; }
+.saved-home-summary-card { min-height: 115px; }
+.saved-home-summary-card span { display: block; margin-bottom: 8px; color: #60738a; font-size: 10px; font-weight: 800; letter-spacing: .45px; }
+.saved-home-summary-card h3 { margin: 0 0 6px; color: #17324d; font-size: 23px; }
+.saved-home-summary-card p, .saved-home-guidance-card p { margin: 6px 0 0; color: #60738a; font-size: 12px; line-height: 1.5; }
+.saved-home-summary-card.consumption { background: #e7f0ff; }
+.saved-home-summary-card.savings { background: #e4f7ee; }
+.saved-home-summary-card.savings h3 { color: #059669; }
+.saved-home-summary-card.insight { background: #fff5d8; }
+.saved-home-summary-card.insight h3 { font-size: 16px; }
+.saved-home-guidance-card h4 { margin: 0 0 12px; color: #17324d; font-size: 15px; }
+.saved-home-guidance-card.peak { color: #fff; background: #940018; border: 3px solid #ff536b; box-shadow: 0 0 0 3px rgba(255, 50, 80, .12); }
+.saved-home-guidance-card.peak h4, .saved-home-guidance-card.peak p, .saved-home-guidance-card.peak strong { color: #fff; }
+.saved-home-guidance-card.peak strong { display: block; margin-top: 8px; font-size: 19px; }
+.saved-home-badge { display: inline-block; padding: 5px 8px; border: 1px solid #fff; border-radius: 6px; color: #fff; font-size: 9px; font-weight: 800; }
+.saved-home-guidance-card.opportunities p { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 9px 0; }
+.impact { display: inline-block; padding: 6px 8px; border-radius: 7px; color: #fff; font-size: 10px; white-space: nowrap; }
+.impact.high { background: #ef4444; } .impact.medium { background: #f59e0b; } .impact.easy { background: #22a866; }
+.saved-home-guidance-card.tips p { margin: 6px 0; color: #35536a; }
+.saved-home-section { padding: 14px; border: 1px solid #d8e4f1; border-radius: 13px; background: #fff; }
+.saved-home-section > h4 { margin: 0 0 12px; color: #17324d; font-size: 15px; }
+.comparison-home-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.comparison-home-item { min-width: 0; padding: 13px; border: 1px solid #d8e4f1; border-radius: 11px; background: #f8fbff; }
+.comparison-home-item.result { background: #f2fbf7; border-color: #c7eadb; }
+.comparison-home-item h5 { margin: 0 0 10px; color: #17324d; font-size: 13px; }
+.comparison-home-item p { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 6px 0; color: #60738a; font-size: 11px; }
+.comparison-home-item p strong { color: #17324d; text-align: right; }
+.comparison-home-item .saving-value strong { color: #059669; }
+.saved-home-empty { padding: 12px; color: #60738a; background: #f8fafc; border-radius: 8px; font-size: 12px; }
+.comparison-edit-saved-analysis { padding: 0 22px 18px; overflow-y: auto; max-height: 48vh; }
+.comparison-edit-saved-analysis .comparison-home-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-theme="dark"] .saved-home-summary-card, [data-theme="dark"] .saved-home-guidance-card:not(.peak), [data-theme="dark"] .saved-home-section, [data-theme="dark"] .comparison-home-item { background: #141f2b; border-color: rgba(255,255,255,.12); }
+[data-theme="dark"] .saved-home-summary-card h3, [data-theme="dark"] .saved-home-guidance-card h4, [data-theme="dark"] .saved-home-section > h4, [data-theme="dark"] .comparison-home-item h5, [data-theme="dark"] .comparison-home-item p strong { color: #f1f5f9; }
+[data-theme="dark"] .saved-home-summary-card span, [data-theme="dark"] .saved-home-summary-card p, [data-theme="dark"] .saved-home-guidance-card p, [data-theme="dark"] .comparison-home-item p { color: #b6c4d4; }
+@media (max-width: 900px) { .saved-home-summary-grid, .saved-home-guidance-grid, .comparison-home-grid, .comparison-edit-saved-analysis .comparison-home-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .saved-home-summary-grid, .saved-home-guidance-grid, .comparison-home-grid, .comparison-edit-saved-analysis .comparison-home-grid { grid-template-columns: 1fr; } .comparison-edit-saved-analysis { padding: 0 14px 14px; } }

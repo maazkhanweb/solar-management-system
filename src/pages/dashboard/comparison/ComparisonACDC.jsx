@@ -2130,6 +2130,25 @@ function ComparisonACDC() {
 
                     </div>
 
+                    {(selectedBill?.home_analysis_data || selectedBill?.home_analysis_result) && (
+                        <section className="comparison-edit-saved-analysis">
+                            <div className="comparison-section-heading">
+                                <div>
+                                    <small>HOME ANALYSIS</small>
+                                    <h3>Saved Home Analysis Preview</h3>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="comparison-secondary-btn"
+                                    onClick={() => openHomeAnalysis(selectedBill)}
+                                >
+                                    <RiHome4Line /> {t.home}
+                                </button>
+                            </div>
+                            {renderSavedHomeAnalysis(selectedBill)}
+                        </section>
+                    )}
+
                     <div className="comparison-modal-footer">
 
                         <button
@@ -2228,50 +2247,94 @@ const renderSavedHomeAnalysis = (bill) => {
             values: homeData[key] || {},
         }));
 
+    const totalCurrentLoad = Array.isArray(homeResults)
+        ? homeResults.reduce((sum, item) => sum + Number(item.currentPower || 0), 0)
+        : 0;
+    const totalEfficientLoad = Array.isArray(homeResults)
+        ? homeResults.reduce((sum, item) => sum + Number(item.efficientPower || 0), 0)
+        : 0;
+    const totalSaving = Math.max(0, totalCurrentLoad - totalEfficientLoad);
+    const savingPercent = totalCurrentLoad > 0
+        ? Math.round((totalSaving / totalCurrentLoad) * 100)
+        : 0;
+
     return (
         <div className="comparison-home-details">
-            <h4>Appliances Entered by User</h4>
+            <div className="saved-home-summary-grid">
+                <article className="saved-home-summary-card consumption">
+                    <span>YOUR ELECTRICITY CONSUMPTION</span>
+                    <h3>{totalCurrentLoad.toLocaleString()} W</h3>
+                    <p>Current appliance load</p>
+                </article>
+                <article className="saved-home-summary-card savings">
+                    <span>POTENTIAL ELECTRICITY SAVINGS</span>
+                    <h3>{savingPercent}%</h3>
+                    <p>Estimated load reduction: {totalSaving.toLocaleString()} W</p>
+                </article>
+                <article className="saved-home-summary-card insight">
+                    <span>KEY INSIGHT</span>
+                    <h3>{homeResults.length ? "Efficiency opportunity" : "No analysis saved"}</h3>
+                    <p>{homeResults.length ? "Replacing high-consumption appliances with efficient DC alternatives may reduce usage." : "Run Home Analysis to save appliance results for this bill."}</p>
+                </article>
+            </div>
 
-            {appliances.length > 0 ? (
-                <div className="comparison-home-grid">
-                    {appliances.map((item) => (
-                        <article
-                            className="comparison-home-item"
-                            key={item.key}
-                        >
-                            <h5>{item.label}</h5>
-                            <p>Total Quantity: {item.values.total ?? 0}</p>
-                            <p>AC Quantity: {item.values.ac ?? 0}</p>
-                            <p>DC Quantity: {item.values.dc ?? 0}</p>
-                            <p>AC Watts: {item.values.watts || "Default"}</p>
-                            <p>DC Watts: {item.values.dcWatts || "Default"}</p>
-                        </article>
-                    ))}
-                </div>
-            ) : (
-                <p>No saved appliance form data.</p>
-            )}
+            <div className="saved-home-guidance-grid">
+                <article className="saved-home-guidance-card peak">
+                    <span className="saved-home-badge">HIGH CONSUMPTION ALERT</span>
+                    <h4>🕘 Peak Hours</h4>
+                    <strong>☀️ 5:00 PM – 11:00 PM</strong>
+                    <p>Where possible, avoid running high-consumption appliances during peak hours.</p>
+                </article>
+                <article className="saved-home-guidance-card opportunities">
+                    <h4>📈 Best Opportunities</h4>
+                    <p><b className="impact high">⚡ High Impact</b> Water pump, refrigerator, iron</p>
+                    <p><b className="impact medium">⚙ Medium Impact</b> Fans</p>
+                    <p><b className="impact easy">💡 Easy Saving</b> LED / DC lights</p>
+                </article>
+                <article className="saved-home-guidance-card tips">
+                    <h4>⚙️ Quick Tips</h4>
+                    <p>✓ Use DC and energy-efficient appliances where possible.</p>
+                    <p>✓ Replace old appliances with efficient alternatives.</p>
+                    <p>✓ Avoid unnecessary heavy appliance usage during peak hours.</p>
+                    <p>✓ Use LED lights instead of high-wattage bulbs.</p>
+                    <p>✓ Use solar energy for high-consumption activities during the day.</p>
+                </article>
+            </div>
 
-            <h4>Analysis Results</h4>
+            <section className="saved-home-section">
+                <h4>Appliances Entered by User</h4>
+                {appliances.length > 0 ? (
+                    <div className="comparison-home-grid">
+                        {appliances.map((item) => (
+                            <article className="comparison-home-item" key={item.key}>
+                                <h5>{item.label}</h5>
+                                <p><span>Total Quantity</span><strong>{item.values.total ?? 0}</strong></p>
+                                <p><span>AC Quantity</span><strong>{item.values.ac ?? 0}</strong></p>
+                                <p><span>DC Quantity</span><strong>{item.values.dc ?? 0}</strong></p>
+                                <p><span>AC Watts</span><strong>{item.values.watts || "Default"}</strong></p>
+                                <p><span>DC Watts</span><strong>{item.values.dcWatts || "Default"}</strong></p>
+                            </article>
+                        ))}
+                    </div>
+                ) : <p className="saved-home-empty">No saved appliance form data.</p>}
+            </section>
 
-            {Array.isArray(homeResults) && homeResults.length > 0 ? (
-                <div className="comparison-home-grid">
-                    {homeResults.map((item, index) => (
-                        <article
-                            className="comparison-home-item result"
-                            key={`${item.key || item.name || "result"}-${index}`}
-                        >
-                            <h5>{item.name || item.key || "Appliance"}</h5>
-                            <p>Quantity: {item.total ?? 0}</p>
-                            <p>Current Load: {item.currentPower ?? 0} W</p>
-                            <p>Efficient Load: {item.efficientPower ?? 0} W</p>
-                            <p>Potential Saving: {item.savingPercent ?? 0}%</p>
-                        </article>
-                    ))}
-                </div>
-            ) : (
-                <p>No saved analysis results.</p>
-            )}
+            <section className="saved-home-section">
+                <h4>Analysis Results</h4>
+                {Array.isArray(homeResults) && homeResults.length > 0 ? (
+                    <div className="comparison-home-grid">
+                        {homeResults.map((item, index) => (
+                            <article className="comparison-home-item result" key={`${item.key || item.name || "result"}-${index}`}>
+                                <h5>{item.name || item.key || "Appliance"}</h5>
+                                <p><span>Quantity</span><strong>{item.total ?? 0}</strong></p>
+                                <p><span>Current Load</span><strong>{item.currentPower ?? 0} W</strong></p>
+                                <p><span>Efficient Load</span><strong>{item.efficientPower ?? 0} W</strong></p>
+                                <p className="saving-value"><span>Potential Saving</span><strong>{item.savingPercent ?? 0}%</strong></p>
+                            </article>
+                        ))}
+                    </div>
+                ) : <p className="saved-home-empty">No saved analysis results.</p>}
+            </section>
         </div>
     );
 };

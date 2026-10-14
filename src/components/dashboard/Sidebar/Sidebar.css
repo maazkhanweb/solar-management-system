@@ -343,7 +343,7 @@ button.sidebar__link {
 
 button.sidebar__link:hover {
 
-    background: #C62828;
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
 
     border-color: transparent;
 
@@ -535,3 +535,12 @@ button.sidebar__link:hover {
     }
 
 }
+
+/* Management / Comparisons collapsible navigation groups */
+.sidebar__group { width: 100%; }
+.sidebar__group-toggle { cursor: pointer; text-align: left; font: inherit; }
+.sidebar__group-arrow { margin-left: auto; flex: 0 0 18px; font-size: 18px; }
+.sidebar__submenu { display: flex; flex-direction: column; gap: 5px; margin: 5px 0 8px 12px; padding-left: 10px; border-left: 1px solid rgba(143, 168, 188, .25); }
+.sidebar__sublink { min-height: 42px; padding: 10px 11px; gap: 10px; border-radius: 10px; font-size: 13px; }
+.sidebar__sublink .sidebar__icon { font-size: 17px; min-width: 19px; flex-basis: 19px; }
+.sidebar__sublink:hover { transform: translateX(3px); }

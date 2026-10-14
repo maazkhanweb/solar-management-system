@@ -5,6 +5,8 @@ import {
     useMemo,
 } from "react";
 
+import { useSearchParams } from "react-router-dom";
+
 import {
     RiTeamLine,
     RiMapPinLine,
@@ -39,6 +41,8 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [dashboardData, setDashboardData] = useState({
 
         statistics: {
@@ -70,6 +74,15 @@ const Dashboard = () => {
 
     const [showComparison, setShowComparison] =
         useState(false);
+
+    useEffect(() => {
+        if (searchParams.get("viewComparison") === "1") {
+            setShowComparison(true);
+            const nextParams = new URLSearchParams(searchParams);
+            nextParams.delete("viewComparison");
+            setSearchParams(nextParams, { replace: true });
+        }
+    }, [searchParams, setSearchParams]);
 
 
     /*
@@ -138,88 +151,31 @@ const Dashboard = () => {
     */
 
     const dashboardStats = [
-
-        {
-            id: 1,
-            title: "Total Users",
-            value:
-                dashboardData.statistics.totalUsers,
-            subtitle: "Registered Users",
-            icon: <RiTeamLine />,
-            path: "/users",
-        },
-
-        {
-            id: 2,
-            title: "Areas",
-            value:
-                dashboardData.statistics.totalAreas,
-            subtitle: "Active Areas",
-            icon: <RiMapPinLine />,
-            path: "/areas",
-        },
-
-        {
-            id: 3,
-            title: "Inventory Items",
-            value:
-                dashboardData.statistics.totalInventoryItems,
-            subtitle: "Total Assets",
-            icon: <RiArchiveLine />,
-            path: "/inventory",
-        },
-
-        {
-            id: 4,
-            title: "Assigned Items",
-            value:
-                dashboardData.statistics.totalAssignedItems,
-            subtitle: "Installed Assets",
-            icon: <RiCheckboxCircleLine />,
-            path: "/inventory-transactions",
-        },
-
-        {
-            id: 5,
-            title: "Low Stock",
-            value:
-                dashboardData.statistics.totalLowStockItems,
-            subtitle: "Low Stock Items",
-            icon: <RiArchiveLine />,
-            path: "/inventory",
-        },
-
         {
             id: 6,
             title: "WAPDA Bills",
-            value:
-                dashboardData.statistics.totalWapdaBills,
+            value: dashboardData.statistics.totalWapdaBills,
             subtitle: "Uploaded Bills",
             icon: <RiFileList3Line />,
             path: "/bill-management",
         },
-
         {
             id: 7,
             title: "Reports",
-            value:
-                dashboardData.statistics.totalReports,
+            value: dashboardData.statistics.totalReports,
             subtitle: "Available Reports",
             icon: <RiBarChartBoxLine />,
             path: "/reports",
         },
-        
-{
-    id: 9,
-    title: "Comparison AC & DC",
-    value: "AC & DC",
-    subtitle: "Save Electricity",
-    icon: <RiSunLine />,
-    path: "/comparison-ac-dc",
-},
-
+        {
+            id: 9,
+            title: "Comparison AC & DC",
+            value: "AC & DC",
+            subtitle: "Save Electricity",
+            icon: <RiSunLine />,
+            path: "/comparison-ac-dc",
+        },
     ];
-
 
     /*
     |--------------------------------------------------------------------------
