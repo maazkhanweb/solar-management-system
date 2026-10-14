@@ -283,6 +283,9 @@ function ComparisonACDC() {
     const [activeSection, setActiveSection] =
         useState("bills");
 
+    const [openPickerAfterSectionChange, setOpenPickerAfterSectionChange] =
+        useState(false);
+
     const [selectedFile, setSelectedFile] =
         useState(null);
 
@@ -562,12 +565,23 @@ function ComparisonACDC() {
 
     }, []);
 
+    useEffect(() => {
+        if (
+            activeSection === "upload" &&
+            openPickerAfterSectionChange &&
+            fileInputRef.current
+        ) {
+            fileInputRef.current.click();
+            setOpenPickerAfterSectionChange(false);
+        }
+    }, [activeSection, openPickerAfterSectionChange]);
+
 
     /* =========================================================================
        FILE SELECT
     ========================================================================= */
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
 
         const file =
             event.target.files?.[0];
@@ -581,6 +595,12 @@ function ComparisonACDC() {
         setSuccess("");
         setOCRResult(null);
 
+        // Start upload/OCR immediately after the user selects a file.
+        await processBillOCR(file);
+
+        // Allow selecting the same file again later.
+        event.target.value = "";
+
     };
 
 
@@ -588,9 +608,9 @@ function ComparisonACDC() {
        OCR
     ========================================================================= */
 
-    const processBillOCR = async () => {
+    const processBillOCR = async (fileToUpload = selectedFile) => {
 
-        if (!selectedFile) {
+        if (!fileToUpload) {
 
             setError(
                 language === "ur"
@@ -610,7 +630,7 @@ function ComparisonACDC() {
 
             const response =
                 await comparisonBillService.processOCR(
-                    selectedFile
+                    fileToUpload
                 );
 
             const result =
@@ -1587,17 +1607,6 @@ function ComparisonACDC() {
 
                     </div>
 
-                    <button
-                        type="button"
-                        className="comparison-primary-btn"
-                        onClick={() =>
-                            fileInputRef.current?.click()
-                        }
-                    >
-                        <RiFileUploadLine />
-
-                        {t.choose}
-                    </button>
 
                 </div>
 
@@ -1612,57 +1621,22 @@ function ComparisonACDC() {
                 />
 
                 {selectedFile && (
-
                     <div className="comparison-selected-file">
-
                         <div>
-
                             <RiFileList3Line />
-
                             <div>
-
-                                <strong>
-                                    {selectedFile.name}
-                                </strong>
-
+                                <strong>{selectedFile.name}</strong>
                                 <span>
-                                    {(
-                                        selectedFile.size /
-                                        1024
-                                    ).toFixed(1)} KB
+                                    {ocrLoading
+                                        ? t.processing
+                                        : success || "File selected"}
                                 </span>
-
                             </div>
-
                         </div>
-
-                        <button
-                            type="button"
-                            className="comparison-primary-btn"
-                            disabled={ocrLoading}
-                            onClick={
-                                processBillOCR
-                            }
-                        >
-
-                            {ocrLoading ? (
-                                <>
-                                    <RiLoader4Line className="comparison-spin" />
-
-                                    {t.processing}
-                                </>
-                            ) : (
-                                <>
-                                    <RiFileUploadLine />
-
-                                    {t.upload}
-                                </>
-                            )}
-
-                        </button>
-
+                        {ocrLoading && (
+                            <RiLoader4Line className="comparison-spin" />
+                        )}
                     </div>
-
                 )}
 
                 {ocrResult &&
@@ -2568,10 +2542,10 @@ const renderSavedHomeAnalysis = (bill) => {
                             : "comparison-top-card"
                     }
                     onClick={() => {
-                        setActiveSection(
-                            "upload"
-                        );
+                        setActiveSection("upload");
                         setError("");
+                        setSuccess("");
+                        setOpenPickerAfterSectionChange(true);
                     }}
                 >
 
