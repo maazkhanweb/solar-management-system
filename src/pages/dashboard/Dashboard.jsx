@@ -68,8 +68,7 @@ const Dashboard = () => {
     });
 
 
-    const [loading, setLoading] =
-        useState(true);
+    
 
 
     const [showComparison, setShowComparison] =
@@ -101,48 +100,68 @@ const Dashboard = () => {
     |--------------------------------------------------------------------------
     */
 
-    const loadDashboardData =
-        useCallback(async () => {
+    
 
-            try {
+/*
+|--------------------------------------------------------------------------
+| Load Dashboard Data
+|--------------------------------------------------------------------------
+*/
 
-                const response =
-                    await dashboardService
-                        .getDashboardStatistics();
+const [loading, setLoading] = useState(true);
+const [dashboardError, setDashboardError] = useState("");
 
-                /*
-                 * API structure:
-                 *
-                 * response.data.statistics
-                 * response.data.comparisons
-                 */
+const loadDashboardData = useCallback(
+    async (showLoader = false) => {
+        if (showLoader) {
+            setLoading(true);
+        }
 
-                setDashboardData(
-                    response.data
+        setDashboardError("");
+
+        try {
+            const response =
+                await dashboardService.getDashboardStatistics();
+
+            const data = response?.data;
+
+            if (!data || typeof data !== "object") {
+                throw new Error(
+                    "Dashboard data is not available."
                 );
-
-            } catch (error) {
-
-                console.error(
-                    "Dashboard Error:",
-                    error
-                );
-
-            } finally {
-
-                setLoading(false);
-
             }
 
-        }, []);
+            setDashboardData((previous) => ({
+                ...previous,
+                ...data,
+                statistics: {
+                    ...previous.statistics,
+                    ...(data.statistics || {}),
+                },
+                comparisons: Array.isArray(data.comparisons)
+                    ? data.comparisons
+                    : [],
+            }));
+        } catch (error) {
+            console.error("Dashboard Error:", error);
 
+            setDashboardError(
+                error?.response?.status === 401
+                    ? "Your session has expired. Please log in again."
+                    : error?.code === "ECONNABORTED"
+                        ? "The request took too long. Please try again."
+                        : "Dashboard data could not be loaded. Please try again."
+            );
+        } finally {
+            setLoading(false);
+        }
+    },
+    []
+);
 
-    useEffect(() => {
-
-        loadDashboardData();
-
-    }, [loadDashboardData]);
-
+useEffect(() => {
+    loadDashboardData(true);
+}, [loadDashboardData]);
 
     /*
     |--------------------------------------------------------------------------
@@ -509,6 +528,7 @@ const Dashboard = () => {
         <section
             className="dashboard"
         >
+            
 
             {/* ======================================================
                 Dashboard Header
@@ -553,6 +573,34 @@ const Dashboard = () => {
                 ) : (
 
                     <>
+
+
+
+                    
+{dashboardError && (
+    <div
+        role="alert"
+        style={{
+            padding: "14px",
+            marginBottom: "16px",
+            border: "1px solid #FECACA",
+            borderRadius: "8px",
+            background: "#FEF2F2",
+            color: "#991B1B",
+        }}
+    >
+        <p>{dashboardError}</p>
+
+        <button
+            type="button"
+            onClick={() => loadDashboardData(true)}
+            disabled={loading}
+        >
+            {loading ? "Loading..." : "Try Again"}
+        </button>
+    </div>
+)}
+
 
                         {/* ==================================================
                             Dashboard Statistics
