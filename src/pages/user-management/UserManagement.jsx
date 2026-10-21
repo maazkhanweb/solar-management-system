@@ -1,11 +1,12 @@
+
 /*
 ==========================================================
 File: src/pages/user-management/UserManagement.jsx
-Description: User Management page with custom success and error notifications.
+Description: User Management page with custom notifications.
 ==========================================================
 */
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import authService from "../../services/authService";
 
@@ -16,17 +17,11 @@ import DeleteUserModal from "../../components/dashboard/user/DeleteUserModal";
 import "./UserManagement.css";
 
 function UserManagement() {
-
     const [users, setUsers] = useState([]);
-
     const [loading, setLoading] = useState(true);
-
     const [searchTerm, setSearchTerm] = useState("");
-
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
     const [selectedUser, setSelectedUser] = useState(null);
 
     const [notification, setNotification] = useState({
@@ -35,269 +30,191 @@ function UserManagement() {
         message: "",
     });
 
-    useEffect(() => {
-
-        loadUsers();
-
-    }, []);
-
-    const loadUsers = async () => {
-
-        try {
-
-            setLoading(true);
-
-            const response = await authService.getUsers();
-
-            setUsers(response.users.data);
-
-        } catch (error) {
-
-            console.error(error);
-
-            showNotification(
-                "Failed to load users.",
-                "error"
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const openAddModal = () => {
-
-        setSelectedUser(null);
-
-        setIsModalOpen(true);
-
-    };
-
-    const closeModal = () => {
-
-        setIsModalOpen(false);
-
-        setSelectedUser(null);
-
-    };
-
     const showNotification = (message, type = "success") => {
-
         setNotification({
             isOpen: true,
             type,
             message,
         });
-
     };
 
     const closeNotification = () => {
-
         setNotification({
             isOpen: false,
             type: "success",
             message: "",
         });
+    };
 
+    const loadUsers = useCallback(async () => {
+        try {
+            setLoading(true);
+
+            const response = await authService.getUsers();
+            const responseUsers = response?.users?.data;
+
+            if (!Array.isArray(responseUsers)) {
+                throw new Error("Unexpected users API response.");
+            }
+
+            /*
+             * Google users are identified by their stored google_id.
+             * Do not identify accounts by role alone: an admin may
+             * also create a user with the Public User role.
+             */
+            setUsers(
+                responseUsers.map((user) => ({
+                    ...user,
+                    is_google_user: Boolean(
+                        user.is_google_user ||
+                        user.auth_provider === "google" ||
+                        user.google_id
+                    ),
+                }))
+            );
+        } catch (error) {
+            console.error("Failed to load users:", error);
+            showNotification("Failed to load users.", "error");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadUsers();
+    }, [loadUsers]);
+
+    const openAddModal = () => {
+        setSelectedUser(null);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null);
     };
 
     const getErrorMessage = (error, fallbackMessage) => {
-
         const responseData = error?.response?.data;
 
         if (responseData?.message) {
-
             return responseData.message;
-
         }
 
         if (responseData?.errors) {
-
             const firstError = Object.values(responseData.errors)
                 .flat()
                 .find(Boolean);
 
             if (firstError) {
-
                 return firstError;
-
             }
-
         }
 
         return fallbackMessage;
-
     };
 
     const handleSaveUser = async (userData) => {
-
         try {
-
             if (selectedUser) {
-
-                await authService.updateUser(
-                    selectedUser.id,
-                    userData
-                );
-
-                showNotification(
-                    "User updated successfully."
-                );
-
+                await authService.updateUser(selectedUser.id, userData);
+                showNotification("User updated successfully.");
             } else {
-
                 await authService.createUser(userData);
-
-                showNotification(
-                    "User created successfully."
-                );
-
+                showNotification("User created successfully.");
             }
 
             await loadUsers();
-
             closeModal();
-
         } catch (error) {
-
-            console.error(error);
+            console.error("Failed to save user:", error);
 
             showNotification(
-                getErrorMessage(
-                    error,
-                    "Failed to save user."
-                ),
+                getErrorMessage(error, "Failed to save user."),
                 "error"
             );
-
         }
-
     };
 
     const handleEdit = (user) => {
-
         setSelectedUser(user);
-
         setIsModalOpen(true);
-
     };
 
     const handleDelete = (user) => {
-
         setSelectedUser(user);
-
         setIsDeleteModalOpen(true);
-
-    };
-
-    const confirmDelete = async () => {
-
-        try {
-
-            await authService.deleteUser(
-                selectedUser.id
-            );
-
-            showNotification(
-                "User deleted successfully."
-            );
-
-            await loadUsers();
-
-            closeDeleteModal();
-
-        } catch (error) {
-
-            console.error(error);
-
-            showNotification(
-                "Failed to delete user.",
-                "error"
-            );
-
-        }
-
     };
 
     const closeDeleteModal = () => {
-
         setSelectedUser(null);
-
         setIsDeleteModalOpen(false);
+    };
 
+    const confirmDelete = async () => {
+        if (!selectedUser) return;
+
+        try {
+            await authService.deleteUser(selectedUser.id);
+            showNotification("User deleted successfully.");
+
+            closeDeleteModal();
+            await loadUsers();
+        } catch (error) {
+            console.error("Failed to delete user:", error);
+
+            showNotification(
+                getErrorMessage(error, "Failed to delete user."),
+                "error"
+            );
+        }
     };
 
     const filteredUsers = users.filter((user) => {
+        const search = searchTerm.trim().toLowerCase();
 
-        const search = searchTerm.toLowerCase();
-
-        return (
-
-            user.name.toLowerCase().includes(search) ||
-
-            user.email.toLowerCase().includes(search) ||
-
-            user.role.toLowerCase().includes(search) ||
-
-            user.status.toLowerCase().includes(search)
-
+        return [
+            user.name,
+            user.email,
+            user.role,
+            user.status,
+        ].some((value) =>
+            String(value ?? "").toLowerCase().includes(search)
         );
-
     });
 
     if (loading) {
-
         return (
-
             <section className="users">
-
                 <h2>Loading users...</h2>
-
             </section>
-
         );
-
     }
 
     return (
-
         <section className="users">
-
             <div className="users-header">
-
                 <div>
-
                     <h1>User Management</h1>
-
-                    <p>
-                        Manage all system users from one place.
-                    </p>
-
+                    <p>Manage all system users from one place.</p>
                 </div>
 
                 <button
+                    type="button"
                     className="add-user-btn"
                     onClick={openAddModal}
                 >
                     + Add User
                 </button>
-
             </div>
 
             <div className="search-box">
-
                 <input
                     type="text"
                     placeholder="Search User..."
                     value={searchTerm}
-                    onChange={(e) =>
-                        setSearchTerm(e.target.value)
-                    }
+                    onChange={(event) => setSearchTerm(event.target.value)}
                 />
-
             </div>
 
             <UserTable
@@ -321,9 +238,7 @@ function UserManagement() {
             />
 
             {notification.isOpen && (
-
                 <div className="user-notification-overlay">
-
                     <div
                         className={`user-notification ${
                             notification.type === "error"
@@ -331,22 +246,12 @@ function UserManagement() {
                                 : "success"
                         }`}
                     >
-
                         <div className="user-notification-content">
-
                             <div className="user-notification-icon">
-
-                                {notification.type === "error"
-                                    ? "!"
-                                    : "✓"
-                                }
-
+                                {notification.type === "error" ? "!" : "✓"}
                             </div>
 
-                            <p>
-                                {notification.message}
-                            </p>
-
+                            <p>{notification.message}</p>
                         </div>
 
                         <button
@@ -356,17 +261,11 @@ function UserManagement() {
                         >
                             OK
                         </button>
-
                     </div>
-
                 </div>
-
             )}
-
         </section>
-
     );
-
 }
 
 export default UserManagement;

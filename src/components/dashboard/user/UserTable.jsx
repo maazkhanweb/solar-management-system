@@ -1,282 +1,152 @@
+
 /**
  * ============================================================================
- * File:
- * src/components/dashboard/user/UserTable.jsx
+ * File: src/components/dashboard/user/UserTable.jsx
  *
- * Description:
- * User Table with automatic serial numbering.
- * Displays Name, Email, Phone, Area, Role and Status.
+ * Google-created users:
+ * Name, Email, blank Phone, blank Area, Role, Status and Edit only.
  *
- * IMPORTANT:
- * The Super Admin (admin@solar.com) cannot be deleted.
- * The delete action is disabled for this protected account.
+ * Admin-created users:
+ * Existing columns and Edit/Delete actions.
+ *
+ * Protected Super Admin:
+ * Cannot be deleted.
  * ============================================================================
  */
 
 import "./UserTable.css";
-
 import ActionButtons from "../../common/ActionButtons/ActionButtons";
-
-
-/*
-|--------------------------------------------------------------------------
-| PROTECTED SUPER ADMIN EMAIL
-|--------------------------------------------------------------------------
-|
-| This account must never be deleted from the system.
-|
-*/
 
 const SUPER_ADMIN_EMAIL = "admin@solar.com";
 
-
-function UserTable({
-
-    users,
-
-    onEdit,
-
-    onDelete,
-
-}) {
+function UserTable({ users = [], onEdit, onDelete }) {
+    const isGoogleUser = (user) =>
+        Boolean(
+            user.is_google_user === true ||
+            user.auth_provider === "google" ||
+            user.google_id
+        );
 
     return (
-
         <div className="users-table-container">
-
             <table className="users-table">
-
-                {/* =========================================================
-                    TABLE HEADER
-                ========================================================= */}
-
                 <thead>
-
                     <tr>
-
                         <th>#</th>
-
                         <th>Name</th>
-
                         <th>Email</th>
-
                         <th>Phone</th>
-
                         <th>Area</th>
-
                         <th>Role</th>
-
                         <th>Status</th>
-
                         <th>Actions</th>
-
                     </tr>
-
                 </thead>
 
-
-                {/* =========================================================
-                    TABLE BODY
-                ========================================================= */}
-
                 <tbody>
+                    {users.length > 0 ? (
+                        users.map((user, index) => {
+                            const googleUser = isGoogleUser(user);
 
-                    {
+                            const isSuperAdmin =
+                                user.email?.toLowerCase() ===
+                                SUPER_ADMIN_EMAIL;
 
-                        users.length > 0 ? (
+                            const status = String(
+                                user.status ?? "Active"
+                            );
 
-                            users.map((user, index) => {
+                            return (
+                                <tr key={user.id}>
+                                    <td>{index + 1}</td>
 
-                                /*
-                                |--------------------------------------------------------------------------
-                                | CHECK PROTECTED SUPER ADMIN
-                                |--------------------------------------------------------------------------
-                                */
+                                    <td>{user.name || "-"}</td>
 
-                                const isSuperAdmin =
-                                    user.email?.toLowerCase() ===
-                                    SUPER_ADMIN_EMAIL;
+                                    <td>{user.email || "-"}</td>
 
+                                    {/* Phone is blank for Google users. */}
+                                    <td>
+                                        {googleUser
+                                            ? ""
+                                            : user.phone || "-"}
+                                    </td>
 
-                                return (
+                                    {/* Area is blank for Google users. */}
+                                    <td>
+                                        {googleUser
+                                            ? ""
+                                            : (
+                                                user.area?.area_name ??
+                                                user.area?.name ??
+                                                user.area_name ??
+                                                "All Areas"
+                                            )}
+                                    </td>
 
-                                    <tr key={user.id}>
+                                    <td>{user.role || "Public User"}</td>
 
-                                        {/* SERIAL NUMBER */}
+                                    <td>
+                                        <span
+                                            className={`status ${status.toLowerCase()}`}
+                                        >
+                                            {status}
+                                        </span>
+                                    </td>
 
-                                        <td>
-
-                                            {index + 1}
-
-                                        </td>
-
-
-                                        {/* NAME */}
-
-                                        <td>
-
-                                            {user.name}
-
-                                        </td>
-
-
-                                        {/* EMAIL */}
-
-                                        <td>
-
-                                            {user.email}
-
-                                        </td>
-
-
-                                        {/* PHONE */}
-
-                                        <td>
-
-                                            {
-
-                                                user.phone
-                                                    ? user.phone
-                                                    : "-"
-
-                                            }
-
-                                        </td>
-
-
-                                        {/* AREA */}
-
-                                        <td>
-
-                                            {
-
-                                                user.area
-                                                    ? user.area.area_name
-                                                    : "All Areas"
-
-                                            }
-
-                                        </td>
-
-
-                                        {/* ROLE */}
-
-                                        <td>
-
-                                            {user.role}
-
-                                        </td>
-
-
-                                        {/* STATUS */}
-
-                                        <td>
-
-                                            <span
-                                                className={`
-                                                    status
-                                                    ${user.status.toLowerCase()}
-                                                `}
-                                            >
-
-                                                {user.status}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        {/* ACTIONS */}
-
-                                        <td>
-
-                                            <div className="table-actions">
-
+                                    <td>
+                                        <div className="table-actions">
+                                            {googleUser ? (
+                                                <button
+                                                    type="button"
+                                                    className="edit-btn"
+                                                    title="Edit user"
+                                                    aria-label={`Edit ${user.name || "user"}`}
+                                                    onClick={() =>
+                                                        onEdit(user)
+                                                    }
+                                                >
+                                                    <span aria-hidden="true">
+                                                        ✎
+                                                    </span>
+                                                </button>
+                                            ) : (
                                                 <ActionButtons
-
-                                                    /*
-                                                    |--------------------------------------------------------------------------
-                                                    | EDIT
-                                                    |--------------------------------------------------------------------------
-                                                    |
-                                                    | Super Admin can still be edited.
-                                                    |
-                                                    */
-
                                                     onEdit={() =>
                                                         onEdit(user)
                                                     }
-
-
-                                                    /*
-                                                    |--------------------------------------------------------------------------
-                                                    | DELETE
-                                                    |--------------------------------------------------------------------------
-                                                    |
-                                                    | Super Admin cannot be deleted.
-                                                    |
-                                                    */
-
                                                     onDelete={
                                                         isSuperAdmin
                                                             ? undefined
                                                             : () =>
-                                                                onDelete(user)
+                                                                  onDelete(user)
                                                     }
-
-                                                    /*
-                                                    |--------------------------------------------------------------------------
-                                                    | DELETE DISABLED
-                                                    |--------------------------------------------------------------------------
-                                                    */
-
                                                     deleteDisabled={
                                                         isSuperAdmin
                                                     }
-
                                                 />
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                );
-
-                            })
-
-                        ) : (
-
-                            <tr>
-
-                                <td
-                                    colSpan="8"
-                                    style={{
-                                        textAlign: "center",
-                                        padding: "30px",
-                                    }}
-                                >
-
-                                    No Users Found.
-
-                                </td>
-
-                            </tr>
-
-                        )
-
-                    }
-
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })
+                    ) : (
+                        <tr>
+                            <td
+                                colSpan={8}
+                                style={{
+                                    textAlign: "center",
+                                    padding: "30px",
+                                }}
+                            >
+                                No Users Found.
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
-
             </table>
-
         </div>
-
     );
-
 }
-
 
 export default UserTable;

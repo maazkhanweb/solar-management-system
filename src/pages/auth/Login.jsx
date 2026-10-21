@@ -1,6 +1,6 @@
 import "./Login.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -37,6 +37,8 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const [loading, setLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const googleButtonRef = useRef(null);
 
     useEffect(() => {
 
@@ -53,6 +55,55 @@ function Login() {
         }
 
     }, []);
+
+    useEffect(() => {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId || !googleButtonRef.current) return undefined;
+
+        let cancelled = false;
+        const initializeGoogle = () => {
+            if (cancelled || !window.google?.accounts?.id || !googleButtonRef.current) return;
+            window.google.accounts.id.initialize({
+                client_id: clientId,
+                callback: async ({ credential }) => {
+                    if (!credential) return;
+                    try {
+                        setGoogleLoading(true);
+                        const response = await authService.googleLogin(credential);
+                        login(response.user, response.token, true);
+                        navigate("/dashboard", { replace: true });
+                    } catch (error) {
+                        alert(error.response?.data?.message || "Google sign-in failed.");
+                    } finally {
+                        setGoogleLoading(false);
+                    }
+                },
+            });
+            googleButtonRef.current.innerHTML = "";
+            window.google.accounts.id.renderButton(googleButtonRef.current, {
+                type: "standard", theme: "outline", size: "large",
+                text: "continue_with", shape: "rectangular", width: 320,
+            });
+        };
+
+        if (window.google?.accounts?.id) {
+            initializeGoogle();
+        } else {
+            const existing = document.querySelector('script[data-google-identity="true"]');
+            if (existing) {
+                existing.addEventListener("load", initializeGoogle, { once: true });
+            } else {
+                const script = document.createElement("script");
+                script.src = "https://accounts.google.com/gsi/client";
+                script.async = true;
+                script.defer = true;
+                script.dataset.googleIdentity = "true";
+                script.onload = initializeGoogle;
+                document.head.appendChild(script);
+            }
+        }
+        return () => { cancelled = true; };
+    }, [login, navigate]);
 
     const handleLogin = async () => {
 
@@ -430,6 +481,16 @@ function Login() {
                             }
 
                         </button>
+
+                        <div className="google-signin-divider"><span>OR</span></div>
+                        {import.meta.env.VITE_GOOGLE_CLIENT_ID ? (
+                            <div className="google-signin-wrap">
+                                <div ref={googleButtonRef} className="google-signin-button" />
+                                {googleLoading && <p className="google-signin-status">Signing in with Google...</p>}
+                            </div>
+                        ) : (
+                            <p className="google-signin-config-note">Google sign-in is not configured yet.</p>
+                        )}
 
                         <div className="login-footer">
 

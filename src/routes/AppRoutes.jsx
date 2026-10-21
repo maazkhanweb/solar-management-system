@@ -39,7 +39,9 @@ function AppRoutes() {
     const {
         isAuthenticated,
         loading,
+        user,
     } = useAuthentication();
+    const isPublicUser = String(user?.role || "").toLowerCase() === "public user";
 
     if (loading) {
         return <div>Loading...</div>;
@@ -76,35 +78,29 @@ function AppRoutes() {
                 />
 
                 <Route
-                    path="/users"
-                    element={<UserManagement />}
+                    path="/users" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <UserManagement />}
                 />
 
                 <Route
-                    path="/areas"
-                    element={<AreaManagement />}
+                    path="/areas" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <AreaManagement />}
                 />
 
                 <Route
-                    path="/inventory"
-                    element={<InventoryManagement />}
+                    path="/inventory" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <InventoryManagement />}
                 />
 
                 {/* Inventory Transaction History */}
 
                 <Route
-                    path="/inventory-transactions"
-                    element={<InventoryTransactionHistory />}
+                    path="/inventory-transactions" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <InventoryTransactionHistory />}
                 />
 
                 <Route
-    path="/bill-management"
-    element={<BillManagement />}
+    path="/bill-management" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <BillManagement />}
 />
 
                 <Route
-                    path="/reports"
-                    element={<Reports />}
+                    path="/reports" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <Reports />}
                 />
 
                 <Route
@@ -114,33 +110,29 @@ function AppRoutes() {
 
                 <Route
     path="/comparison-ac-dc/savings-analysis"
-    element={<SavingsAnalysis />}
+    element={isPublicUser ? <Navigate to="/dashboard" replace /> : <SavingsAnalysis />}
 />
 <Route
     path="/savings-analysis"
-    element={<SavingsAnalysis />}
+    element={isPublicUser ? <Navigate to="/dashboard" replace /> : <SavingsAnalysis />}
 />
 
                 <Route
-                    path="/charts"
-                    element={<Charts />}
+                    path="/charts" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <Charts />}
                 />
 
                 {/* Profile */}
 
                 <Route
-                    path="/my-profile"
-                    element={<MyProfile />}
+                    path="/my-profile" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <MyProfile />}
                 />
 
                 <Route
-                    path="/account-settings"
-                    element={<AccountSettings />}
+                    path="/account-settings" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <AccountSettings />}
                 />
 
                 <Route
-                    path="/change-password"
-                    element={<ChangePassword />}
+                    path="/change-password" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <ChangePassword />}
                 />
 
             </Route>

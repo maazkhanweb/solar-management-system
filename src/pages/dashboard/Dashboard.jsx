@@ -35,6 +35,7 @@ import {
 
 import DashboardCard from "../../components/dashboard/DashboardCard/DashboardCard";
 import dashboardService from "../../services/dashboardService";
+import useAuthentication from "../../hooks/useAuth";
 
 import "./Dashboard.css";
 
@@ -42,6 +43,8 @@ import "./Dashboard.css";
 const Dashboard = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const { user } = useAuthentication();
+    const isPublicUser = String(user?.role || "").toLowerCase() === "public user";
 
     const [dashboardData, setDashboardData] = useState({
 
@@ -75,13 +78,14 @@ const Dashboard = () => {
         useState(false);
 
     useEffect(() => {
+        if (isPublicUser) return;
         if (searchParams.get("viewComparison") === "1") {
             setShowComparison(true);
             const nextParams = new URLSearchParams(searchParams);
             nextParams.delete("viewComparison");
             setSearchParams(nextParams, { replace: true });
         }
-    }, [searchParams, setSearchParams]);
+    }, [searchParams, setSearchParams, isPublicUser]);
 
 
     /*
@@ -113,6 +117,11 @@ const [dashboardError, setDashboardError] = useState("");
 
 const loadDashboardData = useCallback(
     async (showLoader = false) => {
+        if (isPublicUser) {
+            setDashboardError("");
+            setLoading(false);
+            return;
+        }
         if (showLoader) {
             setLoading(true);
         }
@@ -156,7 +165,7 @@ const loadDashboardData = useCallback(
             setLoading(false);
         }
     },
-    []
+    [isPublicUser]
 );
 
 useEffect(() => {
@@ -610,7 +619,7 @@ useEffect(() => {
 
                             {
 
-                                dashboardStats.map(
+                                dashboardStats.filter((item) => !isPublicUser || item.path === "/comparison-ac-dc").map(
                                     (item) => (
 
                                         <DashboardCard
@@ -634,7 +643,7 @@ useEffect(() => {
                                 View Comparison Card
                             =================================================== */}
 
-                            <button
+                            {!isPublicUser && <button
                                 type="button"
                                 className="view-comparison-card"
                                 onClick={
@@ -675,7 +684,7 @@ useEffect(() => {
 
                                 </div>
 
-                            </button>
+                            </button>}
 
                         </div>
 

@@ -6,6 +6,11 @@ const authService = {
     // Authentication
     // ==========================================
 
+    googleLogin: async (credential) => {
+        const response = await api.post("/auth/google", { credential });
+        return response.data;
+    },
+
     login: async (credentials) => {
 
         const response = await api.post(

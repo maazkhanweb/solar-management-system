@@ -47,13 +47,8 @@ const comparisonBillService = {
 
         const response = await api.post(
             "/comparison/process-ocr",
-            formData,
-            {
-                headers: {
-                    "Content-Type":
-                        "multipart/form-data",
-                },
-            }
+            formData
+            // Let Axios/browser set multipart Content-Type with its boundary.
         );
 
         return response.data;

@@ -9,7 +9,13 @@ import authService from "../../../services/authService";
 const Sidebar = ({ isOpen = false, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuthentication();
+  const { logout, user } = useAuthentication();
+  const isPublicUser = String(user?.role || "").toLowerCase() === "public user";
+  const visibleMenuData = isPublicUser
+    ? menuData.filter((item) => item.id === "dashboard").concat([{
+        id: "public-ac-dc", title: "Comparison AC & DC", path: "/comparison-ac-dc", icon: RiSunFoggyLine, type: "link",
+      }])
+    : menuData;
   const [expanded, setExpanded] = useState({
     management: location.pathname !== "/dashboard" || location.pathname === "/inventory",
     comparisons: ["/bill-management", "/reports", "/comparison-ac-dc"].includes(location.pathname),
@@ -32,7 +38,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
       </div>
 
       <nav className="sidebar__navigation">
-        {menuData.map((item) => {
+        {visibleMenuData.map((item) => {
           const Icon = item.icon;
           if (item.type === "group") {
             const expandedIcon = expanded[item.id] ? RiArrowDownSLine : RiArrowRightSLine;
