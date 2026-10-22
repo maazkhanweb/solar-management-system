@@ -31,6 +31,12 @@ function UserModal({
 
 }) {
 
+    const isGoogleUser = Boolean(
+        selectedUser?.is_google_user ||
+        selectedUser?.auth_provider === "google" ||
+        selectedUser?.google_id
+    );
+
     const [formData, setFormData] = useState({
 
         name: "",
@@ -319,27 +325,23 @@ function UserModal({
 
                             </label>
 
-                            <select
-                                name="role"
-                                value={formData.role}
-                                onChange={handleChange}
-                            >
-
-                                <option value="Administrator">
-
-                                    Administrator
-
-                                </option>
-
-                                <option value="Manager">
-
-                                    Manager
-
-                                </option>
-
-                                
-
-                            </select>
+                            {isGoogleUser ? (
+                                <input
+                                    type="text"
+                                    value="Public User"
+                                    readOnly
+                                    aria-label="Role"
+                                />
+                            ) : (
+                                <select
+                                    name="role"
+                                    value={formData.role}
+                                    onChange={handleChange}
+                                >
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Manager">Manager</option>
+                                </select>
+                            )}
 
                         </div>
 

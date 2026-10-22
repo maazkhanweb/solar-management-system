@@ -95,36 +95,15 @@ function UserTable({ users = [], onEdit, onDelete }) {
 
                                     <td>
                                         <div className="table-actions">
-                                            {googleUser ? (
-                                                <button
-                                                    type="button"
-                                                    className="edit-btn"
-                                                    title="Edit user"
-                                                    aria-label={`Edit ${user.name || "user"}`}
-                                                    onClick={() =>
-                                                        onEdit(user)
-                                                    }
-                                                >
-                                                    <span aria-hidden="true">
-                                                        ✎
-                                                    </span>
-                                                </button>
-                                            ) : (
-                                                <ActionButtons
-                                                    onEdit={() =>
-                                                        onEdit(user)
-                                                    }
-                                                    onDelete={
-                                                        isSuperAdmin
-                                                            ? undefined
-                                                            : () =>
-                                                                  onDelete(user)
-                                                    }
-                                                    deleteDisabled={
-                                                        isSuperAdmin
-                                                    }
-                                                />
-                                            )}
+                                            <ActionButtons
+                                                onEdit={() => onEdit(user)}
+                                                onDelete={
+                                                    isSuperAdmin
+                                                        ? undefined
+                                                        : () => onDelete(user)
+                                                }
+                                                deleteDisabled={isSuperAdmin}
+                                            />
                                         </div>
                                     </td>
                                 </tr>
