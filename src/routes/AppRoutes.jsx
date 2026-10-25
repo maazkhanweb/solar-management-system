@@ -109,13 +109,14 @@ function AppRoutes() {
                 />
 
                 <Route
-    path="/comparison-ac-dc/savings-analysis"
-    element={isPublicUser ? <Navigate to="/dashboard" replace /> : <SavingsAnalysis />}
-/>
-<Route
-    path="/savings-analysis"
-    element={isPublicUser ? <Navigate to="/dashboard" replace /> : <SavingsAnalysis />}
-/>
+                    path="/comparison-ac-dc/savings-analysis"
+                    element={<SavingsAnalysis />}
+                />
+
+                <Route
+                    path="/savings-analysis"
+                    element={<SavingsAnalysis />}
+                />
 
                 <Route
                     path="/charts" element={isPublicUser ? <Navigate to="/dashboard" replace /> : <Charts />}
