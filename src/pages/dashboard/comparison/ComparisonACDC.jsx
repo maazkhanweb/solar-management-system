@@ -301,6 +301,9 @@ function ComparisonACDC() {
     const [viewBill, setViewBill] =
         useState(null);
 
+    const [reportBill, setReportBill] =
+        useState(null);
+
     const [loading, setLoading] =
         useState(false);
 
@@ -668,6 +671,401 @@ function ComparisonACDC() {
 
 
     /* =========================================================================
+       URDU BILL REPORT + PDF
+       Uses only values returned by OCR / saved bill data. Missing values are
+       shown as unavailable; no tariff, generation or savings values guessed.
+    ========================================================================= */
+
+    const getReportOCR = (bill) => {
+        let data = bill?.ocr_data || bill?.data || bill || {};
+        if (typeof data === "string") {
+            try { data = JSON.parse(data); } catch { data = {}; }
+        }
+        return data && typeof data === "object" ? data : {};
+    };
+
+    const firstReportValue = (data, keys) => {
+        for (const key of keys) {
+            const value = data?.[key];
+            if (value !== null && value !== undefined && value !== "") return value;
+        }
+        return null;
+    };
+
+    // OCR providers may return the same bill fields nested inside bill_details,
+    // readings, net_metering, or other objects. Match exact normalized keys
+    // recursively rather than treating a generic "units" field as total import.
+    const deepReportValue = (data, keys) => {
+        const wanted = new Set(keys.map(key =>
+            String(key).toLowerCase().replace(/[^a-z0-9]/g, "")
+        ));
+        const visited = new Set();
+        const walk = (node) => {
+            if (!node || typeof node !== "object" || visited.has(node)) return null;
+            visited.add(node);
+            if (Array.isArray(node)) {
+                for (const item of node) {
+                    const found = walk(item);
+                    if (found !== null && found !== undefined && found !== "") return found;
+                }
+                return null;
+            }
+            for (const [key, value] of Object.entries(node)) {
+                const normalized = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+                if (wanted.has(normalized) && value !== null && value !== undefined && value !== "") {
+                    return value;
+                }
+            }
+            for (const value of Object.values(node)) {
+                const found = walk(value);
+                if (found !== null && found !== undefined && found !== "") return found;
+            }
+            return null;
+        };
+        return walk(data);
+    };
+
+    const reportNumber = (value) => {
+        if (value === null || value === undefined || value === "") return null;
+        const n = Number(String(value).replace(/,/g, "").replace(/[^0-9.-]/g, ""));
+        return Number.isFinite(n) ? n : null;
+    };
+
+    const reportMoney = (value) => value === null || value === undefined
+        ? "بل میں معلومات دستیاب نہیں"
+        : `${formatNumber(value, 0)} روپے`;
+
+    const reportUnits = (value) => value === null || value === undefined
+        ? "بل میں معلومات دستیاب نہیں"
+        : `${formatNumber(value, 0)} یونٹ`;
+
+    const escapeReportHTML = (value) => String(value ?? "—")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    const buildUrduReport = (bill) => {
+        const ocr = getReportOCR(bill);
+        const peak = reportNumber(deepReportValue(ocr, [
+            "peak_units", "peak_consumption_units", "peak_units_consumed",
+            "peak_time_units", "peak_units_imported", "peak_consumption",
+            "peak_unit", "peak_units_purchased", "peak_import_units",
+            "peak_kwh", "peak_reading_units"
+        ]));
+        const offPeak = reportNumber(deepReportValue(ocr, [
+            "off_peak_units", "offpeak_units", "off_peak_consumption_units",
+            "off_peak", "offpeak", "off_peak_kwh", "offpeak_consumption",
+            "off_peak_units_consumed", "off_peak_import_units",
+            "off_peak_reading_units"
+        ]));
+        const explicitImportTotal = reportNumber(deepReportValue(ocr, [
+            "total_import_units", "total_units_imported", "units_imported",
+            "total_imported_units", "total_grid_import_units", "grid_import_units",
+            "units_purchased", "units_from_grid", "total_consumption_units",
+            "imported_units", "total_units_consumed", "total_kwh_consumed",
+            "total_energy_consumed"
+        ]));
+        // When OCR supplies separate peak and off-peak readings, their sum is
+        // the WAPDA import total. Never use an ambiguous generic "units" field.
+        const importTotal = explicitImportTotal ??
+            (peak !== null && offPeak !== null ? peak + offPeak : null);
+        const exportUnits = reportNumber(deepReportValue(ocr, [
+            "solar_export_units", "export_units", "units_exported",
+            "net_metering_export_units", "exported_units", "offered_units",
+            "units_returned", "solar_units_exported", "units_exported_to_grid",
+            "grid_export_units", "export_to_grid_units", "units_sent_to_grid",
+            "units_delivered_to_grid", "units_exported_to_wapda",
+            "exported_to_grid_units", "net_export_units",
+            "net_metering_units_exported", "solar_energy_exported",
+            "reverse_meter_units", "bi_directional_export_units"
+        ]));
+        const netUnits = reportNumber(firstReportValue(ocr, ["net_billable_units", "net_units", "adjusted_units"])) ?? (importTotal !== null && exportUnits !== null ? importTotal - exportUnits : null);
+        const amount = reportNumber(firstReportValue(ocr, ["total_payable", "payable_before_due", "current_bill", "bill_amount", "total_amount"])) ?? reportNumber(bill?.bill_amount);
+        const electricity = reportNumber(firstReportValue(ocr, ["electricity_charges", "current_charges", "net_electricity_charges"]));
+        const taxes = reportNumber(deepReportValue(ocr, ["total_taxes", "tax_total", "government_taxes", "total_tax", "taxes", "gst", "electricity_duty", "income_tax", "tax_amount"]));
+        const fpa = reportNumber(deepReportValue(ocr, ["fpa", "fuel_price_adjustment", "fuel_adjustment", "total_fpa", "fpa_amount", "fuel_price_adj"]));
+        const monthRaw = firstReportValue(ocr, ["billing_period", "bill_month_name"]) || billMonthLabel(bill, ocr);
+        const due = firstReportValue(ocr, ["due_date"]);
+        const provider = firstReportValue(ocr, ["utility_provider"]) || "واپڈا";
+        const area = firstReportValue(ocr, ["area_name", "bill_address", "division"]);
+        const charges = Array.isArray(ocr.charge_breakdown) ? ocr.charge_breakdown : [];
+        const history = Array.isArray(ocr.consumption_history) ? ocr.consumption_history : (Array.isArray(ocr.reading_history) ? ocr.reading_history : []);
+        // Never mix another customer's bill into this report.
+        // Use the strongest available account identifier for matching.
+        const billReference = String(bill?.reference_number || ocr?.reference_number || "").trim().toLowerCase();
+        const billEmail = String(bill?.account_email || bill?.email || "").trim().toLowerCase();
+        const billConsumer = String(bill?.consumer_name || ocr?.consumer_name || "").trim().toLowerCase();
+        const sameAccountPrevious = (Array.isArray(bills) ? bills : [])
+            .filter(item => {
+                if (!item || item?.id === bill?.id) return false;
+                const itemOcr = getReportOCR(item);
+                const itemReference = String(item?.reference_number || itemOcr?.reference_number || "").trim().toLowerCase();
+                const itemEmail = String(item?.account_email || item?.email || "").trim().toLowerCase();
+                const itemConsumer = String(item?.consumer_name || itemOcr?.consumer_name || "").trim().toLowerCase();
+                if (billReference) return itemReference === billReference;
+                if (billEmail) return itemEmail === billEmail;
+                return Boolean(billConsumer && itemConsumer === billConsumer &&
+                    String(item?.area_name || itemOcr?.area_name || "").trim().toLowerCase() ===
+                    String(bill?.area_name || ocr?.area_name || "").trim().toLowerCase());
+            })
+            .sort((a, b) => {
+                const ay = getNumber(a.bill_year, 0) * 100 + getNumber(a.bill_month, 0);
+                const by = getNumber(b.bill_year, 0) * 100 + getNumber(b.bill_month, 0);
+                return by - ay;
+            });
+        const previous = sameAccountPrevious[0] || (history.length ? history[history.length - 1] : null);
+        const previousAmount = reportNumber(previous?.bill_amount ?? previous?.current_bill ?? previous?.total_payable ?? previous?.amount ?? previous?.payable);
+        const billMonthAmount = amount;
+        const monthDifference = previousAmount !== null && billMonthAmount !== null ? previousAmount - billMonthAmount : null;
+        const consumer = firstReportValue(ocr, ["consumer_name"]) || bill?.consumer_name || "—";
+        const systemCapacity = firstReportValue(ocr, ["solar_system_capacity_kw", "solar_capacity_kw", "installed_solar_capacity_kw"]);
+        const rows = [
+            ["واپڈا سے حاصل کردہ کل بجلی", reportUnits(importTotal)],
+            ["پیک ٹائم کے یونٹس", reportUnits(peak)],
+            ["آف پیک یونٹس", reportUnits(offPeak)],
+            ["سولر سے واپڈا کو واپس دیے گئے یونٹس", exportUnits === null ? "بل میں معلومات دستیاب نہیں" : `−${formatNumber(exportUnits)} یونٹ`],
+            ["ایڈجسٹمنٹ کے بعد قابلِ بل یونٹس", reportUnits(netUnits)],
+        ];
+        const amountRows = [
+            ["بجلی کے چارجز", reportMoney(electricity)],
+            ["حکومتی ٹیکس", reportMoney(taxes)],
+            ["فیول پرائس ایڈجسٹمنٹ (FPA)", reportMoney(fpa)],
+            ["کل قابلِ ادا رقم", reportMoney(amount)],
+        ];
+        const table = (items) => items.map(([a,b]) => `<tr><td>${escapeReportHTML(a)}</td><td>${escapeReportHTML(b)}</td></tr>`).join("");
+        const chargeRows = charges.map(row => `<tr><td>${escapeReportHTML(row.label || row.description || row.name || "چارج")}</td><td>${escapeReportHTML(row.amount ?? row.total ?? "—")}</td></tr>`).join("");
+        // Reasons are generated exclusively from the selected bill's OCR values.
+        // Approved four-point explanation. Values always come from this bill's OCR.
+        const chargeAmount = (pattern) => {
+            const row = charges.find(item => {
+                const label = String(item?.label || item?.description || item?.name || "").toLowerCase();
+                return pattern.test(label);
+            });
+            return reportNumber(row?.amount ?? row?.total ?? row?.value);
+        };
+        const taxAmount = taxes ?? chargeAmount(/tax|gst|income tax|electricity duty|ٹیکس|ڈیوٹی/);
+        const fpaAmount = fpa ?? chargeAmount(/fpa|fuel|فیول|ایڈجسٹمنٹ/);
+        const reasons = [];
+        if (importTotal !== null && exportUnits !== null) {
+            reasons.push(`واپڈا سے ${formatNumber(importTotal)} یونٹ لیے جبکہ ${formatNumber(exportUnits)} یونٹ واپس دیے گئے۔`);
+        } else if (importTotal !== null) {
+            reasons.push(`اس بل میں واپڈا سے حاصل کردہ کل بجلی ${formatNumber(importTotal)} یونٹ درج ہے۔`);
+        }
+        if (peak !== null && peak > 0) reasons.push(`بل میں پیک ٹائم کے ${formatNumber(peak)} یونٹس درج ہیں۔`);
+        if (taxAmount !== null && taxAmount > 0) reasons.push(`بل میں ${formatNumber(taxAmount)} روپے ٹیکس درج ہے۔`);
+        if (fpaAmount !== null && fpaAmount > 0) reasons.push(`فیول پرائس ایڈجسٹمنٹ (FPA) ${formatNumber(fpaAmount)} روپے ہے۔`);
+        const homeData = bill?.home_analysis_data || bill?.home_analysis || null;
+        const homeResult = bill?.home_analysis_result || null;
+        return { ocr, consumer, monthRaw, due, provider, area, amount, rows, amountRows, chargeRows, chargeItems: charges, reasons, previousAmount, monthDifference, systemCapacity, homeData, homeResult, history };
+    };
+
+    const billMonthLabel = (bill, ocr) => {
+        const month = reportNumber(ocr?.bill_month ?? bill?.bill_month);
+        const year = ocr?.bill_year ?? bill?.bill_year ?? "";
+        if (month && month >= 1 && month <= 12) return `${new Date(2000, month - 1, 1).toLocaleString("ur-PK", { month: "long" })} ${year}`.trim();
+        return year ? String(year) : "بجلی کا بل";
+    };
+
+    const openBillReport = async (bill) => {
+        try {
+            setActionLoading(true);
+            let complete = bill;
+            try {
+                const response = await comparisonBillService.getBill(bill.id);
+                complete = extractSingleBill(response) || bill;
+            } catch (fetchError) {
+                console.warn("Using bill list data for report:", fetchError);
+            }
+            setReportBill(complete);
+        } catch (err) {
+            setError(getErrorMessage(err));
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    
+const printBillReport = (bill) => {
+    let frame = null;
+
+    try {
+        const r = buildUrduReport(bill);
+        const esc = escapeReportHTML;
+        const cards = (items, type = "") => items.map(([label, value]) => `
+            <article class="metric-card ${type}">
+                <div class="metric-label">${esc(label)}</div>
+                <div class="metric-value">${esc(value)}</div>
+            </article>
+        `).join("");
+
+        const chargeRows = Array.isArray(r.chargeItems) ? r.chargeItems : [];
+        const charges = chargeRows.length ? `
+            <section class="report-section">
+                <h2>بل کے تمام چارجز</h2>
+                <table class="report-table charges-table">
+                    <colgroup><col style="width:68%"><col style="width:32%"></colgroup>
+                    <thead><tr><th>چارج کی تفصیل</th><th>رقم</th></tr></thead>
+                    <tbody>${chargeRows.map(row => `
+                        <tr>
+                            <td>${esc(row.label || row.description || row.name || "چارج")}</td>
+                            <td class="amount-cell">${esc(row.amount ?? row.total ?? "—")}</td>
+                        </tr>`).join("")}</tbody>
+                </table>
+            </section>` : "";
+
+        const reasons = r.reasons.length
+            ? `<ol class="reason-list">${r.reasons.map(x => `<li>${esc(x)}</li>`).join("")}</ol>`
+            : `<p class="empty-note">اس بل سے وجوہات اخذ کرنے کے لیے کافی واضح معلومات دستیاب نہیں۔</p>`;
+
+        const historyRows = Array.isArray(r.history) ? r.history : [];
+        const history = historyRows.length ? `
+            <section class="report-section">
+                <h2>بل کی سابقہ کھپت</h2>
+                <table class="report-table history-table">
+                    <colgroup><col style="width:34%"><col style="width:33%"><col style="width:33%"></colgroup>
+                    <thead><tr><th>مہینہ</th><th>یونٹس</th><th>بل کی رقم</th></tr></thead>
+                    <tbody>${historyRows.map(item => `
+                        <tr>
+                            <td>${esc(item.month || item.billing_month || "—")}</td>
+                            <td>${esc(item.units ?? item.units_consumed ?? "—")}</td>
+                            <td>${esc(item.bill_amount ?? item.amount ?? "—")}</td>
+                        </tr>`).join("")}</tbody>
+                </table>
+            </section>` : "";
+
+        const home = r.homeResult
+            ? `<div class="home-summary"><pre>${esc(JSON.stringify(r.homeResult, null, 2))}</pre></div>`
+            : `<p class="empty-note">ہوم اینالیسس ابھی محفوظ نہیں کیا گیا۔</p>`;
+
+        const previous = r.previousAmount !== null
+            ? `<div class="comparison-highlight"><span>پچھلے بل کی رقم</span><strong>${esc(reportMoney(r.previousAmount))}</strong><span>فرق</span><strong>${r.monthDifference === null ? "موازنہ دستیاب نہیں" : `${formatNumber(Math.abs(r.monthDifference))} روپے ${r.monthDifference >= 0 ? "کم" : "زیادہ"}`}</strong></div>`
+            : `<p class="empty-note">پچھلے مہینے کا بل ریکارڈ دستیاب نہیں، اس لیے موازنہ نہیں کیا جا سکا۔</p>`;
+
+        const html = `<!doctype html>
+        <html lang="ur" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>بجلی اور سولر نیٹ میٹرنگ رپورٹ</title>
+            <style>
+                @page { size: A4; margin: 13mm 12mm; }
+                * { box-sizing: border-box; }
+                html, body { margin:0; padding:0; width:100%; background:#fff; color:#172b45; direction:rtl; font-family:Arial,"Noto Naskh Arabic",sans-serif; font-size:11px; line-height:1.75; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+                body { max-width:100%; overflow-wrap:anywhere; }
+                .report-header { padding:0 0 15px; margin:0 0 18px; border-bottom:3px solid #98445a; }
+                .eyebrow { color:#98445a; font-size:9px; font-weight:700; letter-spacing:1px; }
+                h1 { color:#123b5b; font-size:21px; line-height:1.5; margin:5px 0 7px; }
+                .provider { color:#53677e; font-size:10px; }
+                .meta { display:flex; flex-wrap:wrap; gap:5px 18px; margin-top:8px; color:#526174; }
+                .payable { margin-top:10px; color:#98445a; font-size:27px; font-weight:800; }
+                .intro { background:#f3f7fa; border:1px solid #d4dee8; border-right:4px solid #98445a; border-radius:4px; padding:9px 12px; margin-top:10px; }
+                .report-section { margin:17px 0 0; page-break-inside:auto; }
+                h2 { color:#fff; background:#98445a; font-size:15px; margin:0 0 9px; padding:8px 11px; border:0; page-break-after:avoid; }
+                .metric-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; width:100%; }
+                .metric-card { min-width:0; border:1px solid #d4dee8; border-radius:4px; padding:9px 11px; background:#f3f7fa; break-inside:avoid; page-break-inside:avoid; }
+                .metric-card.money { background:#f3f7fa; border-color:#d4dee8; }
+                .metric-label { color:#53677e; font-size:10px; margin-bottom:4px; }
+                .metric-value { color:#163b5c; font-size:13px; font-weight:700; overflow-wrap:anywhere; }
+                .money .metric-value { color:#253b53; }
+                .report-table { width:100%; max-width:100%; border-collapse:collapse; table-layout:fixed; margin:8px 0 12px; direction:rtl; }
+                .report-table th,.report-table td { border:1px solid #d8e2ec; padding:7px 9px; text-align:right; vertical-align:top; overflow-wrap:anywhere; }
+                .report-table th { background:#98445a; color:#ffffff; font-weight:700; border-color:#803449; }
+                .report-table tbody tr:nth-child(even) { background:#eaf2f7; }
+                .report-table td.amount-cell { direction:rtl; font-weight:700; white-space:normal; }
+                .reason-list { margin:5px 0; padding-right:23px; }
+                .reason-list li { margin:5px 0; padding-right:3px; }
+                .comparison-highlight { display:grid; grid-template-columns:1fr 1fr; gap:7px; border:1px solid #d4dee8; border-radius:4px; padding:10px; background:#f3f7fa; }
+                .comparison-highlight span { color:#60748a; }
+                .comparison-highlight strong { color:#123b5b; }
+                .home-summary { border:1px solid #d9e5ef; border-radius:8px; padding:9px; background:#f8fbfd; }
+                pre { margin:0; white-space:pre-wrap; word-break:break-word; direction:ltr; text-align:left; font-size:9px; }
+                .empty-note { color:#68788c; background:#f7f9fb; border:1px dashed #ccd8e3; border-radius:7px; padding:9px; }
+                .footer-note { color:#68788c; font-size:9px; border-top:1px solid #e1e8ef; margin-top:18px; padding-top:8px; }
+                tr, .metric-card { break-inside:avoid; page-break-inside:avoid; }
+                @media print { html,body { width:100%; } .report-section { break-inside:auto; } h2 { break-after:avoid; } }
+            </style>
+        </head>
+        <body>
+            <header class="report-header">
+                <div class="eyebrow">URDU BILL REPORT</div>
+                <h1>${esc(r.monthRaw)} کا بجلی اور سولر نیٹ میٹرنگ بل</h1>
+                <div class="provider">${esc(r.provider)}${r.area ? `، ${esc(r.area)}` : ""}</div>
+                <div class="meta"><span>صارف: ${esc(r.consumer)}</span><span>آخری تاریخ: ${esc(r.due || "بل میں درج نہیں")}</span></div>
+                <div class="payable">${esc(reportMoney(r.amount))}</div>
+                <div class="intro">یہ رپورٹ اپ لوڈ کیے گئے بجلی کے بل میں موجود OCR معلومات کی بنیاد پر تیار کی گئی ہے۔</div>
+            </header>
+
+            <section class="report-section">
+                <h2>1۔ بجلی کی کھپت اور سولر ایکسپورٹ</h2>
+                <div class="metric-grid">${cards(r.rows)}</div>
+                <p>واپڈا کو واپس دیے گئے یونٹس سولر کی کل پیداوار نہیں ہوتے۔ گھر میں براہِ راست استعمال ہونے والی سولر بجلی کی مقدار بل میں موجود نہ بھی ہو سکتی ہے۔</p>
+                <p><strong>سولر سسٹم کی صلاحیت:</strong> ${r.systemCapacity ? `${esc(r.systemCapacity)} کلوواٹ` : "بل میں معلومات دستیاب نہیں۔"}</p>
+            </section>
+
+            <section class="report-section">
+                <h2>2۔ سولر ہونے کے باوجود بل زیادہ کیوں آیا؟</h2>
+                ${reasons}
+            </section>
+
+            <section class="report-section">
+                <h2>3۔ بل کی رقم کی تفصیل</h2>
+                <div class="metric-grid">${cards(r.amountRows, "money")}</div>
+            </section>
+            ${charges}
+
+            <section class="report-section">
+                <h2>4۔ پچھلے مہینے کے مقابلے میں</h2>
+                ${previous}
+            </section>
+            ${history}
+
+           
+            <div class="footer-note">یہ خودکار معلوماتی رپورٹ ہے۔ حتمی بل، ٹیرف اور ادائیگی کے لیے متعلقہ بجلی کمپنی کے اصل بل کو ترجیح دیں۔</div>
+        </body></html>`;
+
+        frame = document.createElement("iframe");
+        frame.title = "Bill report print";
+        frame.setAttribute("aria-hidden", "true");
+        frame.style.cssText = "position:fixed;left:0;bottom:0;width:0;height:0;border:0;visibility:hidden;";
+        document.body.appendChild(frame);
+
+        const printDoc = frame.contentDocument || frame.contentWindow?.document;
+        if (!printDoc || !frame.contentWindow) throw new Error("Unable to create print document.");
+
+        let printed = false;
+        const doPrint = () => {
+            if (printed || !frame?.contentWindow) return;
+            printed = true;
+            try {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            } catch (err) {
+                console.error("Print dialog error:", err);
+                window.alert("پرنٹ ڈائیلاگ نہیں کھل سکا۔ دوبارہ کوشش کریں۔");
+            }
+            setTimeout(() => {
+                if (frame?.parentNode) frame.parentNode.removeChild(frame);
+                frame = null;
+            }, 3000);
+        };
+
+        frame.onload = () => {
+            const fontsReady = frame?.contentDocument?.fonts?.ready;
+            if (fontsReady) fontsReady.then(() => setTimeout(doPrint, 400)).catch(() => setTimeout(doPrint, 600));
+            else setTimeout(doPrint, 600);
+        };
+        printDoc.open();
+        printDoc.write(html);
+        printDoc.close();
+        setTimeout(doPrint, 2000);
+    } catch (error) {
+        console.error("Bill PDF generation error:", error);
+        if (frame?.parentNode) frame.parentNode.removeChild(frame);
+        window.alert("PDF رپورٹ تیار کرنے میں مسئلہ پیش آیا۔ براہِ کرم دوبارہ کوشش کریں۔");
+    }
+};
+
+/* =========================================================================
        VIEW BILL
     ========================================================================= */
 
@@ -1893,6 +2291,15 @@ function ComparisonACDC() {
                                                 <div className="comparison-actions">
 
                                                     <button
+                                                        type="button"
+                                                        className="view"
+                                                        title="اردو رپورٹ / PDF"
+                                                        onClick={() => openBillReport(bill)}
+                                                    >
+                                                        <RiFileList3Line />
+                                                    </button>
+
+                                                    <button
     type="button"
     className="view"
     title={t.view}
@@ -2319,6 +2726,131 @@ const renderSavedHomeAnalysis = (bill) => {
        VIEW MODAL
     ========================================================================= */
 
+    const renderReportModal = () => {
+        if (!reportBill) return null;
+        const report = buildUrduReport(reportBill);
+        const reportCards = (items, variant = "") => (
+            <div className={`urdu-report-grid ${variant}`}>
+                {items.map(([label, value], index) => (
+                    <article className="urdu-report-card" key={`${label}-${index}`}>
+                        <span className="urdu-report-card-label">{label}</span>
+                        <strong className="urdu-report-card-value">{value}</strong>
+                    </article>
+                ))}
+            </div>
+        );
+        const chargeItems = Array.isArray(report.chargeItems) ? report.chargeItems : [];
+        const historyItems = Array.isArray(report.history) ? report.history : [];
+        return (
+            <div className="comparison-modal-overlay urdu-report-overlay">
+                <style>{`
+                    .urdu-report-overlay .comparison-view-modal{width:min(980px,calc(100vw - 32px));max-width:980px;max-height:94vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;box-shadow:0 24px 70px rgba(8,25,45,.24)}
+                    .urdu-report-overlay .comparison-modal-header{flex:0 0 auto;padding:18px 22px;border-bottom:1px solid #e4ebf2;background:linear-gradient(135deg,#f8fbfd,#fff)}
+                    .urdu-report-overlay .comparison-modal-header small{color:#98445a;font-size:10px;font-weight:800;letter-spacing:1px}
+                    .urdu-report-overlay .comparison-modal-header h2{margin:4px 0 0;color:#153b5b;font-size:20px}
+                    .urdu-report-overlay .comparison-view-content{flex:1 1 auto;overflow-y:auto;padding:22px 26px 26px;text-align:right;line-height:1.85;color:#243b53}
+                    .urdu-report-title{margin:0 0 5px;color:#153b5b;font-size:23px}
+                    .urdu-report-provider{margin:0;color:#65788d;font-size:13px}
+                    .urdu-report-total{margin:12px 0 3px;color:#98445a;font-size:30px;font-weight:800}
+                    .urdu-report-meta{display:flex;flex-wrap:wrap;gap:5px 18px;color:#65788d;font-size:12px}
+                    .urdu-report-note{margin:14px 0 20px;padding:11px 14px;border:1px solid #d4dee8;border-right:4px solid #98445a;border-radius:4px;background:#f3f7fa;color:#253b53}
+                    .urdu-report-section{margin:22px 0 0}
+                    .urdu-report-section h3{margin:0 0 12px;padding:8px 11px;background:#98445a;color:#fff;border:0;border-radius:2px;font-size:16px}
+                    .urdu-report-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+                    .urdu-report-card{min-width:0;padding:13px 15px;border:1px solid #d4dee8;border-radius:4px;background:#fff;box-shadow:none}
+                    .urdu-report-card-label{display:block;margin-bottom:6px;color:#65788d;font-size:12px}
+                    .urdu-report-card-value{display:block;color:#173e60;font-size:15px;overflow-wrap:anywhere}
+                    .urdu-report-grid.money .urdu-report-card{background:#f3f7fa;border-color:#d4dee8}
+                    .urdu-report-grid.money .urdu-report-card-value{color:#253b53}
+                    .urdu-report-table-wrap{overflow-x:auto;border:1px solid #dce6ef;border-radius:10px}
+                    .urdu-report-table{width:100%;border-collapse:collapse;table-layout:fixed;text-align:right;direction:rtl}
+                    .urdu-report-table th,.urdu-report-table td{padding:11px 14px;border-bottom:1px solid #e5edf3;text-align:right;overflow-wrap:anywhere}
+                    .urdu-report-table th{background:#98445a;color:#fff;font-size:12px;border-color:#803449}
+                    .urdu-report-table tbody tr:nth-child(even){background:#eaf2f7}
+                    .urdu-report-table tr:last-child td{border-bottom:0}
+                    .urdu-report-reasons{margin:0;padding-right:24px;line-height:2}
+                    .urdu-report-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+                    .urdu-report-comparison>div{padding:13px;border:1px solid #d4dee8;border-radius:4px;background:#f3f7fa}
+                    .urdu-report-comparison span{display:block;color:#65788d;font-size:12px}
+                    .urdu-report-comparison strong{display:block;margin-top:5px;color:#173e60;font-size:16px}
+                    .urdu-report-home{padding:14px;border:1px solid #dce6ef;border-radius:10px;background:#f8fbfd;white-space:pre-wrap;word-break:break-word;direction:ltr;text-align:left;font-size:11px;max-height:280px;overflow:auto}
+                    .urdu-report-empty{padding:12px;border:1px dashed #cbd8e3;border-radius:9px;background:#f8fafc;color:#65788d}
+                    .urdu-report-overlay .comparison-modal-footer{flex:0 0 auto;display:flex;gap:9px;justify-content:flex-start;padding:13px 18px;border-top:1px solid #e4ebf2;background:#fff}
+                    @media(max-width:640px){.urdu-report-grid{grid-template-columns:1fr}.urdu-report-overlay .comparison-view-content{padding:16px}.urdu-report-title{font-size:19px}.urdu-report-comparison{grid-template-columns:1fr}}
+                `}</style>
+                <div className="comparison-view-modal" dir="rtl">
+                    <div className="comparison-modal-header">
+                        <div><small>URDU BILL REPORT</small><h2>بجلی اور سولر نیٹ میٹرنگ رپورٹ</h2></div>
+                        <button type="button" onClick={() => setReportBill(null)} aria-label="Close report"><RiCloseLine /></button>
+                    </div>
+                    <div className="comparison-view-content">
+                        <h1 className="urdu-report-title">{report.monthRaw} کا بجلی اور سولر نیٹ میٹرنگ بل</h1>
+                        <p className="urdu-report-provider">{report.provider}{report.area ? `، ${report.area}` : ""}</p>
+                        <div className="urdu-report-total">{reportMoney(report.amount)}</div>
+                        <div className="urdu-report-meta"><span>صارف: {report.consumer}</span><span>آخری تاریخ: {displayValue(report.due)}</span></div>
+                        <div className="urdu-report-note">یہ رپورٹ اپ لوڈ کیے گئے بجلی کے بل میں موجود OCR معلومات کی بنیاد پر تیار کی گئی ہے۔</div>
+
+                        <section className="urdu-report-section">
+                            <h3>1۔ بجلی کی کھپت اور سولر ایکسپورٹ</h3>
+                            {reportCards(report.rows)}
+                            <p>واپڈا کو واپس دیے گئے یونٹس سولر کی کل پیداوار نہیں ہیں۔ گھر میں براہِ راست استعمال ہونے والی سولر بجلی کی مقدار اس بل میں موجود نہ بھی ہو سکتی ہے۔</p>
+                            <p><strong>سولر سسٹم کی صلاحیت:</strong> {displayValue(report.systemCapacity)} {report.systemCapacity ? "کلوواٹ" : ""}</p>
+                        </section>
+
+                        <section className="urdu-report-section">
+                            <h3>2۔ سولر ہونے کے باوجود بل زیادہ کیوں آیا؟</h3>
+                            {report.reasons.length ? <ol className="urdu-report-reasons">{report.reasons.map((reason, i) => <li key={i}>{reason}</li>)}</ol> : <p className="urdu-report-empty">اس بل سے وجوہات اخذ کرنے کے لیے کافی واضح معلومات دستیاب نہیں۔</p>}
+                        </section>
+
+                        <section className="urdu-report-section">
+                            <h3>3۔ بل کی رقم کی تفصیل</h3>
+                            {reportCards(report.amountRows, "money")}
+                        </section>
+
+                        {chargeItems.length > 0 && (
+                            <section className="urdu-report-section">
+                                <h3>بل کے تمام چارجز</h3>
+                                <div className="urdu-report-table-wrap">
+                                    <table className="urdu-report-table">
+                                        <colgroup><col style={{width:"68%"}}/><col style={{width:"32%"}}/></colgroup>
+                                        <thead><tr><th>چارج کی تفصیل</th><th>رقم</th></tr></thead>
+                                        <tbody>{chargeItems.map((row, i) => <tr key={i}><td>{row.label || row.description || row.name || "چارج"}</td><td>{displayValue(row.amount ?? row.total)}</td></tr>)}</tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        )}
+
+                        <section className="urdu-report-section">
+                            <h3>4۔ پچھلے مہینے کے مقابلے میں</h3>
+                            {report.previousAmount !== null ? (
+                                <div className="urdu-report-comparison">
+                                    <div><span>پچھلے بل کی رقم</span><strong>{reportMoney(report.previousAmount)}</strong></div>
+                                    <div><span>موجودہ بل کے مقابلے میں فرق</span><strong>{report.monthDifference === null ? "موازنہ دستیاب نہیں" : `${formatNumber(Math.abs(report.monthDifference))} روپے ${report.monthDifference >= 0 ? "کم" : "زیادہ"}`}</strong></div>
+                                </div>
+                            ) : <p className="urdu-report-empty">پچھلے مہینے کا ریکارڈ دستیاب نہیں۔</p>}
+                            {historyItems.length > 0 && (
+                                <div className="urdu-report-table-wrap" style={{marginTop:12}}>
+                                    <table className="urdu-report-table">
+                                        <colgroup><col style={{width:"34%"}}/><col style={{width:"33%"}}/><col style={{width:"33%"}}/></colgroup>
+                                        <thead><tr><th>مہینہ</th><th>یونٹس</th><th>بل کی رقم</th></tr></thead>
+                                        <tbody>{historyItems.map((item, i) => <tr key={i}><td>{item.month || item.billing_month || "—"}</td><td>{item.units ?? item.units_consumed ?? "—"}</td><td>{item.bill_amount ?? item.amount ?? "—"}</td></tr>)}</tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </section>
+
+                    
+                        <p style={{marginTop:20,color:"#718096",fontSize:11}}>یہ خودکار معلوماتی رپورٹ ہے۔ حتمی بل اور ادائیگی کے لیے متعلقہ بجلی کمپنی کے اصل بل کو ترجیح دیں۔</p>
+                    </div>
+                    <div className="comparison-modal-footer">
+                        <button type="button" className="comparison-secondary-btn" onClick={() => printBillReport(reportBill)}>PDF محفوظ کریں / پرنٹ کریں</button>
+                        <button type="button" className="comparison-primary-btn" onClick={() => setReportBill(null)}>{t.close}</button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     const renderViewModal = () => {
 
         if (!viewBill) {
@@ -2677,6 +3209,8 @@ const renderSavedHomeAnalysis = (bill) => {
             {renderEditModal()}
 
             {renderViewModal()}
+
+            {renderReportModal()}
 
 
             {/* ACTION LOADING */}

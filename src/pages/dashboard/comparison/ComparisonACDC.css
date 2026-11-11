@@ -1189,3 +1189,35 @@
 [data-theme="dark"] .saved-home-summary-card span, [data-theme="dark"] .saved-home-summary-card p, [data-theme="dark"] .saved-home-guidance-card p, [data-theme="dark"] .comparison-home-item p { color: #b6c4d4; }
 @media (max-width: 900px) { .saved-home-summary-grid, .saved-home-guidance-grid, .comparison-home-grid, .comparison-edit-saved-analysis .comparison-home-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .saved-home-summary-grid, .saved-home-guidance-grid, .comparison-home-grid, .comparison-edit-saved-analysis .comparison-home-grid { grid-template-columns: 1fr; } .comparison-edit-saved-analysis { padding: 0 14px 14px; } }
+
+
+/* ============================================================================
+   URDU BILL REPORT — MATCH REFERENCE PDF (MAROON / LIGHT BLUE)
+============================================================================ */
+.urdu-report-overlay .urdu-report-section h3 {
+    background: #98445a;
+    color: #fff;
+    border: 0;
+    border-radius: 2px;
+    padding: 8px 11px;
+}
+.urdu-report-overlay .urdu-report-note {
+    background: #f3f7fa;
+    border-color: #d4dee8;
+    border-right-color: #98445a;
+    color: #253b53;
+    border-radius: 4px;
+}
+.urdu-report-overlay .urdu-report-table th {
+    background: #98445a;
+    color: #fff;
+    border-color: #803449;
+}
+.urdu-report-overlay .urdu-report-table tbody tr:nth-child(even) {
+    background: #eaf2f7;
+}
+.urdu-report-overlay .urdu-report-card {
+    border-color: #d4dee8;
+    border-radius: 4px;
+    box-shadow: none;
+}
