@@ -1221,3 +1221,52 @@
     border-radius: 4px;
     box-shadow: none;
 }
+
+/* Jameel Noori Nastaleeq Urdu bill report typography */
+@font-face {
+    font-family: "Jameel Noori Nastaleeq";
+    src: url("/fonts/JameelNooriNastaleeq.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+.urdu-report-overlay .comparison-view-content,
+.urdu-report-overlay .urdu-report-title,
+.urdu-report-overlay .urdu-report-note,
+.urdu-report-overlay .urdu-report-section h3,
+.urdu-report-overlay .urdu-report-card-label,
+.urdu-report-overlay .urdu-report-card-value,
+.urdu-report-overlay .urdu-report-reasons,
+.urdu-report-overlay .urdu-report-comparison,
+.urdu-report-overlay .urdu-report-footer-note {
+    font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", serif;
+}
+.urdu-report-overlay .comparison-modal-header,
+.urdu-report-overlay .comparison-modal-footer {
+    font-family: Arial, sans-serif;
+}
+.urdu-report-overlay .urdu-report-paper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid #d8e1e9;
+    border-top: 6px solid #98445a;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(30,50,70,.07);
+}
+.urdu-report-overlay .urdu-report-section h3 {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 2;
+    padding: 5px 14px 9px;
+    border-right: 5px solid #c7a36a;
+}
+.urdu-report-overlay .urdu-report-card-label {font-size:15px;font-weight:700;line-height:2}
+.urdu-report-overlay .urdu-report-card-value {font-size:20px;font-weight:800;line-height:2}
+.urdu-report-overlay .urdu-report-reasons {font-size:17px;line-height:2.25}
+.urdu-report-overlay .urdu-report-footer-note {margin-top:24px;padding-top:12px;border-top:1px solid #e1e8ef;color:#71808d;font-size:13px}
+@media(max-width:640px) {
+    .urdu-report-overlay .urdu-report-paper {padding:14px;border-radius:8px}
+}

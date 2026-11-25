@@ -949,9 +949,17 @@ const printBillReport = (bill) => {
             <title>بجلی اور سولر نیٹ میٹرنگ رپورٹ</title>
             <style>
                 @page { size: A4; margin: 13mm 12mm; }
+                @font-face {
+                    font-family: "Jameel Noori Nastaleeq";
+                    src: url("/fonts/JameelNooriNastaleeq.ttf") format("truetype");
+                    font-style: normal;
+                    font-weight: 400;
+                    font-display: swap;
+                }
                 * { box-sizing: border-box; }
-                html, body { margin:0; padding:0; width:100%; background:#fff; color:#172b45; direction:rtl; font-family:Arial,"Noto Naskh Arabic",sans-serif; font-size:11px; line-height:1.75; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+                html, body { margin:0; padding:0; width:100%; background:#fff; color:#172b45; direction:rtl; font-family:"Jameel Noori Nastaleeq","Noto Nastaliq Urdu",serif; font-size:13px; line-height:2.05; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
                 body { max-width:100%; overflow-wrap:anywhere; }
+                .report-paper { width:100%; margin:0 auto; padding:8mm; background:#fff; border:1px solid #d5dee7; border-top:6px solid #98445a; border-radius:10px; }
                 .report-header { padding:0 0 15px; margin:0 0 18px; border-bottom:3px solid #98445a; }
                 .eyebrow { color:#98445a; font-size:9px; font-weight:700; letter-spacing:1px; }
                 h1 { color:#123b5b; font-size:21px; line-height:1.5; margin:5px 0 7px; }
@@ -986,6 +994,7 @@ const printBillReport = (bill) => {
             </style>
         </head>
         <body>
+            <main class="report-paper">
             <header class="report-header">
                 <div class="eyebrow">URDU BILL REPORT</div>
                 <h1>${esc(r.monthRaw)} کا بجلی اور سولر نیٹ میٹرنگ بل</h1>
@@ -1021,6 +1030,7 @@ const printBillReport = (bill) => {
 
            
             <div class="footer-note">یہ خودکار معلوماتی رپورٹ ہے۔ حتمی بل، ٹیرف اور ادائیگی کے لیے متعلقہ بجلی کمپنی کے اصل بل کو ترجیح دیں۔</div>
+            </main>
         </body></html>`;
 
         frame = document.createElement("iframe");
@@ -2744,6 +2754,50 @@ const renderSavedHomeAnalysis = (bill) => {
         return (
             <div className="comparison-modal-overlay urdu-report-overlay">
                 <style>{`
+                    @font-face {
+                        font-family: "Jameel Noori Nastaleeq";
+                        src: url("/fonts/JameelNooriNastaleeq.ttf") format("truetype");
+                        font-style: normal;
+                        font-weight: 400;
+                        font-display: swap;
+                    }
+                    .urdu-report-overlay .comparison-view-content {
+                        font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", serif;
+                        line-height: 2.15;
+                    }
+                    .urdu-report-paper {
+                        width: 100%;
+                        max-width: 900px;
+                        margin: 0 auto;
+                        padding: 24px;
+                        background: #fff;
+                        border: 1px solid #d8e1e9;
+                        border-top: 6px solid #98445a;
+                        border-radius: 12px;
+                        box-shadow: 0 5px 18px rgba(30,50,70,.07);
+                    }
+                    .urdu-report-paper .urdu-report-title,
+                    .urdu-report-paper .urdu-report-section h3,
+                    .urdu-report-paper .urdu-report-card-label,
+                    .urdu-report-paper .urdu-report-card-value,
+                    .urdu-report-paper .urdu-report-reasons,
+                    .urdu-report-paper .urdu-report-note,
+                    .urdu-report-paper .urdu-report-comparison,
+                    .urdu-report-paper .urdu-report-footer-note {
+                        font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", serif;
+                    }
+                    .urdu-report-paper .urdu-report-section h3 {
+                        font-size: 19px;
+                        font-weight: 800;
+                        line-height: 2;
+                        padding: 5px 14px 9px;
+                        border-right: 5px solid #c7a36a;
+                        border-radius: 5px;
+                    }
+                    .urdu-report-paper .urdu-report-card-label {font-size:15px;font-weight:700;line-height:2}
+                    .urdu-report-paper .urdu-report-card-value {font-size:20px;font-weight:800;line-height:2}
+                    .urdu-report-paper .urdu-report-reasons {font-size:17px;line-height:2.25}
+                    .urdu-report-paper .urdu-report-footer-note {margin-top:24px;padding-top:12px;border-top:1px solid #e1e8ef;color:#71808d;font-size:13px}
                     .urdu-report-overlay .comparison-view-modal{width:min(980px,calc(100vw - 32px));max-width:980px;max-height:94vh;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff;box-shadow:0 24px 70px rgba(8,25,45,.24)}
                     .urdu-report-overlay .comparison-modal-header{flex:0 0 auto;padding:18px 22px;border-bottom:1px solid #e4ebf2;background:linear-gradient(135deg,#f8fbfd,#fff)}
                     .urdu-report-overlay .comparison-modal-header small{color:#98445a;font-size:10px;font-weight:800;letter-spacing:1px}
@@ -2776,7 +2830,7 @@ const renderSavedHomeAnalysis = (bill) => {
                     .urdu-report-home{padding:14px;border:1px solid #dce6ef;border-radius:10px;background:#f8fbfd;white-space:pre-wrap;word-break:break-word;direction:ltr;text-align:left;font-size:11px;max-height:280px;overflow:auto}
                     .urdu-report-empty{padding:12px;border:1px dashed #cbd8e3;border-radius:9px;background:#f8fafc;color:#65788d}
                     .urdu-report-overlay .comparison-modal-footer{flex:0 0 auto;display:flex;gap:9px;justify-content:flex-start;padding:13px 18px;border-top:1px solid #e4ebf2;background:#fff}
-                    @media(max-width:640px){.urdu-report-grid{grid-template-columns:1fr}.urdu-report-overlay .comparison-view-content{padding:16px}.urdu-report-title{font-size:19px}.urdu-report-comparison{grid-template-columns:1fr}}
+                    @media(max-width:640px){.urdu-report-paper{padding:14px;border-radius:8px}.urdu-report-grid{grid-template-columns:1fr}.urdu-report-overlay .comparison-view-content{padding:16px}.urdu-report-title{font-size:19px}.urdu-report-comparison{grid-template-columns:1fr}}
                 `}</style>
                 <div className="comparison-view-modal" dir="rtl">
                     <div className="comparison-modal-header">
@@ -2784,6 +2838,7 @@ const renderSavedHomeAnalysis = (bill) => {
                         <button type="button" onClick={() => setReportBill(null)} aria-label="Close report"><RiCloseLine /></button>
                     </div>
                     <div className="comparison-view-content">
+                        <div className="urdu-report-paper">
                         <h1 className="urdu-report-title">{report.monthRaw} کا بجلی اور سولر نیٹ میٹرنگ بل</h1>
                         <p className="urdu-report-provider">{report.provider}{report.area ? `، ${report.area}` : ""}</p>
                         <div className="urdu-report-total">{reportMoney(report.amount)}</div>
@@ -2840,7 +2895,8 @@ const renderSavedHomeAnalysis = (bill) => {
                         </section>
 
                     
-                        <p style={{marginTop:20,color:"#718096",fontSize:11}}>یہ خودکار معلوماتی رپورٹ ہے۔ حتمی بل اور ادائیگی کے لیے متعلقہ بجلی کمپنی کے اصل بل کو ترجیح دیں۔</p>
+                        <p className="urdu-report-footer-note">یہ خودکار معلوماتی رپورٹ ہے۔ حتمی بل اور ادائیگی کے لیے متعلقہ بجلی کمپنی کے اصل بل کو ترجیح دیں۔</p>
+                        </div>
                     </div>
                     <div className="comparison-modal-footer">
                         <button type="button" className="comparison-secondary-btn" onClick={() => printBillReport(reportBill)}>PDF محفوظ کریں / پرنٹ کریں</button>
